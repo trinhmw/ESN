@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--General-->
+    <string name="app_name">Empty Seat Navigator</string>
+    <string name="action_settings">Settings</string>
+
+    <!--Seat Activity-->
+    <string name="groupsize">Group Size</string>
+    <string name="seatformation">Seat Formation</string>
+    <string name="submitsize">Submit Group Size</string>
+    <string name="reserveseats">Make Reservation</string>
+    <string name="theaterfront">Theater Screen</string>
+    <string name="theaterback">Back</string>
+</resources>
