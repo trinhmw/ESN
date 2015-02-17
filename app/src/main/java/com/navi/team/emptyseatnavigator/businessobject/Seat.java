@@ -8,30 +8,30 @@ import java.io.Serializable;
  * Created by Melissa on 2/10/2015.
  */
 public class Seat implements Serializable {
-    private boolean isAvailable;
+    private String isAvailable;
     private int[] color;
     private static final String TAG = "SeatObject";
 
 
-    public Seat(boolean isAvailable, int[] color) {
+    public Seat(String isAvailable, int[] color) {
         this.isAvailable = isAvailable;
         this.color = color;
     }
-    public Seat(boolean isAvailable) {
+    public Seat(String isAvailable) {
         int[] color = {0,0,0};
         this.isAvailable = isAvailable;
     }
     public Seat() {
         int[] color = {0,0,0};
-        this.isAvailable = false;
+        this.isAvailable = "n";
         this.color = color;
     }
 
-    public boolean isAvailable() {
+    public String isAvailable() {
         return isAvailable;
     }
 
-    public void setAvailable(boolean isAvailable) {
+    public void setAvailable(String isAvailable) {
         this.isAvailable = isAvailable;
     }
 
