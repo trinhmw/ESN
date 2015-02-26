@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.navi.team.emptyseatnavigator.R;
+import com.navi.team.emptyseatnavigator.businessobject.ReserveSeatsController;
 import com.navi.team.emptyseatnavigator.businessobject.Seat;
 
 import java.util.ArrayList;
@@ -171,22 +172,22 @@ public class SeatActivity extends ActionBarActivity {
         Button buttonSeat = new Button(this);
         buttonSeat.setId(R.id.tempbutton);
         if(seat.isAvailable()){
-//            buttonSeat.setBackgroundColor(Color.GREEN);
-//            buttonSeat.getBackground().setColorFilter(0xFF00FF00, PorterDuff.Mode.MULTIPLY);
 //            buttonSeat.setEnabled(false);
             buttonSeat.getBackground().setColorFilter(res.getColor(R.color.empty), PorterDuff.Mode.MULTIPLY);
         }
         else{
-//            buttonSeat.setBackgroundColor(Color.RED);
-//            buttonSeat.getBackground().setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
-//            buttonSeat.setEnabled(false);
+            buttonSeat.setEnabled(false);
             buttonSeat.getBackground().setColorFilter(res.getColor(R.color.not_empty), PorterDuff.Mode.MULTIPLY);
         }
         buttonSeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int id = v.getId();
-                Toast.makeText(getApplicationContext(), "" + R.color.not_empty, Toast.LENGTH_LONG).show();
+                Resources res = getResources();
+                ReserveSeatsController rsc = new ReserveSeatsController(null);
+                int[] colors = rsc.hexToRGB(res.getColor(R.color.not_empty));
+
+                Toast.makeText(getApplicationContext(), "R:" + colors[0] + ", G:" + colors[1] + ",B:" + colors[2], Toast.LENGTH_LONG).show();
 
             }
         });

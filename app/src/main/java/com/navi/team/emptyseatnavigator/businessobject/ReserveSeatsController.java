@@ -1,12 +1,13 @@
 package com.navi.team.emptyseatnavigator.businessobject;
 
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.util.Log;
 
 /**
  * Created by Melissa on 2/10/2015.
  */
-public class ReserveSeatsController {
+public class ReserveSeatsController{
     private int[] color;
     private Seat[][] formation;
     private static final String TAG = "ReserveSeatsController";
@@ -17,7 +18,6 @@ public class ReserveSeatsController {
     }
 
     public int reserveSeats(){
-        Resources res;
         return 0;
     }
 
@@ -27,6 +27,19 @@ public class ReserveSeatsController {
 
     public void setColor(int[] color) {
         this.color = color;
+    }
+
+    public int[] hexToRGB(int hex){
+        int r = Color.red(hex);
+        int g = Color.green(hex);
+        int b = Color.blue(hex);
+        int[] color = {r,g,b};
+        return color;
+    }
+
+    public String rgbToHex(int r, int g, int b){
+        String hexColor = String.format( "#%02x%02x%02x", r, g, b );
+        return hexColor;
     }
 
     public void setColor(int r, int g, int b) {
