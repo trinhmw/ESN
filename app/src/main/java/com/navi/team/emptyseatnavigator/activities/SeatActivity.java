@@ -1,5 +1,6 @@
 package com.navi.team.emptyseatnavigator.activities;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v7.app.ActionBarActivity;
@@ -31,8 +32,7 @@ public class SeatActivity extends ActionBarActivity {
     private final int TOTAL_SEATS = 8;
     private final int MAX_GROUP_SIZE = 4;
     private Seat[][] availableSeats;
-    private String seatFormation;
-
+    private Seat[][] seatFormation;
 
 
     @Override
@@ -167,23 +167,26 @@ public class SeatActivity extends ActionBarActivity {
      * @return Button
      */
     public Button generateSeatButton(Seat seat){
+        Resources res = getResources();
         Button buttonSeat = new Button(this);
         buttonSeat.setId(R.id.tempbutton);
         if(seat.isAvailable()){
 //            buttonSeat.setBackgroundColor(Color.GREEN);
-            buttonSeat.getBackground().setColorFilter(0xFF00FF00, PorterDuff.Mode.MULTIPLY);
-            buttonSeat.setEnabled(false);
+//            buttonSeat.getBackground().setColorFilter(0xFF00FF00, PorterDuff.Mode.MULTIPLY);
+//            buttonSeat.setEnabled(false);
+            buttonSeat.getBackground().setColorFilter(res.getColor(R.color.empty), PorterDuff.Mode.MULTIPLY);
         }
         else{
 //            buttonSeat.setBackgroundColor(Color.RED);
-            buttonSeat.getBackground().setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
-            buttonSeat.setEnabled(false);
+//            buttonSeat.getBackground().setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
+//            buttonSeat.setEnabled(false);
+            buttonSeat.getBackground().setColorFilter(res.getColor(R.color.not_empty), PorterDuff.Mode.MULTIPLY);
         }
         buttonSeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int id = v.getId();
-                Toast.makeText(getApplicationContext(), "Dynamic!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "" + R.color.not_empty, Toast.LENGTH_LONG).show();
 
             }
         });
