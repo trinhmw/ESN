@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners
+        android:radius="@dimen/seat_corner_radius"
+        />
+    <padding
+        android:left="@dimen/seat_padding"
+        android:right="@dimen/seat_padding"
+        android:bottom="@dimen/seat_padding"
+        android:top="@dimen/seat_padding"
+        />
+    <stroke
+        android:color="@color/seat_avail_stroke"
+        android:width="@dimen/seat_stroke"
+        />
+    <gradient
+        android:startColor="@color/seat_avail_start"
+        android:endColor="@color/seat_avail_end"
+        />
+
+</shape>

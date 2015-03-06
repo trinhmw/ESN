@@ -3,4 +3,16 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="activity_form_padding">30dp</dimen>
+
+    <dimen name="normal_text">7sp</dimen>
+    <dimen name="large_text">15sp</dimen>
+    <dimen name="line_seperator">1dp</dimen>
+
+    <dimen name="seat_stroke">1dp</dimen>
+    <dimen name="seat_padding">5dp</dimen>
+    <dimen name="seat_corner_radius">15dp</dimen>
+
+    <dimen name="btn_padding">10dp</dimen>
+    <dimen name="btn_radius">5dp</dimen>
+    <dimen name="btn_stroke">0dp</dimen>
 </resources>

@@ -3,6 +3,8 @@ package com.navi.team.emptyseatnavigator.activities;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.print.PrintAttributes;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -40,13 +42,18 @@ public class SeatActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setIcon(R.drawable.ic_launcher);
+        }
 
         Spinner spinnerSeatFormation = (Spinner) findViewById(R.id.spinnerSeatFormation);
         List<String> list = new ArrayList<>();
-        list.add("Formation 1");
+        list.add("None");
         list.add("Formation 2");
         list.add("Formation 3");
-        ArrayAdapter<String> adapterSeatFormation = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+        ArrayAdapter<String> adapterSeatFormation = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, list);
         adapterSeatFormation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSeatFormation.setAdapter(adapterSeatFormation);
 
@@ -170,14 +177,19 @@ public class SeatActivity extends ActionBarActivity {
     public Button generateSeatButton(Seat seat){
         Resources res = getResources();
         Button buttonSeat = new Button(this);
+        int height = 80;
+        int width = 80;
         buttonSeat.setId(R.id.tempbutton);
+        LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(width, height);
+        layoutParams1.setMargins(3,3,3,3);
+        buttonSeat.setLayoutParams(layoutParams1);
         if(seat.isAvailable()){
 //            buttonSeat.setEnabled(false);
             buttonSeat.getBackground().setColorFilter(res.getColor(R.color.empty), PorterDuff.Mode.MULTIPLY);
         }
         else{
             buttonSeat.setEnabled(false);
-            buttonSeat.getBackground().setColorFilter(res.getColor(R.color.not_empty), PorterDuff.Mode.MULTIPLY);
+//            buttonSeat.getBackground().setColorFilter(res.getColor(R.color.not_empty), PorterDuff.Mode.MULTIPLY);
         }
         buttonSeat.setOnClickListener(new View.OnClickListener() {
             @Override

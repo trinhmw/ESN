@@ -5,10 +5,17 @@
     <string name="action_settings">Settings</string>
 
     <!--Seat Activity-->
-    <string name="groupsize">Group Size</string>
-    <string name="seatformation">Seat Formation</string>
-    <string name="submitsize">Submit Group Size</string>
-    <string name="reserveseats">Make Reservation</string>
-    <string name="theaterfront">Theater Screen</string>
-    <string name="theaterback">Back</string>
+    <string name="group_size">Group Size</string>
+    <string name="seat_formation">Seat Formation</string>
+    <string name="seat_preference">Seat Preference</string>
+    <string name="submit_size">Submit</string>
+    <string name="reserve_seats">Make Reservation</string>
+    <string name="theater_front">Theater Screen</string>
+    <string name="theater_back">Back</string>
+    <string name="pref_left">Left</string>
+    <string name="pref_right">Right</string>
+    <string name="pref_center">Center</string>
+    <string name="pref_front">Front</string>
+    <string name="pref_middle">Middle</string>
+    <string name="pref_back">Back</string>
 </resources>

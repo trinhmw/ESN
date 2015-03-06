@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.navi.team.emptyseatnavigator"
-        minSdkVersion 13
+        minSdkVersion 12
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"

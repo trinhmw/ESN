@@ -6,6 +6,38 @@
     <color name="cyan">#38BFF0</color>
     <color name="empty">#00ff20</color>
     <color name="not_empty">#007eff</color>
+
+    <color name="primary">#ffffff</color>
+    <color name="secondary">#ffffff</color>
+    <color name="tertiary">#ffffff</color>
+
+    <color name="line">#ffffff</color>
+
+    <color name="btn_focus">#004380</color>
+    <color name="btn_focus_stroke">#91d9ff</color>
+
+    <color name="btn_start">#11429b</color>
+    <color name="btn_end">#052161</color>
+    <color name="btn_stroke">#72bcff</color>
+
+    <color name="btn_press">#470022</color>
+    <color name="btn_press_stroke">#ff3399</color>
+
+    <color name="seat_avail_start">#00ee1f</color>
+    <color name="seat_avail_end">#006a0d</color>
+    <color name="seat_avail_stroke">#001a03</color>
+
+    <color name="seat_unavail_start">#e7e7e7</color>
+    <color name="seat_unavail_end">#616261</color>
+    <color name="seat_unavail_stroke">#1a1a1a</color>
+
+    <color name="seat_select_start">#0033ef</color>
+    <color name="seat_select_end">#00146a</color>
+    <color name="seat_select_stroke">#000932</color>
+
+
+    <color name="bkg_start">#206cc4</color>
+    <color name="bkg_end">#618ec3</color>
     <!--<color-->
         <!--name="color_name">hex_color</color>-->
 </resources>
