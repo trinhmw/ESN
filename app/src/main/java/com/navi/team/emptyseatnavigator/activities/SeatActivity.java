@@ -31,11 +31,12 @@ import java.util.List;
 
 public class SeatActivity extends ActionBarActivity {
     private final int MAX_COLUMN = 4;
-    private final int MAX_ROW = 2;
-    private final int TOTAL_SEATS = 8;
+    private final int MAX_ROW = 3;
+    private final int TOTAL_SEATS = MAX_COLUMN * MAX_ROW;
     private final int MAX_GROUP_SIZE = 4;
-    private Seat[][] availableSeats;
-    private Seat[][] seatFormation;
+    private Seat[][] availableSeats = new Seat[MAX_ROW][MAX_COLUMN];
+    private Seat[][] seatFormation = new Seat[MAX_ROW][MAX_COLUMN];
+    private LinearLayout[] tempLinLayout;
 
 
     @Override
@@ -50,7 +51,7 @@ public class SeatActivity extends ActionBarActivity {
 
         Spinner spinnerSeatFormation = (Spinner) findViewById(R.id.spinnerSeatFormation);
         List<String> list = new ArrayList<>();
-        list.add("None");
+        list.add("Formation 1");
         list.add("Formation 2");
         list.add("Formation 3");
         ArrayAdapter<String> adapterSeatFormation = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, list);
@@ -61,40 +62,20 @@ public class SeatActivity extends ActionBarActivity {
         pickerGroupSize.setMaxValue(MAX_GROUP_SIZE);
         pickerGroupSize.setMinValue(1);
 
-        LinearLayout layoutSeat = (LinearLayout) findViewById(R.id.layoutSeat);
-        LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
-        LinearLayout[] tempLayout = new LinearLayout[MAX_ROW];
-        Button temp = generateSeatButton(new Seat(true));
+        availableSeats[0][0] = new Seat(true);
+        availableSeats[0][1] = new Seat(false);
+        availableSeats[0][2] = new Seat(false);
+        availableSeats[0][3] = new Seat(false);
+        availableSeats[1][0] = new Seat(true);
+        availableSeats[1][1] = new Seat(false);
+        availableSeats[1][2] = new Seat(false);
+        availableSeats[1][3] = new Seat(false);
+        availableSeats[2][0] = new Seat(true);
+        availableSeats[2][1] = new Seat(false);
+        availableSeats[2][2] = new Seat(false);
+        availableSeats[2][3] = new Seat(false);
 
-        for(int i = 0; i<MAX_ROW; i++)
-        {
-            tempLayout[i] = addLayoutRow(layoutRows,i);
-        }
-
-        temp = generateSeatButton(new Seat(true));
-        addSeatButton(temp, tempLayout[0]);
-
-        temp = generateSeatButton(new Seat(true));
-        addSeatButton(temp, tempLayout[0]);
-
-        temp = generateSeatButton(new Seat(false));
-        addSeatButton(temp, tempLayout[0]);
-
-        temp = generateSeatButton(new Seat(true));
-        addSeatButton(temp, tempLayout[0]);
-
-        temp = generateSeatButton(new Seat(true));
-        addSeatButton(temp, tempLayout[1]);
-
-        temp = generateSeatButton(new Seat(false));
-        addSeatButton(temp, tempLayout[1]);
-
-        temp = generateSeatButton(new Seat(true));
-        addSeatButton(temp, tempLayout[1]);
-
-        temp = generateSeatButton(new Seat(false));
-        addSeatButton(temp, tempLayout[1]);
-
+        tempLinLayout = displaySeats(availableSeats,1);
     }
 
 
@@ -168,17 +149,17 @@ public class SeatActivity extends ActionBarActivity {
     }
 
     /**
-     * generateSeatButton
+     * generateSeatStatusButton
      * Generates a seat button based off the information of a single seat. Takes the information of
      * whether it is available or not and makes a distinguishable difference between available and unavailable
      * @param seat
      * @return Button
      */
-    public Button generateSeatButton(Seat seat){
+    public Button generateSeatStatusButton(Seat seat){
         Resources res = getResources();
         Button buttonSeat = new Button(this);
-        int height = 80;
-        int width = 80;
+        int height = 70;
+        int width = 70;
         buttonSeat.setId(R.id.tempbutton);
         LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(width, height);
         layoutParams1.setMargins(3,3,3,3);
@@ -191,18 +172,83 @@ public class SeatActivity extends ActionBarActivity {
             buttonSeat.setEnabled(false);
 //            buttonSeat.getBackground().setColorFilter(res.getColor(R.color.not_empty), PorterDuff.Mode.MULTIPLY);
         }
-        buttonSeat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int id = v.getId();
-                Resources res = getResources();
-                ReserveSeatsController rsc = new ReserveSeatsController(null);
-                int[] colors = rsc.hexToRGB(res.getColor(R.color.not_empty));
+//        buttonSeat.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int id = v.getId();
+//                Resources res = getResources();
+//                ReserveSeatsController rsc = new ReserveSeatsController(null);
+//                int[] colors = rsc.hexToRGB(res.getColor(R.color.not_empty));
 
-                Toast.makeText(getApplicationContext(), "R:" + colors[0] + ", G:" + colors[1] + ",B:" + colors[2], Toast.LENGTH_LONG).show();
-
-            }
-        });
+//                Toast.makeText(getApplicationContext(), "R:" + colors[0] + ", G:" + colors[1] + ",B:" + colors[2], Toast.LENGTH_LONG).show();
+//                 tempLinLayout[0].removeAllViews();
+//                LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
+//                layoutRows.removeAllViews();
+//            }
+//        });
         return buttonSeat;
+    }
+
+    /**
+     * generateSeatSelectedButton
+     * Generates a seat button based off the information of a single seat. Takes the information of
+     * whether the seat is the one selected in the formation
+     * @param seat
+     * @return Button
+     */
+    public Button generateSeatSelectedButton(Seat seat){
+        Resources res = getResources();
+        Button buttonSeat = new Button(this);
+        int height = 70;
+        int width = 70;
+        buttonSeat.setId(R.id.tempbutton);
+        LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(width, height);
+        layoutParams1.setMargins(3,3,3,3);
+        buttonSeat.setLayoutParams(layoutParams1);
+        if(seat.isAvailable()){
+            buttonSeat.getBackground().setColorFilter(res.getColor(R.color.not_empty), PorterDuff.Mode.MULTIPLY);
+        }
+        else{
+            buttonSeat.setEnabled(false);
+        }
+
+        return buttonSeat;
+    }
+
+    /**
+     * displaySeats
+     * Displays current seats based off the multidimensional array of seats informaiton. The type determines whether it is displaying
+     * seat status or the selected formation
+     * @param seats
+     * @param type - 0 for available seats, 1 for formation seats
+     * @return
+     */
+    public LinearLayout[] displaySeats(Seat[][] seats, int type){
+        LinearLayout layoutSeat = (LinearLayout) findViewById(R.id.layoutSeat);
+        LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
+        LinearLayout[] tempLayout = new LinearLayout[MAX_ROW];
+        layoutRows.removeAllViews();
+        for(int i = 0; i < MAX_ROW ;i++){
+            tempLayout[i] = addLayoutRow(layoutRows,i);
+            for(int j = 0; j < MAX_COLUMN;j++){
+                if(type == 0) {
+                    addSeatButton(generateSeatStatusButton(seats[i][j]), tempLayout[i]);
+                }
+                if(type == 1){
+                    addSeatButton(generateSeatSelectedButton(seats[i][j]), tempLayout[i]);
+                }
+            }
+        }
+
+        return tempLayout;
+    }
+
+
+    public void setAvailableSeats(Seat[][] availableSeats) {
+        this.availableSeats = availableSeats;
+    }
+
+    public void setSeatFormation(Seat[][] seatFormation) {
+        this.seatFormation = seatFormation;
     }
 }
