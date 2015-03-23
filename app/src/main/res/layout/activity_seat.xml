@@ -70,8 +70,7 @@
                 android:text="@string/seat_preference"
                 android:id="@+id/tvSeatPreferences"
                 android:layout_gravity="center_horizontal"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:layout_margin="@dimen/activity_vertical_margin"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
             <RadioGroup
                 android:layout_width="wrap_content"
