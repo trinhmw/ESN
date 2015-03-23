@@ -2,6 +2,8 @@ package com.navi.team.emptyseatnavigator.businessobject;
 
 import android.util.Log;
 
+import com.navi.team.emptyseatnavigator.activities.SeatActivity;
+
 import java.io.Serializable;
 
 /**
@@ -11,11 +13,14 @@ public class Seat implements Serializable {
     private Boolean isAvailable;
     private int[] color;
     private static final String TAG = "SeatObject";
+    private int column;
+    private int row;
 
 
     public Seat(Boolean isAvailable, int[] color) {
         this.isAvailable = isAvailable;
         this.color = color;
+
     }
     public Seat(Boolean isAvailable) {
         setColor(0,0,0);
@@ -24,6 +29,20 @@ public class Seat implements Serializable {
     public Seat() {
         setColor(0,0,0);
         this.isAvailable = false;
+    }
+
+    public Seat(Boolean isAvailable, int[] color, int row, int column){
+        this.isAvailable = isAvailable;
+        this.color = color;
+        this.row = row;
+        this.column = column;
+    }
+
+    public Seat(int row, int column){
+        this.isAvailable = false;
+        setColor(0,0,0);
+        this.row = row;
+        this.column = column;
     }
 
     public Boolean isAvailable() {
@@ -61,5 +80,21 @@ public class Seat implements Serializable {
         } else {
             Log.e(TAG, "RGB int value is not within the valid range of 0 to 255.");
         }
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
     }
 }

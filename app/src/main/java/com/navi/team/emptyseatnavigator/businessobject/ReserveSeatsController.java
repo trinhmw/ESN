@@ -1,5 +1,8 @@
 package com.navi.team.emptyseatnavigator.businessobject;
 
+import com.navi.team.emptyseatnavigator.R;
+
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.Log;
@@ -8,25 +11,67 @@ import android.util.Log;
  * Created by Melissa on 2/10/2015.
  */
 public class ReserveSeatsController{
+    private static ReserveSeatsController instance;
     private int[] color;
+    private int[] possibleColors = {R.color.color0, R.color.color1, R.color.color2, R.color.color3};
+    private int colorIndex;
     private Seat[][] formation;
     private static final String TAG = "ReserveSeatsController";
+    private Resources res;
 
-    public ReserveSeatsController(Seat[][] formation) {
-        setColor(100,100,100);
-        this.formation = formation;
+    public static ReserveSeatsController getInstance(Context context){
+        if(instance == null){
+            instance = new ReserveSeatsController(context.getApplicationContext());
+        }
+        return instance;
     }
 
-    public int reserveSeats(){
-        return 0;
+    private ReserveSeatsController(Context context){
+        colorIndex = 0;
+        res = context.getResources();
+    }
+
+    public int[] reserveSeats(Seat[][] formation){
+        boolean isValid = true;
+        setColor(0,0,0);
+
+        if(setFormation(formation) == false){
+            isValid = false;
+        }
+
+        if(isValid == true) {
+
+//        Call isReserved= MapModule.reserveseat() or something like that here
+//            If reserve successful then
+            setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
+            colorIndexAdjust();
+
+        }
+        return color;
+    }
+
+    private void colorIndexAdjust(){
+        if(colorIndex >= (possibleColors.length - 1)){
+            colorIndex = 0;
+        }
+        else {
+            colorIndex++;
+        }
     }
 
     public int[] getColor() {
         return color;
     }
 
-    public void setColor(int[] color) {
-        this.color = color;
+    private boolean setColor(int[] color) {
+        boolean isSet = false;
+        if (color[0] <= 255 && color[0] >= 0 && color[1] <= 255 && color[1] >= 0 && color[2] <= 255 && color[2] >= 0) {
+            this.color = color;
+            isSet = true;
+        } else {
+            Log.e(TAG, "RGB int value is not within the valid range of 0 to 255.");
+        }
+        return isSet;
     }
 
     public int[] hexToRGB(int hex){
@@ -42,13 +87,17 @@ public class ReserveSeatsController{
         return hexColor;
     }
 
-    public void setColor(int r, int g, int b) {
+    private boolean setColor(int r, int g, int b) {
+        boolean isSet = false;
         if (r <= 255 && r >= 0 && g <= 255 && g >= 0 && b <= 255 && b >= 0) {
             int[] color = {r, g, b};
             this.color = color;
+            isSet = true;
         } else {
             Log.e(TAG, "RGB int value is not within the valid range of 0 to 255.");
         }
+
+        return isSet;
     }
 
     public int getR() {
@@ -67,8 +116,14 @@ public class ReserveSeatsController{
         return formation;
     }
 
-    public void setFormation(Seat[][] formation) {
-        this.formation = formation;
+    private boolean setFormation(Seat[][] formation) {
+        boolean isSet = false;
+        if(!formation.equals(null))
+        {
+            this.formation = formation;
+            isSet = true;
+        }
+        return isSet;
     }
 }
 

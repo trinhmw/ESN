@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="magenta">#F70061</color>
-    <color name="pale_blue">#91A9FC</color>
-    <color name="sand">#EDA74F</color>
-    <color name="cyan">#38BFF0</color>
+    <color name="color0">#F70061</color>
+    <color name="color1">#91A9FC</color>
+    <color name="color2">#EDA74F</color>
+    <color name="color3">#38BFF0</color>
+
     <color name="empty">#00ff20</color>
     <color name="not_empty">#007eff</color>
 

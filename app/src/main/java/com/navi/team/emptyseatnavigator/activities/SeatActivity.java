@@ -1,32 +1,38 @@
 package com.navi.team.emptyseatnavigator.activities;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.print.PrintAttributes;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.Layout;
+
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ActionMenuView;
+
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.navi.team.emptyseatnavigator.R;
+import com.navi.team.emptyseatnavigator.businessobject.InputController;
 import com.navi.team.emptyseatnavigator.businessobject.ReserveSeatsController;
 import com.navi.team.emptyseatnavigator.businessobject.Seat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class SeatActivity extends ActionBarActivity {
@@ -34,9 +40,12 @@ public class SeatActivity extends ActionBarActivity {
     private final int MAX_ROW = 3;
     private final int TOTAL_SEATS = MAX_COLUMN * MAX_ROW;
     private final int MAX_GROUP_SIZE = 4;
+    private int[] reserveColor;
     private Seat[][] availableSeats = new Seat[MAX_ROW][MAX_COLUMN];
     private Seat[][] seatFormation = new Seat[MAX_ROW][MAX_COLUMN];
+    private Seat[][][] seatFormationSet;
     private LinearLayout[] tempLinLayout;
+    private final String ERROR_TITLE = "Error";
 
 
     @Override
@@ -49,6 +58,8 @@ public class SeatActivity extends ActionBarActivity {
             actionBar.setIcon(R.drawable.ic_launcher);
         }
 
+
+//        Seat Formation Spinner
         Spinner spinnerSeatFormation = (Spinner) findViewById(R.id.spinnerSeatFormation);
         List<String> list = new ArrayList<>();
         list.add("Formation 1");
@@ -58,24 +69,68 @@ public class SeatActivity extends ActionBarActivity {
         adapterSeatFormation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSeatFormation.setAdapter(adapterSeatFormation);
 
-        NumberPicker pickerGroupSize = (NumberPicker) findViewById(R.id.pickerGroupSize);
+
+//        Number Picker
+        final NumberPicker pickerGroupSize = (NumberPicker) findViewById(R.id.pickerGroupSize);
         pickerGroupSize.setMaxValue(MAX_GROUP_SIZE);
         pickerGroupSize.setMinValue(1);
+        pickerGroupSize.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
-        availableSeats[0][0] = new Seat(true);
-        availableSeats[0][1] = new Seat(false);
-        availableSeats[0][2] = new Seat(false);
-        availableSeats[0][3] = new Seat(false);
-        availableSeats[1][0] = new Seat(true);
-        availableSeats[1][1] = new Seat(false);
-        availableSeats[1][2] = new Seat(false);
-        availableSeats[1][3] = new Seat(false);
-        availableSeats[2][0] = new Seat(true);
-        availableSeats[2][1] = new Seat(false);
-        availableSeats[2][2] = new Seat(false);
-        availableSeats[2][3] = new Seat(false);
 
-        tempLinLayout = displaySeats(availableSeats,1);
+
+
+        Button submitButton = (Button) findViewById(R.id.buttonSubmit);
+        View.OnClickListener submitOnClickListener = new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+//               Radio Group
+                RadioGroup seatPreferencesRadioGroup = (RadioGroup) findViewById(R.id.radioGroup0);
+                int checkedPreference = seatPreferencesRadioGroup.getCheckedRadioButtonId();
+                boolean hasFormation;
+                if(checkedPreference != -1) {
+                    RadioButton radioButton = (RadioButton) findViewById(checkedPreference);
+                    InputController ic = new InputController();
+                    if (radioButton.getText() != null) {
+                        hasFormation = ic.validateInput(pickerGroupSize.getValue(), radioButton.getText().toString(), MAX_GROUP_SIZE);
+                        if(hasFormation == false){
+                            errorDialog("No possible formations available");
+                        }
+                        //dialog here on whether seat formations are generated
+                    }
+                }
+                else{
+                    errorDialog("Please select your seat preference.");
+                }
+            }
+        };
+        submitButton.setOnClickListener(submitOnClickListener);
+
+
+        final Button reserveButton = (Button) findViewById(R.id.buttonReserve);
+        View.OnClickListener reserveOnClickListener = new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                ReserveSeatsController rsc = ReserveSeatsController.getInstance(getApplicationContext());
+                seatFormation = availableSeats;
+                reserveColor = rsc.reserveSeats(seatFormation);
+                if(!(reserveColor[0] == 0  &&  reserveColor[1] == 0 && reserveColor[2] == 0))
+                {
+                    //Show reservation seat color with a confirmation button
+                    //Clear the display to available seats again
+                    reservedDialog(reserveColor[0],reserveColor[1],reserveColor[2]);
+                }
+                else{
+                    //Tell the user that their seats could not be reserved and refresh display back to available seats
+                    errorDialog("Your seats have been taken, please try again.");
+                    refresh();
+                }
+            }
+        };
+        reserveButton.setOnClickListener(reserveOnClickListener);
+
+        randomSeatAvailability(availableSeats);
+
+        tempLinLayout = displaySeats(availableSeats,0);
     }
 
 
@@ -99,6 +154,37 @@ public class SeatActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void errorDialog(String message){
+        Dialog dialog = new Dialog(SeatActivity.this);
+        dialog.setContentView(R.layout.error_dialog);
+        dialog.setTitle(ERROR_TITLE);
+        TextView textView = (TextView) dialog.findViewById(R.id.text);
+        textView.setText(message);
+        dialog.show();
+    }
+
+    public void reservedDialog(int r,int g,int b){
+        final Dialog dialog = new Dialog(SeatActivity.this);
+        dialog.setContentView(R.layout.reserved_dialog);
+        dialog.setTitle("Reservation Successful");
+        ImageView colorImage = (ImageView) dialog.findViewById(R.id.image);
+        colorImage.setBackgroundColor(Color.rgb(r,g,b));
+        TextView textView = (TextView) dialog.findViewById(R.id.reservedText);
+        textView.setText("Your seat has been reserved.\nPlease look for the light with the color displayed");
+
+        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refresh();
+//                displaySeats(availableSeats,0);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     /**
@@ -158,8 +244,8 @@ public class SeatActivity extends ActionBarActivity {
     public Button generateSeatStatusButton(Seat seat){
         Resources res = getResources();
         Button buttonSeat = new Button(this);
-        int height = 70;
-        int width = 70;
+        int height = 50;
+        int width = 50;
         buttonSeat.setId(R.id.tempbutton);
         LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(width, height);
         layoutParams1.setMargins(3,3,3,3);
@@ -199,8 +285,8 @@ public class SeatActivity extends ActionBarActivity {
     public Button generateSeatSelectedButton(Seat seat){
         Resources res = getResources();
         Button buttonSeat = new Button(this);
-        int height = 70;
-        int width = 70;
+        int height = 50;
+        int width = 50;
         buttonSeat.setId(R.id.tempbutton);
         LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(width, height);
         layoutParams1.setMargins(3,3,3,3);
@@ -250,5 +336,29 @@ public class SeatActivity extends ActionBarActivity {
 
     public void setSeatFormation(Seat[][] seatFormation) {
         this.seatFormation = seatFormation;
+    }
+
+    public void refresh(){
+        Intent intent = getIntent();
+        overridePendingTransition(0,0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0,0);
+
+        startActivity(intent);
+        overridePendingTransition(0,0);
+    }
+
+    /**
+     * randomSeatAvailability
+     * For testing purposes only
+     */
+    public void randomSeatAvailability(Seat seats[][]){
+        Random random = new Random();
+        for(int i = 0; i <MAX_ROW; i++){
+            for(int j = 0; j<MAX_COLUMN; j++){
+                seats[i][j] = new Seat(random.nextBoolean());
+            }
+        }
     }
 }
