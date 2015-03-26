@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ESN.iml" filepath="$PROJECT_DIR$/ESN.iml" />
-      <module fileurl="file://$PROJECT_DIR$/EmptySeatNavigator.iml" filepath="$PROJECT_DIR$/EmptySeatNavigator.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

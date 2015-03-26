@@ -73,13 +73,16 @@ public class Seat implements Serializable {
         this.color = color;
     }
 
-    public void setColor(int r, int g, int b) {
+    public boolean setColor(int r, int g, int b) {
+        boolean isValid = false;
         if (r <= 255 && r >= 0 && g <= 255 && g >= 0 && b <= 255 && b >= 0) {
             int[] color = {r, g, b};
             this.color = color;
+            isValid = true;
         } else {
-            Log.e(TAG, "RGB int value is not within the valid range of 0 to 255.");
+//            Log.e(TAG, "RGB int value is not within the valid range of 0 to 255.");
         }
+        return isValid;
     }
 
     public int getColumn() {
