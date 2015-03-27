@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="activity_form_padding">30dp</dimen>
     <dimen name="margin">5dp</dimen>
+    <dimen name="large_margin">50dp</dimen>
 
     <dimen name="image_size">60dp</dimen>
 
@@ -18,4 +19,9 @@
     <dimen name="btn_padding">10dp</dimen>
     <dimen name="btn_radius">5dp</dimen>
     <dimen name="btn_stroke">0dp</dimen>
+
+    <dimen name="screen_stroke">2dp</dimen>
+    <dimen name="screen_padding">10dp</dimen>
+    <dimen name="screen_width">300dp</dimen>
+    <dimen name="screen_height">100dp</dimen>
 </resources>

@@ -39,6 +39,10 @@
 
     <color name="bkg_start">#206cc4</color>
     <color name="bkg_end">#618ec3</color>
+
+    <color name="screen_start">#000000</color>
+    <color name="screen_end">#1a1a1a</color>
+    <color name="screen_stroke">#000000</color>
     <!--<color-->
         <!--name="color_name">hex_color</color>-->
 </resources>

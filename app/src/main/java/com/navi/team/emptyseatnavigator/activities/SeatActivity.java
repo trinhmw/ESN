@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -45,7 +46,7 @@ public class SeatActivity extends ActionBarActivity {
     private Seat[][] seatFormation = new Seat[MAX_ROW][MAX_COLUMN];
     private Seat[][][] seatFormationSet;
     private LinearLayout[] tempLinLayout;
-    private final String ERROR_TITLE = "Error";
+    private final String ERROR_TITLE = "Hey Listen!";
 
 
     @Override
@@ -60,14 +61,14 @@ public class SeatActivity extends ActionBarActivity {
 
 
 //        Seat Formation Spinner
-        Spinner spinnerSeatFormation = (Spinner) findViewById(R.id.spinnerSeatFormation);
-        List<String> list = new ArrayList<>();
-        list.add("Formation 1");
-        list.add("Formation 2");
-        list.add("Formation 3");
-        ArrayAdapter<String> adapterSeatFormation = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, list);
-        adapterSeatFormation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerSeatFormation.setAdapter(adapterSeatFormation);
+//        Spinner spinnerSeatFormation = (Spinner) findViewById(R.id.spinnerSeatFormation);
+//        List<String> list = new ArrayList<>();
+//        list.add("Formation 1");
+//        list.add("Formation 2");
+//        list.add("Formation 3");
+//        ArrayAdapter<String> adapterSeatFormation = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, list);
+//        adapterSeatFormation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerSeatFormation.setAdapter(adapterSeatFormation);
 
 
 //        Number Picker
@@ -157,12 +158,21 @@ public class SeatActivity extends ActionBarActivity {
     }
 
     public void errorDialog(String message){
+        MediaPlayer mediaPlayer = MediaPlayer.create(SeatActivity.this, R.raw.listen);
+
         Dialog dialog = new Dialog(SeatActivity.this);
         dialog.setContentView(R.layout.error_dialog);
         dialog.setTitle(ERROR_TITLE);
         TextView textView = (TextView) dialog.findViewById(R.id.text);
         textView.setText(message);
         dialog.show();
+        mediaPlayer.setLooping(false);
+        mediaPlayer.setVolume(1,1);
+        mediaPlayer.start();
+        if(!mediaPlayer.isPlaying()){
+            mediaPlayer.release();
+        }
+
     }
 
     public void reservedDialog(int r,int g,int b){

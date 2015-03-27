@@ -16,7 +16,7 @@ public class InputController {
             if((groupSize < 1) || (groupSize > MAX_GROUP_SIZE)){
                 isValid = false;
             }
-            if((!seatPreference.equals(R.string.pref_front)) || (!seatPreference.equals(R.string.pref_middle)) || (!seatPreference.equals(R.string.pref_back))){
+            if((!seatPreference.equals(R.string.pref_front)) || (!seatPreference.equals(R.string.pref_middle)) || (!seatPreference.equals(R.string.pref_back) || (!seatPreference.equals("None")))){
                 isValid = false;
             }
             if(MAX_GROUP_SIZE < 1){

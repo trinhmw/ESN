@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
         <item name="android:textAppearanceLarge">@style/TextAppearance.AppCompat.Large</item>
         <item name ="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Medium</item>
@@ -11,6 +11,7 @@
         <item name="android:textColorTertiary">@color/tertiary</item>
 
         <item name="android:buttonStyle">@style/Button</item>
+
     </style>
 
     <style name="Button" parent="android:style/Widget.Button">

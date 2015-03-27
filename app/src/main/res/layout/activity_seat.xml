@@ -45,11 +45,6 @@
                 android:layout_margin="@dimen/activity_vertical_margin"
                 />
 
-            <!--<View-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="@dimen/line_seperator"-->
-                <!--android:background="@color/line"/>-->
-
         </LinearLayout>
 
         <View
@@ -95,6 +90,12 @@
                     android:text="@string/pref_back"
                     android:textColor="@color/line"
                     android:id="@+id/radio2"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pref_none"
+                    android:textColor="@color/line"
+                    android:id="@+id/radio3"/>
             </RadioGroup>
 
 
@@ -122,14 +123,35 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:id="@+id/layoutRowsOuter"
-                    android:layout_margin="@dimen/activity_vertical_margin">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:text="@string/theater_front"
-                        android:id="@+id/textFront"
-                        android:layout_gravity="center_horizontal" />
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/screen_height"
+                        android:background="@drawable/screen"
+                        android:layout_marginTop="@dimen/margin"
+                        android:layout_marginLeft="@dimen/large_margin"
+                        android:layout_marginRight="@dimen/large_margin"
+                        android:orientation="vertical"
+                        android:padding="@dimen/margin">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/theater_front"
+                                android:id="@+id/textFront"
+                                android:layout_gravity="bottom" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -158,21 +180,49 @@
                         android:text="@string/seat_formation"
                         android:id="@+id/tvSeatFormation"
                         android:layout_gravity="center_horizontal"
-                        android:paddingTop="@dimen/activity_form_padding"
+                        android:padding="@dimen/margin"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
-                    <Spinner
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/spinnerSeatFormation"
-                        android:layout_gravity="center_horizontal"/>
+                        android:orientation="horizontal"
+                        android:layout_margin="@dimen/margin"
+                        android:padding="@dimen/margin"
+                        android:layout_gravity="center">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/buttonLeft"
+                            android:text="@string/left"
+                            android:layout_gravity="left"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/available_seats"
+                            android:id="@+id/tvCurrentSeatFormation"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/large_margin"
+                            android:layout_marginRight="@dimen/large_margin"/>
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/buttonRight"
+                            android:text="@string/right"
+                            android:layout_gravity="right"/>
+
+                        </LinearLayout>
 
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/reserve_seats"
                         android:id="@+id/buttonReserve"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="@dimen/margin"/>
                 </LinearLayout>
 
             </LinearLayout>
