@@ -16,11 +16,6 @@
         android:id="@+id/layoutGeneral"
         >
 
-        <!--<View-->
-            <!--android:layout_width="@dimen/line_seperator"-->
-            <!--android:layout_height="fill_parent"-->
-            <!--android:background="@color/line"/>-->
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -71,31 +66,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_vertical_margin"
-                android:id="@+id/radioGroup0">
+                android:id="@+id/seatPreferences">
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/pref_front"
                     android:textColor="@color/line"
-                    android:id="@+id/radio0"/>
+                    android:id="@+id/prefFront"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/pref_middle"
                     android:textColor="@color/line"
-                    android:id="@+id/radio1"/>
+                    android:id="@+id/prefMiddle"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/pref_back"
                     android:textColor="@color/line"
-                    android:id="@+id/radio2"/>
+                    android:id="@+id/prefBack"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/pref_none"
                     android:textColor="@color/line"
-                    android:id="@+id/radio3"/>
+                    android:id="@+id/prefNone"/>
             </RadioGroup>
 
 

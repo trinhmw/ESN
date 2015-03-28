@@ -9,7 +9,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class InputControllerTest {
-    InputController ic = new InputController();
     final int MAX_GROUP_SIZE = 4;
     String seatPreference;
     int groupSize;
@@ -31,7 +30,7 @@ public class InputControllerTest {
         groupSize = 0;
         seatPreference = "";
         expected = false;
-        actuals = ic.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
+        actuals = InputController.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
         assertEquals(expected, actuals);
     }
 
@@ -39,7 +38,7 @@ public class InputControllerTest {
         groupSize = 1;
         seatPreference = "";
         expected = false;
-        actuals = ic.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
+        actuals = InputController.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
         assertEquals(expected, actuals);
     }
 
@@ -47,7 +46,7 @@ public class InputControllerTest {
         groupSize = 1;
         seatPreference = "Front";
         expected = true;
-        actuals = ic.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
+        actuals = InputController.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
         assertEquals(expected, actuals);
     }
 
@@ -55,7 +54,7 @@ public class InputControllerTest {
         groupSize = 2;
         seatPreference = "Middle";
         expected = true;
-        actuals = ic.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
+        actuals = InputController.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
         assertEquals(expected, actuals);
     }
 
@@ -63,7 +62,7 @@ public class InputControllerTest {
         groupSize = 3;
         seatPreference = "Back";
         expected = true;
-        actuals = ic.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
+        actuals = InputController.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
         assertEquals(expected, actuals);
     }
 
@@ -71,7 +70,7 @@ public class InputControllerTest {
         groupSize = 4;
         seatPreference = "Back";
         expected = true;
-        actuals = ic.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
+        actuals = InputController.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
         assertEquals(expected, actuals);
     }
 
@@ -79,7 +78,7 @@ public class InputControllerTest {
         groupSize = 5;
         seatPreference = "Back";
         expected = false;
-        actuals = ic.validateInput(groupSize,seatPreference, MAX_GROUP_SIZE);
+        actuals = InputController.validateInput(groupSize, seatPreference, MAX_GROUP_SIZE);
         assertEquals(expected,actuals);
 
     }

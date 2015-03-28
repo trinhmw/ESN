@@ -16,14 +16,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.navi.team.emptyseatnavigator.R;
@@ -31,8 +29,6 @@ import com.navi.team.emptyseatnavigator.businessobject.InputController;
 import com.navi.team.emptyseatnavigator.businessobject.ReserveSeatsController;
 import com.navi.team.emptyseatnavigator.businessobject.Seat;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 
@@ -59,53 +55,36 @@ public class SeatActivity extends ActionBarActivity {
             actionBar.setIcon(R.drawable.ic_launcher);
         }
 
-
-//        Seat Formation Spinner
-//        Spinner spinnerSeatFormation = (Spinner) findViewById(R.id.spinnerSeatFormation);
-//        List<String> list = new ArrayList<>();
-//        list.add("Formation 1");
-//        list.add("Formation 2");
-//        list.add("Formation 3");
-//        ArrayAdapter<String> adapterSeatFormation = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, list);
-//        adapterSeatFormation.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinnerSeatFormation.setAdapter(adapterSeatFormation);
-
-
-//        Number Picker
+        // Group size picker
         final NumberPicker pickerGroupSize = (NumberPicker) findViewById(R.id.pickerGroupSize);
         pickerGroupSize.setMaxValue(MAX_GROUP_SIZE);
         pickerGroupSize.setMinValue(1);
         pickerGroupSize.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
+        // Seat preferences radio buttons (Default None)
+        final RadioGroup seatPreferences = (RadioGroup) findViewById(R.id.seatPreferences);
+        seatPreferences.check(R.id.prefNone);
 
-
-
+        // Submit button
         Button submitButton = (Button) findViewById(R.id.buttonSubmit);
-        View.OnClickListener submitOnClickListener = new View.OnClickListener(){
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-//               Radio Group
-                RadioGroup seatPreferencesRadioGroup = (RadioGroup) findViewById(R.id.radioGroup0);
-                int checkedPreference = seatPreferencesRadioGroup.getCheckedRadioButtonId();
-                boolean hasFormation;
-                if(checkedPreference != -1) {
-                    RadioButton radioButton = (RadioButton) findViewById(checkedPreference);
-                    InputController ic = new InputController();
-                    if (radioButton.getText() != null) {
-                        hasFormation = ic.validateInput(pickerGroupSize.getValue(), radioButton.getText().toString(), MAX_GROUP_SIZE);
-                        if(hasFormation == false){
-                            errorDialog("No possible formations available");
-                        }
-                        //dialog here on whether seat formations are generated
+            public void onClick(View v) {
+                int checkedPreference = seatPreferences.getCheckedRadioButtonId();
+                RadioButton preference = (RadioButton) findViewById(checkedPreference);
+                if (preference.getText() != null) {
+                    Boolean validInput = InputController.validateInput(
+                        pickerGroupSize.getValue(),
+                        preference.getText().toString(),
+                        MAX_GROUP_SIZE);
+                    if (validInput) {
+                        // Call seating algorithm
+                    } else {
+                        errorDialog("Input validation failed.");
                     }
                 }
-                else{
-                    errorDialog("Please select your seat preference.");
-                }
             }
-        };
-        submitButton.setOnClickListener(submitOnClickListener);
-
+        });
 
         final Button reserveButton = (Button) findViewById(R.id.buttonReserve);
         View.OnClickListener reserveOnClickListener = new View.OnClickListener(){
