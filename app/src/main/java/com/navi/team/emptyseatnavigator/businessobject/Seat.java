@@ -45,6 +45,13 @@ public class Seat implements Serializable {
         this.column = column;
     }
 
+    public Seat(int row, int column, Boolean isAvailable){
+        this.isAvailable = isAvailable;
+        setColor(0,0,0);
+        this.row = row;
+        this.column = column;
+    }
+
     public Boolean isAvailable() {
         return isAvailable;
     }
@@ -85,11 +92,11 @@ public class Seat implements Serializable {
         return isValid;
     }
 
-    public int getColumn() {
+    public int getCol() {
         return column;
     }
 
-    public void setColumn(int column) {
+    public void setCol(int column) {
         this.column = column;
     }
 
