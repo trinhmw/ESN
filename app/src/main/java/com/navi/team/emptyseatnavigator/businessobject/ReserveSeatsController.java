@@ -118,7 +118,7 @@ public class ReserveSeatsController{
 
     private boolean setFormation(Seat[][] formation) {
         boolean isSet = false;
-        if(!formation.equals(null))
+        if(!(formation == null))
         {
             this.formation = formation;
             isSet = true;

@@ -2,8 +2,9 @@ package com.navi.team.emptyseatnavigator.businessobject;
 
 public class InputController {
 
-    public static boolean validateInput(int groupSize, String seatPreference, int MAX_GROUP_SIZE){
+    public static Seat[][] validateInput(int groupSize, String seatPreference, int MAX_GROUP_SIZE){
         boolean isValid = true;
+        Seat[][] formations = null;
         if(seatPreference == null){
             isValid = false;
         }
@@ -18,6 +19,10 @@ public class InputController {
                 isValid = false;
             }
         }
-        return isValid;
+
+        if(isValid){
+            formations = SeatingLogic.SeatingAlgorithm(groupSize, seatPreference);
+        }
+        return formations;
     }
 }

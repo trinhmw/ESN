@@ -54,8 +54,7 @@ public class SeatActivity extends ActionBarActivity {
     private final int MAX_GROUP_SIZE = 4;
     private int[] reserveColor;
     private Seat[][] availableSeats = new Seat[MAX_ROW][MAX_COLUMN];
-    private Seat[][] seatFormation = new Seat[MAX_ROW][MAX_COLUMN];
-    private Seat[][][] seatFormationSet;
+    private Seat[][] seatFormation;
     private LinearLayout[] tempLinLayout;
     private final String ERROR_TITLE = "Hey Listen!";
 
@@ -99,14 +98,15 @@ public class SeatActivity extends ActionBarActivity {
                 int checkedPreference = seatPreferences.getCheckedRadioButtonId();
                 RadioButton preference = (RadioButton) findViewById(checkedPreference);
                 if (preference.getText() != null) {
-                    Boolean validInput = InputController.validateInput(
-                            pickerGroupSize.getValue(),
-                            preference.getText().toString(),
-                            MAX_GROUP_SIZE);
-                    if (validInput) {
-                        // Call seating algorithm in background/another thread
+                    seatFormation = null;
+//                    seatFormation = InputController.validateInput(
+//                            pickerGroupSize.getValue(),
+//                            preference.getText().toString(),
+//                            MAX_GROUP_SIZE);
+                    if (seatFormation != null) {
+                        displayFormation(seatFormation,0);
                     } else {
-                        errorDialog("Input validation failed.");
+                        errorDialog("No seat formations available.");
                     }
                 }
             }
@@ -117,6 +117,8 @@ public class SeatActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 ReserveSeatsController rsc = ReserveSeatsController.getInstance(getApplicationContext());
+
+                seatFormation = availableSeats;
                 reserveColor = rsc.reserveSeats(seatFormation);
                 if (!(reserveColor[0] == 0 && reserveColor[1] == 0 && reserveColor[2] == 0)) {
                     //Show reservation seat color with a confirmation button
@@ -124,14 +126,13 @@ public class SeatActivity extends ActionBarActivity {
                     reservedDialog(reserveColor[0], reserveColor[1], reserveColor[2]);
                 } else {
                     //Tell the user that their seats could not be reserved and refresh display back to available seats
-                    errorDialog("Your seats have been taken, please try again.");
-                    refresh();
+                    errorRefreshDialog("Your seats have been taken, please try again.");
                 }
             }
         });
 
         randomSeatAvailability(availableSeats);
-        tempLinLayout = displaySeats(availableSeats, 0);
+        tempLinLayout = displaySeats(availableSeats);
 
         // USB Communications Setup
         mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
@@ -308,7 +309,39 @@ public class SeatActivity extends ActionBarActivity {
 
     }
 
+
+    public void errorRefreshDialog(String message) {
+        MediaPlayer mediaPlayer = MediaPlayer.create(SeatActivity.this, R.raw.listen);
+
+        final Dialog dialog = new Dialog(SeatActivity.this);
+        dialog.setContentView(R.layout.confirm_dialog);
+        dialog.setTitle(ERROR_TITLE);
+        TextView textView = (TextView) dialog.findViewById(R.id.dialogText);
+        textView.setText(message);
+
+        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refresh();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        mediaPlayer.setLooping(false);
+        mediaPlayer.setVolume(1, 1);
+        mediaPlayer.start();
+        if (!mediaPlayer.isPlaying()) {
+            mediaPlayer.release();
+        }
+    }
+
+
+
     public void reservedDialog(int r, int g, int b) {
+        MediaPlayer mediaPlayer = MediaPlayer.create(SeatActivity.this, R.raw.look);
+
         final Dialog dialog = new Dialog(SeatActivity.this);
         dialog.setContentView(R.layout.reserved_dialog);
         dialog.setTitle("Reservation Successful");
@@ -322,12 +355,17 @@ public class SeatActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 refresh();
-//                displaySeats(availableSeats,0);
                 dialog.dismiss();
             }
         });
 
         dialog.show();
+        mediaPlayer.setLooping(false);
+        mediaPlayer.setVolume(1, 1);
+        mediaPlayer.start();
+        if (!mediaPlayer.isPlaying()) {
+            mediaPlayer.release();
+        }
     }
 
     /**
@@ -360,15 +398,6 @@ public class SeatActivity extends ActionBarActivity {
                 layoutRow.setId(R.id.layoutRow5);
         }
         layoutName.addView(layoutRow);
-//        Button temp = generateSeatButton(new Seat(true));
-//        addSeatButton(temp, layoutRow);
-//
-//        temp = generateSeatButton(new Seat(true));
-//        addSeatButton(temp, layoutRow);
-//
-//        temp = generateSeatButton(new Seat(false));
-//        addSeatButton(temp, layoutRow);
-
         return layoutRow;
     }
 
@@ -402,26 +431,10 @@ public class SeatActivity extends ActionBarActivity {
         layoutParams1.setMargins(3, 3, 3, 3);
         buttonSeat.setLayoutParams(layoutParams1);
         if (seat.isAvailable()) {
-//            buttonSeat.setEnabled(false);
             buttonSeat.getBackground().setColorFilter(res.getColor(R.color.empty), PorterDuff.Mode.MULTIPLY);
         } else {
             buttonSeat.setEnabled(false);
-//            buttonSeat.getBackground().setColorFilter(res.getColor(R.color.not_empty), PorterDuff.Mode.MULTIPLY);
         }
-//        buttonSeat.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int id = v.getId();
-//                Resources res = getResources();
-//                ReserveSeatsController rsc = new ReserveSeatsController(null);
-//                int[] colors = rsc.hexToRGB(res.getColor(R.color.not_empty));
-
-//                Toast.makeText(getApplicationContext(), "R:" + colors[0] + ", G:" + colors[1] + ",B:" + colors[2], Toast.LENGTH_LONG).show();
-//                 tempLinLayout[0].removeAllViews();
-//                LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
-//                layoutRows.removeAllViews();
-//            }
-//        });
         return buttonSeat;
     }
 
@@ -457,26 +470,57 @@ public class SeatActivity extends ActionBarActivity {
      * seat status or the selected formation
      *
      * @param seats
-     * @param type  - 0 for available seats, 1 for formation seats
+     * @param
      * @return
      */
-    public LinearLayout[] displaySeats(Seat[][] seats, int type) {
+    public LinearLayout[] displaySeats(Seat[][] seats) {
         LinearLayout layoutSeat = (LinearLayout) findViewById(R.id.layoutSeat);
         LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
         LinearLayout[] tempLayout = new LinearLayout[MAX_ROW];
         layoutRows.removeAllViews();
+
         for (int i = 0; i < MAX_ROW; i++) {
             tempLayout[i] = addLayoutRow(layoutRows, i);
             for (int j = 0; j < MAX_COLUMN; j++) {
-                if (type == 0) {
+
                     addSeatButton(generateSeatStatusButton(seats[i][j]), tempLayout[i]);
-                }
-                if (type == 1) {
-                    addSeatButton(generateSeatSelectedButton(seats[i][j]), tempLayout[i]);
+            }
+        }
+        return tempLayout;
+    }
+
+    /**
+     * displayFormation
+     * Displays one formation from a given index. Generates each seat and checks each seat in the formation
+     * to see if it matches the row and column of the current seat
+     * @param formation - The seat formations
+     * @param formIndex - The formation number
+     * @return
+     */
+    public LinearLayout[] displayFormation(Seat[][] formation, int formIndex){
+        LinearLayout layoutSeat = (LinearLayout) findViewById(R.id.layoutSeat);
+        LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
+        LinearLayout[] tempLayout = new LinearLayout[MAX_ROW];
+        layoutRows.removeAllViews();
+        int r;
+        int c;
+        Seat unavailable = new Seat(false);
+
+        for (int i = 0; i < MAX_ROW; i++) {
+            tempLayout[i] = addLayoutRow(layoutRows, i);
+            for (int j = 0; j < MAX_COLUMN; j++) {
+                for(int k = 0; k < formation[formIndex].length; k++){
+                    r = formation[formIndex][k].getRow();
+                    c = formation[formIndex][k].getCol();
+                    if((r == i) && (c == j)){
+                        addSeatButton(generateSeatSelectedButton(formation[formIndex][k]), tempLayout[i]);
+                    }
+                    else{
+                        addSeatButton(generateSeatSelectedButton(unavailable), tempLayout[i]);
+                    }
                 }
             }
         }
-
         return tempLayout;
     }
 
