@@ -13,6 +13,37 @@ import java.util.ArrayList;
 public class SeatingLogic {
 
     /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+        Seat results[][];
+
+        results = SeatingAlgorithm(1,"front");
+
+        results = SeatingAlgorithm(1,"back");
+
+        results = SeatingAlgorithm(1,"middle");
+
+        results = SeatingAlgorithm(1,"none");
+
+        results = SeatingAlgorithm(2,"middle");
+
+        results = SeatingAlgorithm(3,"middle");
+
+        results = SeatingAlgorithm(4,"middle");
+
+    }
+
+
+
+/**
+ * Created by Indon on 3/18/2015.
+ * Contains one public static method, called, creatively, SeatingAlgorithm.
+ * Also contains a private method that generates a set of seats to test the algorithm with.
+ */
+
+    /**
      * Takes a number of seats from 1-4 inclusive and a string, returns a two-dimensional array of seats.
      * Each 'row' of Seats represents a set of seats returned by the algorithm.
      * @param seat_number integer, from 1-4.
@@ -90,9 +121,9 @@ public class SeatingLogic {
                             //First available seats. This k-loop fills up the first empty seat in
                             // the empty seats row if the seat being iterated through is available.
                             for(int k=0;k<returnval[1].length;k++){
-                                if(returnval[1][k]==null){
+                                if(returnval[2][k]==null){
                                     if(seats[i][j].isAvailable()){
-                                        returnval[1][k]=seats[i][j];
+                                        returnval[2][k]=seats[i][j];
                                         break;
                                     }
                                 }
@@ -248,10 +279,10 @@ public class SeatingLogic {
                             }
                             //First available seats. This k-loop fills up the first empty seat in
                             // the empty seats row if the seat being iterated through is available.
-                            for(int k=0;k<returnval[1].length;k++){
-                                if(returnval[1][k]==null){
+                            for(int k=0;k<returnval[2].length;k++){
+                                if(returnval[2][k]==null){
                                     if(seats[i][j].isAvailable()){
-                                        returnval[1][k]=seats[i][j];
+                                        returnval[2][k]=seats[i][j];
                                         break;
                                     }
                                 }
@@ -320,19 +351,19 @@ public class SeatingLogic {
                             if(returnval[1][0]==null){
                                 if((i>0) && (j<(seats[i].length-2)) && seats[i][j].isAvailable()){
                                     if(seats[i][j+1].isAvailable() && seats[i][j+2].isAvailable()){
-                                        if(seats[i+1][j].isAvailable()){
+                                        if(seats[i-1][j].isAvailable()){
                                             returnval[1][0]=seats[i][j];
                                             returnval[1][1]=seats[i][j+1];
                                             returnval[1][2]=seats[i][j+2];
                                             returnval[1][3]=seats[i-1][j];
                                         }
-                                        if(seats[i+1][j+1].isAvailable()){
+                                        if(seats[i-1][j+1].isAvailable()){
                                             returnval[1][0]=seats[i][j];
                                             returnval[1][1]=seats[i][j+1];
                                             returnval[1][2]=seats[i][j+2];
                                             returnval[1][3]=seats[i-1][j+1];
                                         }
-                                        if(seats[i+1][j+2].isAvailable()){
+                                        if(seats[i-1][j+2].isAvailable()){
                                             returnval[1][0]=seats[i][j];
                                             returnval[1][1]=seats[i][j+1];
                                             returnval[1][2]=seats[i][j+2];
@@ -344,7 +375,7 @@ public class SeatingLogic {
                             if(returnval[2][0]==null){
                                 if((i>0) && (j<(seats[i].length-1)) && seats[i][j].isAvailable()){
                                     if(seats[i][j+1].isAvailable()){
-                                        if(seats[i+1][j].isAvailable() && seats[i+1][j+1].isAvailable()){
+                                        if(seats[i-1][j].isAvailable() && seats[i-1][j+1].isAvailable()){
                                             returnval[2][0]=seats[i][j];
                                             returnval[2][1]=seats[i][j+1];
                                             returnval[2][2]=seats[i-1][j];
@@ -393,7 +424,7 @@ public class SeatingLogic {
                     }
                     break;
                 case 2:
-                    for(int i=0;i<seats.length;i++){
+                    for(int i=middle_row;i<seats.length;i++){
                         int backi = (seats.length-i)-1;
                         for(int j=0;j<seats[i].length;j++){
                             //Two consecutive seats. For each of these we check one seat first then each other seat in the configuration.
@@ -418,9 +449,9 @@ public class SeatingLogic {
                             //First available seats. This k-loop fills up the first empty seat in
                             // the empty seats row if the seat being iterated through is available.
                             for(int k=0;k<returnval[1].length;k++){
-                                if(returnval[1][k]==null){
+                                if(returnval[2][k]==null){
                                     if(seats[i][j].isAvailable()){
-                                        returnval[1][k]=seats[i][j];
+                                        returnval[2][k]=seats[i][j];
                                         break;
                                     }
                                 }
@@ -436,7 +467,7 @@ public class SeatingLogic {
                             }
                             //Two vertically adjacent seats.
                             if(returnval[1][0]==null){
-                                if((i>0) && seats[backi][j].isAvailable()){
+                                if((backi>0) && seats[backi][j].isAvailable()){
                                     if(seats[backi-1][j].isAvailable()){
                                         returnval[1][0]=seats[backi][j];
                                         returnval[1][1]=seats[backi-1][j];
@@ -446,9 +477,9 @@ public class SeatingLogic {
                             //First available seats. This k-loop fills up the first empty seat in
                             // the empty seats row if the seat being iterated through is available.
                             for(int k=0;k<returnval[1].length;k++){
-                                if(returnval[1][k]==null || (returnval[1][k].getCol()==seats[backi][j].getCol() && returnval[3][k].getRow()==seats[backi][j].getRow())){
+                                if(returnval[2][k]==null || (returnval[2][k].getCol()==seats[backi][j].getCol() && returnval[2][k].getRow()==seats[backi][j].getRow())){
                                     if(seats[backi][j].isAvailable()){
-                                        returnval[1][k]=seats[backi][j];
+                                        returnval[2][k]=seats[backi][j];
                                         break;
                                     }
                                 }
@@ -457,7 +488,7 @@ public class SeatingLogic {
                     }
                     break;
                 case 3:
-                    for(int i=0;i<seats.length;i++){
+                    for(int i=middle_row;i<seats.length;i++){
                         int backi = (seats.length-i)-1;
                         for(int j=0;j<seats[i].length;j++){
                             //Three consecutive seats.
@@ -527,7 +558,7 @@ public class SeatingLogic {
                             }
                             //First available seats.
                             for(int k=0;k<returnval[2].length;k++){
-                                if(returnval[2][k]==null || (returnval[2][k].getCol()==seats[backi][j].getCol() && returnval[3][k].getRow()==seats[backi][j].getRow())){
+                                if(returnval[2][k]==null || (returnval[2][k].getCol()==seats[backi][j].getCol() && returnval[2][k].getRow()==seats[backi][j].getRow())){
                                     if(seats[backi][j].isAvailable()){
                                         returnval[2][k]=seats[backi][j];
                                         break;
@@ -538,7 +569,7 @@ public class SeatingLogic {
                     }
                     break;
                 case 4:
-                    for(int i=0;i<seats.length;i++){
+                    for(int i=middle_row;i<seats.length;i++){
                         int backi = (seats.length-i)-1;
                         for(int j=0;j<seats[i].length;j++){
                             //Four consecutive seats.
@@ -613,19 +644,19 @@ public class SeatingLogic {
                             if(returnval[1][0]==null){
                                 if((backi>0) && (j<(seats[i].length-2)) && seats[backi][j].isAvailable()){
                                     if(seats[backi][j+1].isAvailable() && seats[backi][j+2].isAvailable()){
-                                        if(seats[backi+1][j].isAvailable()){
+                                        if(seats[backi-1][j].isAvailable()){
                                             returnval[1][0]=seats[backi][j];
                                             returnval[1][1]=seats[backi][j+1];
                                             returnval[1][2]=seats[backi][j+2];
                                             returnval[1][3]=seats[backi-1][j];
                                         }
-                                        if(seats[backi+1][j+1].isAvailable()){
+                                        if(seats[backi-1][j+1].isAvailable()){
                                             returnval[1][0]=seats[backi][j];
                                             returnval[1][1]=seats[backi][j+1];
                                             returnval[1][2]=seats[backi][j+2];
                                             returnval[1][3]=seats[backi-1][j+1];
                                         }
-                                        if(seats[backi+1][j+2].isAvailable()){
+                                        if(seats[backi-1][j+2].isAvailable()){
                                             returnval[1][0]=seats[backi][j];
                                             returnval[1][1]=seats[backi][j+1];
                                             returnval[1][2]=seats[backi][j+2];
@@ -638,7 +669,7 @@ public class SeatingLogic {
                             if(returnval[2][0]==null){
                                 if((backi>0) && (j<(seats[backi].length-1)) && seats[backi][j].isAvailable()){
                                     if(seats[backi][j+1].isAvailable()){
-                                        if(seats[backi-1][j].isAvailable() && seats[backi+1][j+1].isAvailable()){
+                                        if(seats[backi-1][j].isAvailable() && seats[backi-1][j+1].isAvailable()){
                                             returnval[2][0]=seats[backi][j];
                                             returnval[2][1]=seats[backi][j+1];
                                             returnval[2][2]=seats[backi-1][j];
@@ -664,18 +695,31 @@ public class SeatingLogic {
             }
         }
 
-        //Process returnval into whatever I'll be returning here.
+        //If the last seat of the last row of returnval is empty, make the entire last row of returnval empty.
+        //returnvalreturnvalreturnvalreturnval
+        if(returnval[returnval.length-1][returnval[returnval.length-1].length-1]==null){
+            for(int i=0;i<returnval[returnval.length-1].length;i++){
+                //It feels wrong re-nulling things.
+                returnval[returnval.length-1][i]=null;
+            }
+        }
+
+
 
         //If returnval is empty and I actually want this thing to send back a real error message... throw an exception? Maybe?
         return returnval;
     }
 
-    //Currently returns a set of 10 (2x5) empty seats.
+    //Currently returns a set of 12 (3x4) empty seats.
     private static Seat[][] GenerateFakeData(){
-        Seat[][] returnval = new Seat [2][5];
-        for(int i=0;i<5;i++){
-            for(int j=4;i>-1;i--){
-                returnval[i][j]=new Seat(true);
+        Seat[][] returnval = new Seat [3][4];
+        for(int i=0;i<3;i++){
+            for(int j=0;j<4;j++){
+                returnval[i][j]=new Seat(i,j,true);
+                //For fiddling with what is available and what isn't.
+                if(i==0 && j ==0){
+                    //returnval[i][j]=new Seat(i,j,true);
+                }
             }
         }
         return returnval;
