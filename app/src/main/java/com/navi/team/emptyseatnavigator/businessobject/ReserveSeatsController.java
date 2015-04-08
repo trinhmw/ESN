@@ -7,6 +7,8 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 /**
  * Created by Melissa on 2/10/2015.
  */
@@ -15,9 +17,10 @@ public class ReserveSeatsController{
     private int[] color;
     private int[] possibleColors = {R.color.color0, R.color.color1, R.color.color2, R.color.color3};
     private int colorIndex;
-    private Seat[][] formation;
+    private Seat[] formation;
     private static final String TAG = "ReserveSeatsController";
     private Resources res;
+    private DBController dbController;
 
     public static ReserveSeatsController getInstance(Context context){
         if(instance == null){
@@ -26,14 +29,21 @@ public class ReserveSeatsController{
         return instance;
     }
 
-    private ReserveSeatsController(Context context){
+    public ReserveSeatsController(Context context){
         colorIndex = 0;
         res = context.getResources();
     }
 
-    public int[] reserveSeats(Seat[][] formation){
+    /**
+     * reserveSeats - Reserves the seats given an array of seats to be reserved.
+     * @param formation
+     * @return
+     */
+    public int[] reserveSeats(Seat[] formation){
         boolean isValid = true;
         setColor(0,0,0);
+        ArrayList<int[][]> seats;
+        boolean reserved = false;
 
         if(setFormation(formation) == false){
             isValid = false;
@@ -41,15 +51,25 @@ public class ReserveSeatsController{
 
         if(isValid == true) {
 
+
 //        Call isReserved= MapModule.reserveseat() or something like that here
 //            If reserve successful then
-            setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
-            colorIndexAdjust();
 
+            reserved = DBController.getController().reserveSeats(formation);
+
+//            If reservation successful, pass the next possible color
+            if(reserved) {
+                setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
+                colorIndexAdjust();
+            }
         }
         return color;
     }
 
+
+    /**
+     * colorIndexAdjust - Rotates the color reservation colors
+     */
     private void colorIndexAdjust(){
         if(colorIndex >= (possibleColors.length - 1)){
             colorIndex = 0;
@@ -112,11 +132,11 @@ public class ReserveSeatsController{
         return color[2];
     }
 
-    public Seat[][] getFormation() {
+    public Seat[] getFormation() {
         return formation;
     }
 
-    private boolean setFormation(Seat[][] formation) {
+    public boolean setFormation(Seat[] formation) {
         boolean isSet = false;
         if(!(formation == null))
         {

@@ -79,4 +79,43 @@ public class DBController {
 
         return status;
     }
+
+
+    /**
+     * reserveSeats - Reserves the seats given an array of seats to be reserved.
+     * @param rSeats - seats to be reserved
+     * @return boolean - true for successfully reserved, false for reservation failure
+     */
+    public boolean reserveSeats(Seat[] rSeats){
+        boolean status = true;
+//      Check to see if all seats are available for reservation
+        for (int x =0; x < rSeats.length; x++){
+            int row = rSeats[x].getRow();
+            int col = rSeats[x].getCol();
+            if (seats[row][col].isAvailable()){
+                continue;
+            } else {
+                status = false;
+                break;
+            }
+        }
+//      If the seats are all available, update map and reserve
+        if (status){
+            for (int x =0; x< rSeats.length; x++){
+                int row = rSeats[x].getRow();
+                int col = rSeats[x].getCol();
+                seats[row][col] = rSeats[x];
+            }
+        } else{
+            return status;
+        }
+
+        for (int x =0; x< rSeats.length; x++){
+            int row = rSeats[x].getRow();
+            int col = rSeats[x].getCol();
+            //Call sendMessage with x, y, and the constant RESERVED
+        }
+
+        return status;
+    }
 }

@@ -1,4 +1,4 @@
-package com.navi.team.emptyseatnavigator.Test;
+package com.navi.team.emptyseatnavigator.Test.JUnit;
 
 import com.navi.team.emptyseatnavigator.businessobject.Seat;
 import android.util.Log;

@@ -55,6 +55,8 @@ public class SeatActivity extends ActionBarActivity {
     private int[] reserveColor;
     private Seat[][] availableSeats = new Seat[MAX_ROW][MAX_COLUMN];
     private Seat[][] seatFormation;
+    private Seat[] selectedFormation;
+    private int selectedFormationIndex = 0;
     private LinearLayout[] tempLinLayout;
     private final String ERROR_TITLE = "Hey Listen!";
 
@@ -119,7 +121,8 @@ public class SeatActivity extends ActionBarActivity {
                 ReserveSeatsController rsc = ReserveSeatsController.getInstance(getApplicationContext());
 
                 seatFormation = availableSeats;
-                reserveColor = rsc.reserveSeats(seatFormation);
+                selectedFormation = seatFormation[selectedFormationIndex];
+                reserveColor = rsc.reserveSeats(selectedFormation);
                 if (!(reserveColor[0] == 0 && reserveColor[1] == 0 && reserveColor[2] == 0)) {
                     //Show reservation seat color with a confirmation button
                     //Clear the display to available seats again
@@ -466,8 +469,7 @@ public class SeatActivity extends ActionBarActivity {
 
     /**
      * displaySeats
-     * Displays current seats based off the multidimensional array of seats informaiton. The type determines whether it is displaying
-     * seat status or the selected formation
+     * Displays current seats based off the multidimensional array of seats information.
      *
      * @param seats
      * @param
@@ -489,6 +491,31 @@ public class SeatActivity extends ActionBarActivity {
         return tempLayout;
     }
 
+
+    public LinearLayout[] displaySeats(int[][] seats) {
+        LinearLayout layoutSeat = (LinearLayout) findViewById(R.id.layoutSeat);
+        LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
+        LinearLayout[] tempLayout = new LinearLayout[MAX_ROW];
+        layoutRows.removeAllViews();
+
+        Seat available = new Seat(true);
+        Seat unavailable = new Seat(false);
+
+        for (int row = 0; row < MAX_ROW; row++) {
+            tempLayout[row] = addLayoutRow(layoutRows, row);
+            for (int column = 0; column < MAX_COLUMN; column++) {
+                if (seats[row][column] == 1) {
+                    addSeatButton(generateSeatSelectedButton(available), tempLayout[row]);
+                } else {
+                    addSeatButton(generateSeatSelectedButton(unavailable), tempLayout[row]);
+                }
+
+            }
+        }
+        return tempLayout;
+    }
+
+
     /**
      * displayFormation
      * Displays one formation from a given index. Generates each seat and checks each seat in the formation
@@ -506,17 +533,17 @@ public class SeatActivity extends ActionBarActivity {
         int c;
         Seat unavailable = new Seat(false);
 
-        for (int i = 0; i < MAX_ROW; i++) {
-            tempLayout[i] = addLayoutRow(layoutRows, i);
-            for (int j = 0; j < MAX_COLUMN; j++) {
-                for(int k = 0; k < formation[formIndex].length; k++){
-                    r = formation[formIndex][k].getRow();
-                    c = formation[formIndex][k].getCol();
-                    if((r == i) && (c == j)){
-                        addSeatButton(generateSeatSelectedButton(formation[formIndex][k]), tempLayout[i]);
+        for (int row = 0; row < MAX_ROW; row++) {
+            tempLayout[row] = addLayoutRow(layoutRows, row);
+            for (int column = 0; column < MAX_COLUMN; column++) {
+                for(int seatInFormation = 0; seatInFormation < formation[formIndex].length; seatInFormation++){
+                    r = formation[formIndex][seatInFormation].getRow();
+                    c = formation[formIndex][seatInFormation].getCol();
+                    if((r == row) && (c == column)){
+                        addSeatButton(generateSeatSelectedButton(formation[formIndex][seatInFormation]), tempLayout[row]);
                     }
                     else{
-                        addSeatButton(generateSeatSelectedButton(unavailable), tempLayout[i]);
+                        addSeatButton(generateSeatSelectedButton(unavailable), tempLayout[row]);
                     }
                 }
             }
