@@ -11,38 +11,6 @@ import java.util.ArrayList;
  * Also contains a private method that generates a set of seats to test the algorithm with.
  */
 public class SeatingLogic {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        Seat results[][];
-
-        results = SeatingAlgorithm(1,"front");
-
-        results = SeatingAlgorithm(1,"back");
-
-        results = SeatingAlgorithm(1,"middle");
-
-        results = SeatingAlgorithm(1,"none");
-
-        results = SeatingAlgorithm(2,"middle");
-
-        results = SeatingAlgorithm(3,"middle");
-
-        results = SeatingAlgorithm(4,"middle");
-
-    }
-
-
-
-/**
- * Created by Indon on 3/18/2015.
- * Contains one public static method, called, creatively, SeatingAlgorithm.
- * Also contains a private method that generates a set of seats to test the algorithm with.
- */
-
     /**
      * Takes a number of seats from 1-4 inclusive and a string, returns a two-dimensional array of seats.
      * Each 'row' of Seats represents a set of seats returned by the algorithm.
