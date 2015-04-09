@@ -42,6 +42,7 @@ import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -163,8 +164,8 @@ public class SeatActivity extends ActionBarActivity {
             public void onClick(View v) {
                 ReserveSeatsController rsc = ReserveSeatsController.getInstance(getApplicationContext());
                 if(seatFormation != null) {
-                    selectedFormation = seatFormation[selectedFormationIndex];
-
+//                    selectedFormation = seatFormation[selectedFormationIndex];
+                    selectedFormation = stripUnavailableFromFormation(seatFormation[selectedFormationIndex]);
                     reserveColor = rsc.reserveSeats(selectedFormation);
                     if (!(reserveColor[0] == 0 && reserveColor[1] == 0 && reserveColor[2] == 0)) {
                         //Show reservation seat color with a confirmation button
@@ -542,7 +543,6 @@ public class SeatActivity extends ActionBarActivity {
 
 
     public LinearLayout[] displaySeats(int[][] seats) {
-        LinearLayout layoutSeat = (LinearLayout) findViewById(R.id.layoutSeat);
         LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
         LinearLayout[] tempLayout = new LinearLayout[MAX_ROW];
         layoutRows.removeAllViews();
@@ -680,6 +680,16 @@ public class SeatActivity extends ActionBarActivity {
         return seats;
     }
 
+
+    public Seat[] stripUnavailableFromFormation(Seat[] formation){
+        ArrayList<Seat> availables = new ArrayList<Seat>();
+        for(Seat seat : formation){
+            if(seat.isAvailable()){
+                availables.add(seat);
+            }
+        }
+        return availables.toArray(new Seat[availables.size()]);
+    }
 
     /**
      * formationIndexRight - Rotates the seat formation index

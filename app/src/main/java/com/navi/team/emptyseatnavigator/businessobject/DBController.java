@@ -92,7 +92,7 @@ public class DBController {
     public boolean reserveSeats(Seat[] rSeats){
         boolean status = true;
 //      Check to see if all seats are available for reservation
-        for (int x =0; x < rSeats.length; x++){
+        for (int x = 0; x < rSeats.length; x++){
             int row = rSeats[x].getRow();
             int col = rSeats[x].getCol();
             if (seats[row][col].isAvailable()){
@@ -104,16 +104,16 @@ public class DBController {
         }
 //      If the seats are all available, update map and reserve
         if (status){
-            for (int x =0; x< rSeats.length; x++){
+            for (int x = 0; x < rSeats.length; x++){
                 int row = rSeats[x].getRow();
                 int col = rSeats[x].getCol();
-                seats[row][col] = rSeats[x];
+                seats[row][col].setAvailable(false);
             }
         } else{
             return status;
         }
 
-        for (int x =0; x< rSeats.length; x++){
+        for (int x =0; x < rSeats.length; x++){
             int row = rSeats[x].getRow();
             int col = rSeats[x].getCol();
             //Call sendMessage with x, y, and the constant RESERVED
@@ -126,10 +126,10 @@ public class DBController {
      * seatAllAvailable - Testing purposes only
      */
     public void seatAllAvailable(){
-        Seat seat = new Seat(true);
         for(int r = 0; r < MAX_ROW; r++){
             for(int c = 0; c < MAX_COLUMN; c++){
                 if(seats[r][c] == null){
+                    Seat seat = new Seat(true);
                     seat.setCol(c);
                     seat.setRow(r);
                     seats[r][c] = seat;
