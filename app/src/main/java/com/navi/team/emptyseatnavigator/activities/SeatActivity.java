@@ -332,8 +332,8 @@ public class SeatActivity extends ActionBarActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                DBController.getController().updateSeat(cmdSeat);
                                 refresh();
-                                // Update map with cmdSeat; refresh UI
                             }
                         });
 
