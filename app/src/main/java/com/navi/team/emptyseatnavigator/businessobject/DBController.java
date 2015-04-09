@@ -1,5 +1,7 @@
 package com.navi.team.emptyseatnavigator.businessobject;
 
+import com.navi.team.emptyseatnavigator.activities.SeatActivity;
+
 import java.util.ArrayList;
 
 /**
@@ -52,7 +54,7 @@ public class DBController {
         return results;
     }
 
-    public boolean reserveSeats(ArrayList<int[][]> rSeats){
+    public boolean reserveSeats(ArrayList<int[][]> rSeats, SeatActivity act){
         boolean status = true;
         for (int x =0; x< rSeats.size(); x++){
             int seatX = rSeats.get(x)[0][0];
@@ -77,7 +79,7 @@ public class DBController {
         for (int x =0; x< rSeats.size(); x++){
             int seatX = rSeats.get(x)[0][0];
             int seatY = rSeats.get(x)[0][1];
-            //Call sendMessage with x, y, and the constant RESERVED
+            act.sendMessage(seats[seatX][seatY]);
         }
 
         return status;
@@ -89,7 +91,7 @@ public class DBController {
      * @param rSeats - seats to be reserved
      * @return boolean - true for successfully reserved, false for reservation failure
      */
-    public boolean reserveSeats(Seat[] rSeats){
+    public boolean reserveSeats(Seat[] rSeats, SeatActivity act){
         boolean status = true;
 //      Check to see if all seats are available for reservation
         for (int x = 0; x < rSeats.length; x++){
@@ -116,7 +118,7 @@ public class DBController {
         for (int x =0; x < rSeats.length; x++){
             int row = rSeats[x].getRow();
             int col = rSeats[x].getCol();
-            //Call sendMessage with x, y, and the constant RESERVED
+            act.sendMessage(seats[row][col]);
         }
 
         return status;
