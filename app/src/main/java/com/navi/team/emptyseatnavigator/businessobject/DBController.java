@@ -119,7 +119,7 @@ public class DBController {
             for (int x = 0; x < rSeats.length; x++){
                 int row = rSeats[x].getRow();
                 int col = rSeats[x].getCol();
-                seats[row][col].setAvailable(false);
+                seats[row][col] = rSeats[x];
             }
         } else{
             return status;

@@ -54,16 +54,19 @@ public class ReserveSeatsController{
         if(isValid == true) {
 
 
-//        Call isReserved= MapModule.reserveseat() or something like that here
-//            If reserve successful then
-
+            for(Seat seat : formation){
+                seat.setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
+                seat.setAvailable(false);
+            }
             reserved = DBController.getController().reserveSeats(formation, activity);
+
 
 //            If reservation successful, pass the next possible color
             if(reserved) {
                 setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
                 colorIndexAdjust();
             }
+
         }
         return color;
     }
