@@ -61,6 +61,7 @@ public class SeatActivity extends ActionBarActivity {
     private int selectedFormationIndex = 0;
     private LinearLayout[] tempLinLayout;
     private final String ERROR_TITLE = "Hey Listen!";
+    private SeatActivity seatActivity;
 
     // USB Communications Variables & Constants
     private PendingIntent mPermissionIntent;
@@ -83,7 +84,7 @@ public class SeatActivity extends ActionBarActivity {
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setIcon(R.drawable.ic_launcher);
         }
-
+        seatActivity = this;
         // Group size picker
         final NumberPicker pickerGroupSize = (NumberPicker) findViewById(R.id.pickerGroupSize);
         pickerGroupSize.setMaxValue(MAX_GROUP_SIZE);
@@ -166,7 +167,7 @@ public class SeatActivity extends ActionBarActivity {
                 if(seatFormation != null) {
 //                    selectedFormation = seatFormation[selectedFormationIndex];
                     selectedFormation = stripUnavailableFromFormation(seatFormation[selectedFormationIndex]);
-                    reserveColor = rsc.reserveSeats(selectedFormation);
+                    reserveColor = rsc.reserveSeats(selectedFormation, seatActivity);
                     if (!(reserveColor[0] == 0 && reserveColor[1] == 0 && reserveColor[2] == 0)) {
                         //Show reservation seat color with a confirmation button
                         //Clear the display to available seats again
@@ -331,6 +332,7 @@ public class SeatActivity extends ActionBarActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                refresh();
                                 // Update map with cmdSeat; refresh UI
                             }
                         });

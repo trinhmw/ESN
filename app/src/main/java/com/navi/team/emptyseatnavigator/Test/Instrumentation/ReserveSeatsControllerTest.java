@@ -67,7 +67,7 @@ public class ReserveSeatsControllerTest extends ActivityInstrumentationTestCase2
         ReserveSeatsController rsc = ReserveSeatsController.getInstance(mSeatActivity.getApplicationContext());
         Seat[] formation = null;
         int[] expectedColor= {0,0,0};
-        int[] actualColor = rsc.reserveSeats(formation);
+        int[] actualColor = rsc.reserveSeats(formation,mSeatActivity);
         boolean expected = true;
         boolean actual = false;
         if((expectedColor[0] == actualColor[0])&&

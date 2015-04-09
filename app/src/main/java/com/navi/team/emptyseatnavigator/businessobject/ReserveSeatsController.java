@@ -1,7 +1,9 @@
 package com.navi.team.emptyseatnavigator.businessobject;
 
 import com.navi.team.emptyseatnavigator.R;
+import com.navi.team.emptyseatnavigator.activities.SeatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -39,7 +41,7 @@ public class ReserveSeatsController{
      * @param formation
      * @return
      */
-    public int[] reserveSeats(Seat[] formation){
+    public int[] reserveSeats(Seat[] formation, SeatActivity activity){
         boolean isValid = true;
         setColor(0,0,0);
         ArrayList<int[][]> seats;
@@ -55,7 +57,7 @@ public class ReserveSeatsController{
 //        Call isReserved= MapModule.reserveseat() or something like that here
 //            If reserve successful then
 
-            reserved = DBController.getController().reserveSeats(formation);
+            reserved = DBController.getController().reserveSeats(formation, activity);
 
 //            If reservation successful, pass the next possible color
             if(reserved) {
