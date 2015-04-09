@@ -183,7 +183,6 @@ public class SeatActivity extends ActionBarActivity {
             }
         });
 
-        randomSeatAvailability(availableSeats);
         availableSeats = DBController.getController().getAvailableSeats();
 
         tempLinLayout = displaySeats(availableSeats);
@@ -327,7 +326,7 @@ public class SeatActivity extends ActionBarActivity {
                         } else {
                             isAvailable = true;
                         }
-                        final Seat cmdSeat = new Seat(col, row, isAvailable);
+                        final Seat cmdSeat = new Seat(row, col, isAvailable);
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -614,14 +613,17 @@ public class SeatActivity extends ActionBarActivity {
     }
 
     public void refresh() {
-        Intent intent = getIntent();
-        overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
-        overridePendingTransition(0, 0);
+//        Intent intent = getIntent();
+//        overridePendingTransition(0, 0);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        finish();
+//        overridePendingTransition(0, 0);
+//
+//        startActivity(intent);
+//        overridePendingTransition(0, 0);
+        availableSeats = DBController.getController().getAvailableSeats();
+        tempLinLayout = displaySeats(availableSeats);
 
-        startActivity(intent);
-        overridePendingTransition(0, 0);
     }
 
     /**
