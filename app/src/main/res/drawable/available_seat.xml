@@ -17,6 +17,7 @@
     <gradient
         android:startColor="@color/seat_avail_start"
         android:endColor="@color/seat_avail_end"
+        android:angle="@integer/seat_angle"
         />
 
 </shape>

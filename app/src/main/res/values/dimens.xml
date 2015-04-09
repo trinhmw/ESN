@@ -12,15 +12,15 @@
     <dimen name="large_text">15sp</dimen>
     <dimen name="line_seperator">1dp</dimen>
 
-    <dimen name="seat_stroke">1dp</dimen>
-    <dimen name="seat_padding">5dp</dimen>
-    <dimen name="seat_corner_radius">15dp</dimen>
+    <dimen name="seat_stroke">0dp</dimen>
+    <dimen name="seat_padding">20dp</dimen>
+    <dimen name="seat_corner_radius">10dp</dimen>
 
     <dimen name="btn_padding">10dp</dimen>
-    <dimen name="btn_radius">5dp</dimen>
-    <dimen name="btn_stroke">0dp</dimen>
+    <dimen name="btn_radius">3dp</dimen>
+    <dimen name="btn_stroke">1dp</dimen>
 
-    <dimen name="screen_stroke">2dp</dimen>
+    <dimen name="screen_stroke">0dp</dimen>
     <dimen name="screen_padding">10dp</dimen>
     <dimen name="screen_width">300dp</dimen>
     <dimen name="screen_height">100dp</dimen>
