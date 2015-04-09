@@ -12,6 +12,8 @@ public class DBController {
     private static DBController controller = null;
     int RESERVED = 384;
     int ERROR =76;
+    private final int MAX_COLUMN = 4;
+    private final int MAX_ROW = 3;
 
     class Result {
         Result previous;
@@ -21,7 +23,8 @@ public class DBController {
     }
 
     private DBController(){
-        seats = new Seat[3][4];
+        seats = new Seat[MAX_ROW][MAX_COLUMN];
+        seatAllAvailable();
         availability = true;
     }
 
@@ -36,8 +39,8 @@ public class DBController {
 
     public int[][] getAvailableSeats(){
         int[][] results = new int[3][4];
-        for (int row =0; row< 3; row++){
-            for (int col =0; col<4; col++){
+        for (int row =0; row< MAX_ROW; row++){
+            for (int col =0; col<MAX_COLUMN; col++){
                 if (seats[row][col].isAvailable()){
                     results[row][col] = 1;
                 }
@@ -117,5 +120,21 @@ public class DBController {
         }
 
         return status;
+    }
+
+    /**
+     * seatAllAvailable - Testing purposes only
+     */
+    public void seatAllAvailable(){
+        Seat seat = new Seat(true);
+        for(int r = 0; r < MAX_ROW; r++){
+            for(int c = 0; c < MAX_COLUMN; c++){
+                if(seats[r][c] == null){
+                    seat.setCol(c);
+                    seat.setRow(r);
+                    seats[r][c] = seat;
+                }
+            }
+        }
     }
 }
