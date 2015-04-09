@@ -745,4 +745,49 @@ public class SeatActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public int getMAX_COLUMN() {
+        return MAX_COLUMN;
+    }
+
+    public int getMAX_ROW() {
+        return MAX_ROW;
+    }
+
+    public int getTOTAL_SEATS() {
+        return TOTAL_SEATS;
+    }
+
+    public int getMAX_GROUP_SIZE() {
+        return MAX_GROUP_SIZE;
+    }
+
+    public int[] getReserveColor() {
+        return reserveColor;
+    }
+
+    public int[][] getAvailableSeats() {
+        return availableSeats;
+    }
+
+    public Seat[][] getSeatFormation() {
+        return seatFormation;
+    }
+
+    public Seat[] getSelectedFormation() {
+        return selectedFormation;
+    }
+
+    public int getSelectedFormationIndex() {
+        return selectedFormationIndex;
+    }
+
+    public void setSelectedFormation(Seat[] selectedFormation) {
+        this.selectedFormation = selectedFormation;
+    }
+
+    public void setSelectedFormationIndex(int selectedFormationIndex) {
+        this.selectedFormationIndex = selectedFormationIndex;
+    }
+
 }

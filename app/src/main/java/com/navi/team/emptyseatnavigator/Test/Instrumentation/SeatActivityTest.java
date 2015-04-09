@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 
 import com.navi.team.emptyseatnavigator.R;
 import com.navi.team.emptyseatnavigator.activities.SeatActivity;
+import com.navi.team.emptyseatnavigator.businessobject.Seat;
 
 import org.junit.After;
 import org.junit.Before;
@@ -87,26 +88,39 @@ public class SeatActivityTest extends ActivityInstrumentationTestCase2<SeatActiv
         assertEquals(expected,actual);
     }
 
-//    @SmallTest
-//    /**
-//     * testSubmitButton - USV3
-//     */
-//    public void testSubmitButton() throws Exception {
-//        boolean expected = false;
-//        boolean actual = false;
-//        assertEquals(expected,actual);
-//    }
-//
-//    @SmallTest
-//    /**
-//     * testDisplaySeatFormationSelection - USV4
-//     */
-//    public void testDisplaySeatFormationSelection() throws Exception {
-//        boolean expected = false;
-//        boolean actual = false;
-//        assertEquals(expected,actual);
-//    }
-//
+    @SmallTest
+    /**
+     * testSubmitButton - USV3
+     */
+    public void testSubmitButton() throws Exception {
+        boolean expected = false;
+        boolean actual = false;
+
+        final SeatActivity mSeatActivity = getActivity();
+        Button submitButton = (Button) mSeatActivity.findViewById(R.id.buttonSubmit);
+        Seat[][] seatFormation = mSeatActivity.getSeatFormation();
+        if(seatFormation != null){
+            actual = true;
+        }
+        assertFalse(actual);
+        TouchUtils.clickView(this,submitButton);
+        seatFormation = mSeatActivity.getSeatFormation();
+        if(seatFormation != null){
+            actual = true;
+        }
+        assertTrue(actual);
+    }
+
+    @SmallTest
+    /**
+     * testDisplaySeatFormationSelection - USV4
+     */
+    public void testDisplaySeatFormationSelection() throws Exception {
+        boolean expected = false;
+        boolean actual = false;
+        assertEquals(expected,actual);
+    }
+
 //    @SmallTest
 //    /**
 //     * testMakeReservationButtonUnsuccessful - USV5
@@ -114,9 +128,35 @@ public class SeatActivityTest extends ActivityInstrumentationTestCase2<SeatActiv
 //    public void testMakeReservationButtonUnsuccessful() throws Exception {
 //        boolean expected = false;
 //        boolean actual = false;
+//        int index = 0;
+//        final SeatActivity mSeatActivity = getActivity();
+//        Button reserveButton = (Button) mSeatActivity.findViewById(R.id.buttonReserve);
+//        Button submitButton = (Button) mSeatActivity.findViewById(R.id.buttonSubmit);
+//
+//        int MAX_ROW = mSeatActivity.getMAX_ROW();
+//        int MAX_COLUMN = mSeatActivity.getMAX_COLUMN();
+//
+//
+//        Seat[] allSeats = new Seat[MAX_ROW*MAX_COLUMN];
+//
+//        for(int row = 0; row < MAX_ROW; row++){
+//            for(int column = 0; column < MAX_COLUMN; column++){
+//                Seat seat = new Seat(true);
+//                seat.setCol(column);
+//                seat.setRow(row);
+//                allSeats[index] = seat;
+//            }
+//        }
+//        Seat[][] seatFormation = new Seat[1][allSeats.length];
+//        seatFormation[0] = allSeats;
+//        mSeatActivity.setSeatFormation(seatFormation);
+//        mSeatActivity.displayFormation(seatFormation,0);
+//        TouchUtils.clickView(this, reserveButton);
+//        mSeatActivity.setSeatFormation(seatFormation);
+//        TouchUtils.clickView(this, reserveButton);
 //        assertEquals(expected,actual);
 //    }
-//
+
 //    @SmallTest
 //    /**
 //     * testMakeReservationButtonSuccessful - USV5
