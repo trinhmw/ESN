@@ -21,8 +21,8 @@
     <color name="btn_end">#052161</color>
     <color name="btn_stroke">#72bcff</color>
 
-    <color name="btn_press">#470022</color>
-    <color name="btn_press_stroke">#ff3399</color>
+    <color name="btn_press">#3c3c3c</color>
+    <color name="btn_press_stroke">#FFFFFF</color>
 
     <color name="seat_avail_start">#00ee1f</color>
     <color name="seat_avail_end">#006a0d</color>

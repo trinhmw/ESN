@@ -194,7 +194,7 @@
                             android:layout_gravity="left"/>
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:text="@string/available_seats"
                             android:id="@+id/tvCurrentSeatFormation"

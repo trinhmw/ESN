@@ -111,16 +111,16 @@ public class SeatActivityTest extends ActivityInstrumentationTestCase2<SeatActiv
         assertTrue(actual);
     }
 
-    @SmallTest
-    /**
-     * testDisplaySeatFormationSelection - USV4
-     */
-    public void testDisplaySeatFormationSelection() throws Exception {
-        boolean expected = false;
-        boolean actual = false;
-        assertEquals(expected,actual);
-    }
-
+//    @SmallTest
+//    /**
+//     * testDisplaySeatFormationSelection - USV4
+//     */
+//    public void testDisplaySeatFormationSelection() throws Exception {
+//        boolean expected = false;
+//        boolean actual = false;
+//        assertEquals(expected,actual);
+//    }
+//
 //    @SmallTest
 //    /**
 //     * testMakeReservationButtonUnsuccessful - USV5
