@@ -85,6 +85,16 @@ public class DBController {
         return status;
     }
 
+    public boolean updateSeat(Seat newSeat){
+        int row = newSeat.getRow();
+        int col = newSeat.getCol();
+
+        Seat currentSeat = seats[row][col];
+        currentSeat.setAvailable(newSeat.isAvailable());
+        currentSeat.setColor(newSeat.getColor());
+        return true;
+    }
+
 
     /**
      * reserveSeats - Reserves the seats given an array of seats to be reserved.
