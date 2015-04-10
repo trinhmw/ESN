@@ -25,7 +25,25 @@ public class SeatingLogic {
 
         //This will be replaced with a call to AvailableSeats.
 //        Seat[][] seats = GenerateFakeData();
-        Seat[][] seats = DBController.getController().getSeats();
+        Seat[][] source = DBController.getController().getSeats();
+
+        //Created it manually, because using the DBController source causes it to make a reference to the array
+        Seat[][] seats = new Seat[3][4];
+        int MAX_ROW = 3;
+        int MAX_COLUMN = 4;
+        Seat temp;
+        for (int r = 0; r < MAX_ROW; r++) {
+            for (int c = 0; c < MAX_COLUMN; c++) {
+                if(source[r][c].isAvailable()){
+                    temp = new Seat(r,c,true);
+                    seats[r][c] = temp;
+                }
+                else{
+                    temp = new Seat(r,c,false);
+                    seats[r][c] = temp;
+                }
+            }
+        }
 
 
         //if seat_number = 1, then there's one configuration: first empty seat.
