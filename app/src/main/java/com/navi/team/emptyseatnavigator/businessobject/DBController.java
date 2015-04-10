@@ -39,7 +39,7 @@ public class DBController {
         return controller;
     }
 
-    public int[][] getAvailableSeats(){
+    public int[][] getAvailableSeatsInt(){
         int[][] results = new int[3][4];
         for (int row =0; row< MAX_ROW; row++){
             for (int col =0; col<MAX_COLUMN; col++){
@@ -49,6 +49,22 @@ public class DBController {
                 else {
                     results[row][col] =0;
                 }
+            }
+        }
+        return results;
+    }
+
+    public Seat[][] getAvailableSeats(){
+        Seat[][] results = new Seat[MAX_ROW][MAX_COLUMN];
+        for (int row =0; row< MAX_ROW; row++){
+            for (int col =0; col<MAX_COLUMN; col++){
+                if (seats[row][col].isAvailable()){
+                    results[row][col] = seats[row][col];
+                }
+                else{
+                    results[row][col] = null;
+                }
+
             }
         }
         return results;
@@ -148,5 +164,9 @@ public class DBController {
                 }
             }
         }
+    }
+
+    public Seat[][] getSeats() {
+        return seats;
     }
 }

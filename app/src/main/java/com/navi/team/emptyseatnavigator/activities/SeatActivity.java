@@ -188,7 +188,7 @@ public class SeatActivity extends ActionBarActivity {
             }
         });
 
-        availableSeats = DBController.getController().getAvailableSeats();
+        availableSeats = DBController.getController().getAvailableSeatsInt();
 
         tempLinLayout = displaySeats(availableSeats);
 
@@ -592,6 +592,7 @@ public class SeatActivity extends ActionBarActivity {
         int r;
         int c;
         Seat unavailable = new Seat(false);
+        Seat available = new Seat(true);
 
         for (int row = 0; row < MAX_ROW; row++) {
             tempLayout[row] = addLayoutRow(layoutRows, row);
@@ -600,10 +601,24 @@ public class SeatActivity extends ActionBarActivity {
                     r = formation[formIndex][seatInFormation].getRow();
                     c = formation[formIndex][seatInFormation].getCol();
                     if((r == row) && (c == column)){
-                        addSeatImage(generateSeatSelectedImage(formation[formIndex][seatInFormation]), tempLayout[row]);
-                        break;
+                        //If this seat is in the seat formation, generate a view that indicates it's part of the formation
+                        if(formation[formIndex][seatInFormation].isAvailable()) {
+                            addSeatImage(generateSeatSelectedImage(formation[formIndex][seatInFormation]), tempLayout[row]);
+                            break;
+                        }
+                        // If this seat is not in the seat formation, check if it is one of the available seats
+                        // and indicate whether it's an available seat or not
+                        else{
+                            if(availableSeats[r][c] == 1){
+                                addSeatImage(generateSeatStatusImage(available), tempLayout[row]);
+                            }
+                            else{
+                                addSeatImage(generateSeatStatusImage(unavailable), tempLayout[row]);
+                            }
+                        }
                     }
                     else{
+                        //is this even needed?
                         if(seatInFormation == formation[formIndex].length){
                             addSeatImage(generateSeatSelectedImage(unavailable), tempLayout[row]);
                         }
@@ -626,7 +641,7 @@ public class SeatActivity extends ActionBarActivity {
      * softRefresh - Refreshes the current available seats layout and removes the current formations
      */
     public void softRefresh() {
-        availableSeats = DBController.getController().getAvailableSeats();
+        availableSeats = DBController.getController().getAvailableSeatsInt();
         tempLinLayout = displaySeats(availableSeats);
 
         TextView text = (TextView) findViewById(R.id.tvCurrentSeatFormation);
@@ -640,7 +655,7 @@ public class SeatActivity extends ActionBarActivity {
      * hardRefresh - Refreshes the current available seats layout and user preferences
      */
     public void hardRefresh() {
-        availableSeats = DBController.getController().getAvailableSeats();
+        availableSeats = DBController.getController().getAvailableSeatsInt();
         tempLinLayout = displaySeats(availableSeats);
 
         TextView text = (TextView) findViewById(R.id.tvCurrentSeatFormation);
@@ -726,7 +741,7 @@ public class SeatActivity extends ActionBarActivity {
      */
     public Seat[][] randomSeatFormation(int groupSize) {
         Random random = new Random();
-        int numberOfFormations = 5;//random.nextInt(6)+1;
+        int numberOfFormations = 1;//random.nextInt(6)+1;
         int seatIndex;
         int size;
         int remaining;
@@ -734,16 +749,18 @@ public class SeatActivity extends ActionBarActivity {
         Seat[][] seats = new Seat[numberOfFormations][(MAX_ROW*MAX_COLUMN)];
         for (int formIndex = 0; formIndex < numberOfFormations; formIndex++) {
             seatIndex = 0;
-            remaining = MAX_ROW*MAX_COLUMN-1;
+            remaining = calculateNumberOfAvailableSeats();
             size = 0;
             for (int r = 0; r < MAX_ROW; r++) {
                 for (int c = 0; c < MAX_COLUMN; c++) {
+                    //if there's not enough selected
                     if((size < groupSize)&& (availableSeats[r][c] == 1) ) {
-                        if(remaining <= size){
+                        if(remaining < (groupSize-size+1)){
                             temp = new Seat(true);
                             temp.setCol(c);
                             temp.setRow(r);
                             seats[formIndex][seatIndex] = temp;
+
                         }
                         else {
                             temp = new Seat(random.nextBoolean());
@@ -754,6 +771,7 @@ public class SeatActivity extends ActionBarActivity {
                         if (temp.isAvailable()) {
                             size++;
                         }
+                        remaining--;
                     }
                     else{
                         temp = new Seat(false);
@@ -761,7 +779,7 @@ public class SeatActivity extends ActionBarActivity {
                         temp.setRow(r);
                         seats[formIndex][seatIndex] = temp;
                     }
-                    remaining--;
+
                     seatIndex++;
                 }
             }

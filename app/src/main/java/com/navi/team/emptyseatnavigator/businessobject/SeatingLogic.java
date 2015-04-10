@@ -24,7 +24,9 @@ public class SeatingLogic {
         Seat [][] returnval = new Seat [1][1];
 
         //This will be replaced with a call to AvailableSeats.
-        Seat[][] seats = GenerateFakeData();
+//        Seat[][] seats = GenerateFakeData();
+        Seat[][] seats = DBController.getController().getSeats();
+
 
         //if seat_number = 1, then there's one configuration: first empty seat.
         //if it's 2, we'll use three configs: horizontal adjacent, vertical adjacent, and first empty seats.
@@ -48,7 +50,7 @@ public class SeatingLogic {
         }
 
         //Seat preference dictates what direction iteration loops go in.
-        if (preference.equals("front") | preference.equals("none")){
+        if (preference.equals("Front") | preference.equals("None")){
             //How many seats the user's looking for dictates how many configurations we look for, and what exactly each is.
             switch(seat_number){
                 case 1:
@@ -209,7 +211,7 @@ public class SeatingLogic {
 
 
         }
-        else if (preference.equals("back")){
+        else if (preference.equals("Back")){
             switch(seat_number){
                 case 1:
                     for(int i=seats.length-1;i>=0;i--){
@@ -366,7 +368,7 @@ public class SeatingLogic {
                     break;
             }
         }
-        else if (preference.equals("middle")){
+        else if (preference.equals("Middle")){
             //Here we run front-first loops from the middle, back-first loops from the middle, then reconcile them.
             int middle_row= (int) Math.floor(seats.length/2);
             switch(seat_number){
