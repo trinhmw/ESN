@@ -40,7 +40,7 @@ public class DBController {
     }
 
     public int[][] getAvailableSeatsInt(){
-        int[][] results = new int[3][4];
+        int[][] results = new int[MAX_ROW][MAX_COLUMN];
         for (int row =0; row< MAX_ROW; row++){
             for (int col =0; col<MAX_COLUMN; col++){
                 if (seats[row][col].isAvailable()){
@@ -113,9 +113,9 @@ public class DBController {
 
 
     /**
-     * reserveSeats - Reserves the seats given an array of seats to be reserved.
-     * @param rSeats - seats to be reserved
-     * @return boolean - true for successfully reserved, false for reservation failure
+     * Reserves the seats given an array of seats to be reserved.
+     * @param rSeats seats to be reserved
+     * @return boolean true for successfully reserved, false for reservation failure
      */
     public boolean reserveSeats(Seat[] rSeats, SeatActivity act){
         boolean status = true;
@@ -131,27 +131,24 @@ public class DBController {
             }
         }
 //      If the seats are all available, update map and reserve
-        if (status){
-            for (int x = 0; x < rSeats.length; x++){
+        if (status) {
+            for (int x = 0; x < rSeats.length; x++) {
                 int row = rSeats[x].getRow();
                 int col = rSeats[x].getCol();
                 seats[row][col] = rSeats[x];
             }
-        } else{
-            return status;
-        }
 
-        for (int x =0; x < rSeats.length; x++){
-            int row = rSeats[x].getRow();
-            int col = rSeats[x].getCol();
-            act.sendMessage(seats[row][col]);
+            for (int x = 0; x < rSeats.length; x++) {
+                int row = rSeats[x].getRow();
+                int col = rSeats[x].getCol();
+                act.sendMessage(seats[row][col]);
+            }
         }
-
         return status;
     }
 
     /**
-     * seatAllAvailable - Testing purposes only
+     * Testing purposes only
      */
     public void seatAllAvailable(){
         for(int r = 0; r < MAX_ROW; r++){

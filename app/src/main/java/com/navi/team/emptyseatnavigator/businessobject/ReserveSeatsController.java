@@ -42,27 +42,15 @@ public class ReserveSeatsController{
      * @return
      */
     public int[] reserveSeats(Seat[] formation, SeatActivity activity){
-        boolean isValid = true;
         setColor(0,0,0);
-        ArrayList<int[][]> seats;
-        boolean reserved = false;
 
-        if(setFormation(formation) == false){
-            isValid = false;
-        }
-
-        if(isValid == true) {
-
-
+        if(setFormation(formation)){
             for(Seat seat : formation){
                 seat.setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
                 seat.setAvailable(false);
             }
-            reserved = DBController.getController().reserveSeats(formation, activity);
-
-
 //            If reservation successful, pass the next possible color
-            if(reserved) {
+            if(DBController.getController().reserveSeats(formation, activity)) {
                 setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
                 colorIndexAdjust();
             }

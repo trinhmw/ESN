@@ -101,6 +101,14 @@
                 android:id="@+id/buttonSubmit"
                 android:layout_gravity="center_horizontal" />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin"
+                android:text="@string/button_lucky"
+                android:id="@+id/buttonLucky"
+                android:layout_gravity="center_horizontal" />
+
             </LinearLayout>
 
         <View
