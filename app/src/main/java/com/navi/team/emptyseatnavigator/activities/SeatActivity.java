@@ -620,11 +620,11 @@ public class SeatActivity extends ActionBarActivity implements Constants{
 
                 }
             }
-        }
-        if(touchSelection.size() != groupSize){
-            reserveButton.setEnabled(false);
-        } else{
-            reserveButton.setEnabled(true);
+            if(touchSelection.size() != groupSize){
+                reserveButton.setEnabled(false);
+            } else{
+                reserveButton.setEnabled(true);
+            }
         }
     }
 
