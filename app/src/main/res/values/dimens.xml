@@ -19,6 +19,9 @@
     <dimen name="btn_padding">10dp</dimen>
     <dimen name="btn_radius">3dp</dimen>
     <dimen name="btn_stroke">1dp</dimen>
+    <dimen name="btn_width">100dp</dimen>
+
+    <dimen name="dialog_padding">10dp</dimen>
 
     <dimen name="screen_stroke">0dp</dimen>
     <dimen name="screen_padding">10dp</dimen>

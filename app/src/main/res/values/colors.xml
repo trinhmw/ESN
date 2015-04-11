@@ -2,7 +2,7 @@
 <resources>
     <!--Color Rotation-->
     <color name="color0">#FF0000</color>
-    <color name="color1">#ff0040</color>
+    <color name="color1">#ff00d2</color>
     <color name="color2">#ff4000</color>
     <color name="color3">#0000FF</color>
     <color name="color4">#91A9FC</color>

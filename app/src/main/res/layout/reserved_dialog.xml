@@ -13,6 +13,7 @@
             android:layout_width="@dimen/image_size"
             android:layout_height="@dimen/image_size"
             android:layout_margin="@dimen/margin"
+            android:padding="@dimen/dialog_padding"
             />
 
         <TextView
@@ -21,7 +22,8 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/large_text"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/margin"/>
+            android:layout_margin="@dimen/margin"
+            android:padding="@dimen/dialog_padding"/>
         </LinearLayout>
 
 

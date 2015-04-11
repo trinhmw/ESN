@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/large_text"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/margin"/>
+        android:layout_margin="@dimen/margin"
+        android:padding="@dimen/dialog_padding"/>
 
     <Button
         android:id="@+id/dialogButtonOK"
