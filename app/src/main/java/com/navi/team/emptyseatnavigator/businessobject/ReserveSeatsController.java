@@ -138,5 +138,21 @@ public class ReserveSeatsController{
         }
         return isSet;
     }
+
+    public int[] getPossibleColors() {
+        return possibleColors;
+    }
+
+    public int[] getCurrentPossibleColors() {
+        return hexToRGB(res.getColor(possibleColors[colorIndex]));
+    }
+
+    public int getCurrentPossibleColors2() {
+        return res.getColor(possibleColors[colorIndex]);
+    }
+
+    private void setPossibleColors(int[] possibleColors) {
+        this.possibleColors = possibleColors;
+    }
 }
 

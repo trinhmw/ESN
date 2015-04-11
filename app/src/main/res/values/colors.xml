@@ -35,9 +35,9 @@
     <color name="btn_press_end">#222222</color>
     <color name="btn_press_stroke">#000000</color>
 
-    <color name="seat_avail_start">#00a898</color>
-    <color name="seat_avail_end">#00ffe7</color>
-    <color name="seat_avail_stroke">#002f2b</color>
+    <color name="seat_avail_start">#008d00</color>
+    <color name="seat_avail_end">#00c800</color>
+    <color name="seat_avail_stroke">#003e00</color>
 
     <color name="seat_unavail_start">#adadad</color>
     <color name="seat_unavail_end">#e7e7e7</color>
