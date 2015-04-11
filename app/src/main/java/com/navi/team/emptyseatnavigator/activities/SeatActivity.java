@@ -20,7 +20,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 
 import android.util.Log;
-import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +34,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.navi.team.emptyseatnavigator.R;
+import com.navi.team.emptyseatnavigator.businessobject.Constants;
 import com.navi.team.emptyseatnavigator.businessobject.DBController;
 import com.navi.team.emptyseatnavigator.businessobject.InputController;
 import com.navi.team.emptyseatnavigator.businessobject.ReserveSeatsController;
@@ -47,19 +47,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Random;
 
 
-public class SeatActivity extends ActionBarActivity {
+public class SeatActivity extends ActionBarActivity implements Constants{
 
     private final static String TAG = SeatActivity.class.getSimpleName();
 
-    private final int MAX_COLUMN = 4;
-    private final int MAX_ROW = 3;
-    private final int TOTAL_SEATS = MAX_COLUMN * MAX_ROW;
-    private final int MAX_GROUP_SIZE = 4;
-    private int availableSeatNumber;
     private int[] reserveColor;
     private int[][] availableSeats = new int[MAX_ROW][MAX_COLUMN];
     private Seat[][] seatFormation;
@@ -120,8 +114,6 @@ public class SeatActivity extends ActionBarActivity {
                         seatFormation = InputController.validateInput(pickerGroupSize.getValue(), preference.getText().toString(), MAX_GROUP_SIZE);
                         if (seatFormation != null) {
                             selectedFormationIndex = 0;
-//                            TextView text = (TextView) findViewById(R.id.tvCurrentSeatFormation);
-//                            text.setText("Formation: " + selectedFormationIndex);
                             displayFormation(seatFormation, selectedFormationIndex);
                             Button rightButton = (Button) findViewById(R.id.buttonRight);
                             Button leftButton = (Button) findViewById(R.id.buttonLeft);
@@ -156,8 +148,6 @@ public class SeatActivity extends ActionBarActivity {
                         seatFormation = randomSeatFormation(pickerGroupSize.getValue());
                         if (seatFormation != null) {
                             selectedFormationIndex = 0;
-//                            TextView text = (TextView) findViewById(R.id.tvCurrentSeatFormation);
-//                            text.setText("Formation: " + selectedFormationIndex);
                             displayFormation(seatFormation, selectedFormationIndex);
                             Button rightButton = (Button) findViewById(R.id.buttonRight);
                             Button leftButton = (Button) findViewById(R.id.buttonLeft);
@@ -297,7 +287,9 @@ public class SeatActivity extends ActionBarActivity {
         unregisterReceiver(mUsbReceiver);
     }
 
-    // Determine when Arduino is attached and if permission is granted by user
+    /**
+     * Determine when Arduino is attached and if permission is granted by user
+     */
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -409,6 +401,10 @@ public class SeatActivity extends ActionBarActivity {
         }
     };
 
+    /**
+     * Pops up an error dialog using the listen sound
+     * @param message error message
+     */
     public void errorDialog(String message) {
         MediaPlayer mediaPlayer = MediaPlayer.create(SeatActivity.this, R.raw.listen);
 
@@ -437,6 +433,10 @@ public class SeatActivity extends ActionBarActivity {
     }
 
 
+    /**
+     * Pops up an error dialog using the listen sound, soft refreshes after tapping confirm
+     * @param message error message
+     */
     public void errorRefreshDialog(String message) {
         MediaPlayer mediaPlayer = MediaPlayer.create(SeatActivity.this, R.raw.listen);
 
@@ -465,7 +465,12 @@ public class SeatActivity extends ActionBarActivity {
     }
 
 
-
+    /**
+     * Pops a message that the seat has been reserved with a look sound, hard refreshes after tapping okay
+     * @param r red
+     * @param g green
+     * @param b blue
+     */
     public void reservedDialog(int r, int g, int b) {
         MediaPlayer mediaPlayer = MediaPlayer.create(SeatActivity.this, R.raw.look);
 
@@ -497,7 +502,6 @@ public class SeatActivity extends ActionBarActivity {
 
     /**
      * Adds one row to layoutName (Adds a horizontal LinearLayout).
-     *
      * @param layoutName linear layout to add row to
      * @param rownumber the next row number of the linear layout
      * @return LinearLayout
@@ -506,7 +510,6 @@ public class SeatActivity extends ActionBarActivity {
         LinearLayout layoutRow = new LinearLayout(this);
         layoutRow.setOrientation(LinearLayout.HORIZONTAL);
         layoutRow.setGravity(Gravity.CENTER_HORIZONTAL);
-//        LinearLayout.LayoutParams param = new ActionMenuView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         switch (rownumber) {
             case 1:
                 layoutRow.setId(R.id.layoutRow1);
@@ -528,9 +531,8 @@ public class SeatActivity extends ActionBarActivity {
     }
 
     /**
-     * Adds button to layoutName. Meant to take the return of generateSeatImage methods and add it into
+     * Adds seat image to layoutName. Meant to take the return of generateSeatImage methods and add it into
      * the layout generated by addLayoutRow
-     *
      * @param imageSeat an ImageView of the seat
      * @param layoutName a linear layout
      */
@@ -538,6 +540,11 @@ public class SeatActivity extends ActionBarActivity {
         layoutName.addView(imageSeat);
     }
 
+    /**
+     * If seat is available, allow selections on screen, deselect when it is already selected
+     * If seat is not available, allow deselect only
+     * @param imageSeat SeatImageView
+     */
     public void imageSelection(SeatImageView imageSeat){
         Drawable d = getResources().getDrawable(R.drawable.unavailable_seat);
         ReserveSeatsController rsv = ReserveSeatsController.getInstance(SeatActivity.this);
@@ -546,8 +553,6 @@ public class SeatActivity extends ActionBarActivity {
         int groupSize = pickerGroupSize.getValue();
         Button reserveButton = (Button) findViewById(R.id.buttonReserve);
 
-        //If seat is available, allow selections on screen, deselect when it is already selected
-        //If seat is not available, allow deselect only
         if(imageSeat.isAvailable()) {
             if(touchSelection == null){
                 touchSelection =new ArrayList<Seat>();
@@ -578,7 +583,7 @@ public class SeatActivity extends ActionBarActivity {
     }
 
     /**
-     * Generates a seat button based off the information of a single seat. Takes the information of
+     * Generates a seat image based off the information of a single seat. Takes the information of
      * whether it is available or not and makes a distinguishable difference between available and unavailable
      *
      * @param seat a seat
@@ -588,34 +593,21 @@ public class SeatActivity extends ActionBarActivity {
         int height = 50;
         int width = 50;
         final SeatImageView imageSeat = new SeatImageView(this, seat);
+
+
         imageSeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Drawable d = getResources().getDrawable(R.drawable.unavailable_seat);
                 ReserveSeatsController rsv = ReserveSeatsController.getInstance(SeatActivity.this);
                 d.setColorFilter(rsv.getCurrentPossibleColors2(), PorterDuff.Mode.MULTIPLY);
-
                 if(seatFormation == null){
-                    NumberPicker pickerGroupSize = (NumberPicker) findViewById(R.id.pickerGroupSize);
-                    int groupSize = pickerGroupSize.getValue();
-
-                    //If seat is available, allow selections on screen, deselect when it is already selected
-                    //If seat is not available, allow deselect only
                     imageSelection(imageSeat);
                 } else{ //if a formation is already selected
-//                    touchSelection.clear();
                     if(touchSelection == null) {
                         touchSelection = new ArrayList<Seat>(Arrays.asList(seatFormation[selectedFormationIndex]));
                     }
-
-                    NumberPicker pickerGroupSize = (NumberPicker) findViewById(R.id.pickerGroupSize);
-                    int groupSize = pickerGroupSize.getValue();
-
-                    //If seat is available, allow selections on screen, deselect when it is already selected
-                    //If seat is not available, allow deselect only
                     imageSelection(imageSeat);
-
-
                 }
             }
         });
@@ -635,12 +627,10 @@ public class SeatActivity extends ActionBarActivity {
     /**
      * Generates a seat image based off the information of a single seat. Takes the information of
      * whether the seat is the one selected in the formation
-     *
      * @param seat a seat
      * @return ImageView
      */
     public SeatImageView generateSeatSelectedImage(Seat seat) {
-        Resources res = getResources();
         int height = 50;
         int width = 50;
         final SeatImageView imageSeat = new SeatImageView(this, seat);
@@ -651,16 +641,9 @@ public class SeatActivity extends ActionBarActivity {
         imageSeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 if(touchSelection == null) {
                     touchSelection = new ArrayList<Seat>(Arrays.asList(seatFormation[selectedFormationIndex]));
                 }
-                NumberPicker pickerGroupSize = (NumberPicker) findViewById(R.id.pickerGroupSize);
-                int groupSize = pickerGroupSize.getValue();
-
-                //If seat is available, allow selections on screen, deselect when it is already selected
-                //If seat is not available, allow deselect only
                 imageSelection(imageSeat);
             }
         });
@@ -677,27 +660,12 @@ public class SeatActivity extends ActionBarActivity {
         return imageSeat;
     }
 
+
     /**
-     * Displays current seats based off the multidimensional array of seats information.
-     *
+     *  Displays current seats based off the multidimensional array of seats information.
      * @param seats available seats
      * @return linear layout of seats
      */
-    public LinearLayout[] displaySeats(Seat[][] seats) {
-        LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
-        LinearLayout[] tempLayout = new LinearLayout[MAX_ROW];
-        layoutRows.removeAllViews();
-
-        for (int i = 0; i < MAX_ROW; i++) {
-            tempLayout[i] = addLayoutRow(layoutRows, i);
-            for (int j = 0; j < MAX_COLUMN; j++) {
-                    addSeatImage(generateSeatStatusImage(seats[i][j]), tempLayout[i]);
-            }
-        }
-        return tempLayout;
-    }
-
-
     public LinearLayout[] displaySeats(int[][] seats) {
         LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
         LinearLayout[] tempLayout = new LinearLayout[MAX_ROW];
@@ -742,15 +710,16 @@ public class SeatActivity extends ActionBarActivity {
         boolean seatMade;
         ReserveSeatsController rsv = ReserveSeatsController.getInstance(this);
 
-        for (int row = 0; row < MAX_ROW; row++) {
+        for (int row = 0; row < MAX_ROW; row++) { //create a row
             tempLayout[row] = addLayoutRow(layoutRows, row);
-            for (int column = 0; column < MAX_COLUMN; column++) {
+            for (int column = 0; column < MAX_COLUMN; column++) { //create a new column
                 seatMade = false;
                 for(int seatInFormation = 0; seatInFormation < formation[formIndex].length; seatInFormation++){
-                    if(formation[formIndex][seatInFormation] != null) {
+                //go through one formation based off the formIndex to find a seat matching the current iteration of row and column
+                    if(formation[formIndex][seatInFormation] != null) { // If there's an actual seat, temporarily save the row and column
                         r = formation[formIndex][seatInFormation].getRow();
                         c = formation[formIndex][seatInFormation].getCol();
-                        if ((r == row) && (c == column)) {
+                        if ((r == row) && (c == column)) { // If the row and column is matches this iteration of row and columns
                             //If this seat is in the seat formation, generate a view that indicates it's part of the formation
                             if (formation[formIndex][seatInFormation].isAvailable()) {
                                 addSeatImage(generateSeatSelectedImage(formation[formIndex][seatInFormation]), tempLayout[row]);
@@ -776,14 +745,6 @@ public class SeatActivity extends ActionBarActivity {
         return tempLayout;
     }
 
-    public void setAvailableSeats(int[][] availableSeats) {
-        this.availableSeats = availableSeats;
-    }
-
-    public void setSeatFormation(Seat[][] seatFormation) {
-        this.seatFormation = seatFormation;
-    }
-
     /**
      * Refreshes the current available seats layout and removes the current formations
      */
@@ -791,17 +752,16 @@ public class SeatActivity extends ActionBarActivity {
         availableSeats = DBController.getController().getAvailableSeatsInt();
         tempLinLayout = displaySeats(availableSeats);
 
-//        TextView text = (TextView) findViewById(R.id.tvCurrentSeatFormation);
-//        String string = getString(R.string.available_seats);
-//        text.setText(string);
         seatFormation = null;
         touchSelection = null;
+
         Button rightButton = (Button) findViewById(R.id.buttonRight);
         Button leftButton = (Button) findViewById(R.id.buttonLeft);
         Button reserveButton = (Button) findViewById(R.id.buttonReserve);
         rightButton.setEnabled(false);
         leftButton.setEnabled(false);
         reserveButton.setEnabled(false);
+
         selectedFormationIndex = 0;
     }
 
@@ -811,18 +771,16 @@ public class SeatActivity extends ActionBarActivity {
     public void hardRefresh() {
         availableSeats = DBController.getController().getAvailableSeatsInt();
         tempLinLayout = displaySeats(availableSeats);
-
-//        TextView text = (TextView) findViewById(R.id.tvCurrentSeatFormation);
-//        String string = getString(R.string.available_seats);
-//        text.setText(string);
         seatFormation = null;
         touchSelection = null;
+
         Button rightButton = (Button) findViewById(R.id.buttonRight);
         Button leftButton = (Button) findViewById(R.id.buttonLeft);
         Button reserveButton = (Button) findViewById(R.id.buttonReserve);
         rightButton.setEnabled(false);
         leftButton.setEnabled(false);
         reserveButton.setEnabled(false);
+
         selectedFormationIndex = 0;
 
         final RadioGroup seatPreferences = (RadioGroup) findViewById(R.id.seatPreferences);
@@ -835,19 +793,6 @@ public class SeatActivity extends ActionBarActivity {
         pickerGroupSize.setValue(1);
 
     }
-
-    /**
-     * For testing purposes only
-     */
-    public void randomSeatAvailability(Seat seats[][]) {
-        Random random = new Random();
-        for (int i = 0; i < MAX_ROW; i++) {
-            for (int j = 0; j < MAX_COLUMN; j++) {
-                seats[i][j] = new Seat(random.nextBoolean());
-            }
-        }
-    }
-
 
     /**
      * For testing purposes only
@@ -945,7 +890,11 @@ public class SeatActivity extends ActionBarActivity {
         return seats;
     }
 
-
+    /**
+     * Removes null or unavailable seats from current formation
+     * @param formation seat formation
+     * @return
+     */
     public Seat[] stripUnavailableFromFormation(Seat[] formation){
         ArrayList<Seat> availables = new ArrayList<Seat>();
         for(Seat seat : formation){

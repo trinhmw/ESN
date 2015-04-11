@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Contains one public static method, called, creatively, SeatingAlgorithm.
  * Also contains a private method that generates a set of seats to test the algorithm with.
  */
-public class SeatingLogic {
+public class SeatingLogic implements Constants{
     /**
      * Takes a number of seats from 1-4 inclusive and a string, returns a two-dimensional array of seats.
      * Each 'row' of Seats represents a set of seats returned by the algorithm.
@@ -28,9 +28,7 @@ public class SeatingLogic {
         Seat[][] source = DBController.getController().getSeats();
 
         //Created it manually, because using the DBController source causes it to make a reference to the array
-        Seat[][] seats = new Seat[3][4];
-        int MAX_ROW = 3;
-        int MAX_COLUMN = 4;
+        Seat[][] seats = new Seat[MAX_ROW][MAX_COLUMN];
         Seat temp;
         for (int r = 0; r < MAX_ROW; r++) {
             for (int c = 0; c < MAX_COLUMN; c++) {

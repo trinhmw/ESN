@@ -208,15 +208,6 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_margin="@dimen/margin"/>
 
-                        <!--<TextView-->
-                            <!--android:layout_width="100dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="@string/available_seats"-->
-                            <!--android:id="@+id/tvCurrentSeatFormation"-->
-                            <!--android:layout_gravity="center"-->
-                            <!--android:layout_marginLeft="@dimen/large_margin"-->
-                            <!--android:layout_marginRight="@dimen/large_margin"/>-->
-
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

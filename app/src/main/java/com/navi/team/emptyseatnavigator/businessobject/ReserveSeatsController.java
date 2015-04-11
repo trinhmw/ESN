@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class ReserveSeatsController{
     private static ReserveSeatsController instance;
     private int[] color;
-    private int[] possibleColors = {R.color.color0, R.color.color1, R.color.color2, R.color.color3};
+    private int[] possibleColors = {R.color.color0, R.color.color1, R.color.color2, R.color.color3, R.color.color4};
     private int colorIndex;
     private Seat[] formation;
     private static final String TAG = "ReserveSeatsController";

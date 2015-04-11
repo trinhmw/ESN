@@ -7,15 +7,13 @@ import java.util.ArrayList;
 /**
  * Created by oguni on 4/3/2015.
  */
-public class DBController {
+public class DBController implements Constants{
     private Seat seats[][];
     private boolean availability;
     private static int objCount =0;
     private static DBController controller = null;
     int RESERVED = 384;
     int ERROR =76;
-    private final int MAX_COLUMN = 4;
-    private final int MAX_ROW = 3;
 
     class Result {
         Result previous;
