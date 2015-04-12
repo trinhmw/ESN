@@ -67,10 +67,12 @@ public class ReserveSeatsController{
 
                         @Override
                         public void onFinish() {
-                            Seat newSeat = new Seat(seat.getRow(),seat.getCol(), true);
-                            DBController.getController().updateSeat(newSeat);
-                            activity.sendMessage(newSeat);
-                            activity.seatUpdateRefresh();
+                            if (!(seat.getR() == 0) && (seat.getG() == 0) && (seat.getB() == 0)) {
+                                Seat newSeat = new Seat(seat.getRow(), seat.getCol(), true);
+                                DBController.getController().updateSeat(newSeat);
+                                activity.sendMessage(newSeat);
+                                activity.seatUpdateRefresh();
+                            }
                         }
                     };
                     cdt.start();

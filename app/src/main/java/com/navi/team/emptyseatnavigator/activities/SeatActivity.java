@@ -424,7 +424,7 @@ public class SeatActivity extends ActionBarActivity implements Constants{
                             @Override
                             public void run() {
                                 DBController.getController().updateSeat(cmdSeat);
-                                softRefresh();
+                                seatUpdateRefresh();
                             }
                         });
 
@@ -486,7 +486,7 @@ public class SeatActivity extends ActionBarActivity implements Constants{
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                softRefresh();
+                seatUpdateRefresh();
                 dialog.dismiss();
             }
         });
@@ -516,7 +516,7 @@ public class SeatActivity extends ActionBarActivity implements Constants{
         ImageView colorImage = (ImageView) dialog.findViewById(R.id.image);
         colorImage.setBackgroundColor(Color.rgb(r, g, b));
         TextView textView = (TextView) dialog.findViewById(R.id.reservedText);
-        textView.setText("Your seat has been reserved.\nPlease look for the light with the color displayed");
+        textView.setText("Your seat has been reserved.\nPlease look for the light with the color displayed.");
 
         Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
         dialogButton.setOnClickListener(new View.OnClickListener() {
