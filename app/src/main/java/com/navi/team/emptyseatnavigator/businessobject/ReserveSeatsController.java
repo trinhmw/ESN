@@ -24,9 +24,8 @@ public class ReserveSeatsController{
     private Seat[] formation;
     private static final String TAG = "ReserveSeatsController";
     private Resources res;
-    private DBController dbController;
     private CountDownTimer cdt;
-    private long timeout = TimeUnit.SECONDS.toMillis(10);
+    private long timeout = TimeUnit.SECONDS.toMillis(5);
 
     public static ReserveSeatsController getInstance(Context context){
         if(instance == null){
@@ -47,6 +46,7 @@ public class ReserveSeatsController{
      */
     public int[] reserveSeats(Seat[] formation, final SeatActivity activity){
         setColor(0,0,0);
+        DBController dbc = DBController.getController();
 
         if(setFormation(formation)){
             for(Seat seat : formation){
@@ -54,7 +54,7 @@ public class ReserveSeatsController{
                 seat.setAvailable(false);
             }
 //            If reservation successful, pass the next possible color
-            if(DBController.getController().reserveSeats(formation, activity)) {
+            if(dbc.reserveSeats(formation, activity)) {
                 setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
                 colorIndexAdjust();
 
@@ -67,12 +67,13 @@ public class ReserveSeatsController{
 
                         @Override
                         public void onFinish() {
-                            if (!(seat.getR() == 0) && (seat.getG() == 0) && (seat.getB() == 0)) {
+                            //commented out check due to it not working after first cdt
+//                            if (!(seat.getR() == 0) && (seat.getG() == 0) && (seat.getB() == 0)) {
                                 Seat newSeat = new Seat(seat.getRow(), seat.getCol(), true);
                                 DBController.getController().updateSeat(newSeat);
                                 activity.sendMessage(newSeat);
                                 activity.seatUpdateRefresh();
-                            }
+//                            }
                         }
                     };
                     cdt.start();

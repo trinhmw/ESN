@@ -109,6 +109,10 @@ public class DBController implements Constants{
         return true;
     }
 
+    public Seat getSeatStatus(int row, int col){
+        return seats[row][col];
+    }
+
 
     /**
      * Reserves the seats given an array of seats to be reserved.
