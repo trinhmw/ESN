@@ -789,6 +789,60 @@ public class SeatActivity extends ActionBarActivity implements Constants{
     }
 
 
+    /**
+     * Displays one formation from a given index. Generates each seat and checks each seat in the formation
+     * to see if it matches the row and column of the current seat
+     * @param formation The seat formations
+     * @param formIndex The formation number
+     * @return a linear layout of the formation
+     */
+    public LinearLayout[] displaySelection(ArrayList<Seat> formation){
+        LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
+        LinearLayout[] tempLayout = new LinearLayout[MAX_ROW];
+        layoutRows.removeAllViews();
+        int r;
+        int c;
+        Seat unavailable;
+        Seat available;
+        boolean seatMade;
+        ReserveSeatsController rsv = ReserveSeatsController.getInstance(this);
+
+        for (int row = 0; row < MAX_ROW; row++) { //create a row
+            tempLayout[row] = addLayoutRow(layoutRows, row);
+            for (int column = 0; column < MAX_COLUMN; column++) { //create a new column
+                seatMade = false;
+                for(int seatInFormation = 0; seatInFormation < formation.size(); seatInFormation++){
+                    //go through one formation based off the formIndex to find a seat matching the current iteration of row and column
+                    if(formation.get(seatInFormation) != null) { // If there's an actual seat, temporarily save the row and column
+                        r = formation.get(seatInFormation).getRow();
+                        c = formation.get(seatInFormation).getCol();
+                        if ((r == row) && (c == column)) { // If the row and column is matches this iteration of row and columns
+                            //If this seat is in the seat formation, generate a view that indicates it's part of the formation
+                            if (formation.get(seatInFormation).isAvailable()) {
+                                addSeatImage(generateSeatSelectedImage(formation.get(seatInFormation)), tempLayout[row]);
+                                seatMade = true;
+                            }
+
+                        }
+                    }
+                }
+                // If this seat is not in the seat formation, check if it is one of the available seats
+                // and indicate whether it's an available seat or not
+                if(seatMade == false) {
+                    if (availableSeats[row][column] == 1) {
+                        available = new Seat(true , rsv.getCurrentPossibleColors(), row, column);
+                        addSeatImage(generateSeatStatusImage(available), tempLayout[row]);
+                    } else {
+                        unavailable = new Seat(false , rsv.getCurrentPossibleColors(), row, column);
+                        addSeatImage(generateSeatStatusImage(unavailable), tempLayout[row]);
+                    }
+                }
+            }
+        }
+        return tempLayout;
+    }
+
+
     public LinearLayout[] displayFormation(ArrayList<ArrayList<Seat>> formation, int formIndex){
         LinearLayout layoutRows = (LinearLayout) findViewById(R.id.layoutRows);
         LinearLayout[] tempLayout = new LinearLayout[MAX_ROW];
@@ -854,6 +908,23 @@ public class SeatActivity extends ActionBarActivity implements Constants{
         reserveButton.setEnabled(false);
 
         selectedFormationIndex = 0;
+    }
+
+    /**
+     * Refreshes to update freed up available seats without losing hand selected formations
+     */
+    public void seatUpdateRefresh() {
+        availableSeats = DBController.getController().getAvailableSeatsInt();
+        if((seatFormation == null) && (touchSelection == null)){
+            tempLinLayout = displaySeats(availableSeats);
+        } else {
+            if(touchSelection != null){
+                tempLinLayout = displaySelection(touchSelection);
+            }
+            else if(seatFormation != null) {
+                tempLinLayout = displayFormation(seatFormation, selectedFormationIndex);
+            }
+        }
     }
 
     /**

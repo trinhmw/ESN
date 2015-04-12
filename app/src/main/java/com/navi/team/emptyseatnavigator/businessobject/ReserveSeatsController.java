@@ -7,9 +7,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.CountDownTimer;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Melissa on 2/10/2015.
@@ -23,6 +25,8 @@ public class ReserveSeatsController{
     private static final String TAG = "ReserveSeatsController";
     private Resources res;
     private DBController dbController;
+    private CountDownTimer cdt;
+    private long timeout = TimeUnit.SECONDS.toMillis(10);
 
     public static ReserveSeatsController getInstance(Context context){
         if(instance == null){
@@ -41,7 +45,7 @@ public class ReserveSeatsController{
      * @param formation
      * @return
      */
-    public int[] reserveSeats(Seat[] formation, SeatActivity activity){
+    public int[] reserveSeats(Seat[] formation, final SeatActivity activity){
         setColor(0,0,0);
 
         if(setFormation(formation)){
@@ -53,6 +57,25 @@ public class ReserveSeatsController{
             if(DBController.getController().reserveSeats(formation, activity)) {
                 setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
                 colorIndexAdjust();
+
+                for(final Seat seat : formation) {
+                    cdt = new CountDownTimer(timeout, TimeUnit.SECONDS.toMillis(1)) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            Seat newSeat = new Seat(seat.getRow(),seat.getCol(), true);
+                            DBController.getController().updateSeat(newSeat);
+                            activity.sendMessage(newSeat);
+                            activity.seatUpdateRefresh();
+                        }
+                    };
+                    cdt.start();
+                }
+
             }
 
         }
