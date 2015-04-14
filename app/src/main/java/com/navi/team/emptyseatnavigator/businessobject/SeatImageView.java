@@ -12,6 +12,7 @@ public class SeatImageView extends ImageView{
     private boolean isAvailable;
     private int color;
     private Seat seat;
+    private boolean reserved;
 
     public SeatImageView(Context context) {
         super(context);
@@ -23,6 +24,7 @@ public class SeatImageView extends ImageView{
         this.column = seat.getCol();
         this.isAvailable = seat.isAvailable();
         this.seat = seat;
+        this.reserved = seat.getReserved();
     }
 
     public Seat getNewSeat(){
@@ -69,5 +71,13 @@ public class SeatImageView extends ImageView{
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public boolean isReserved() {
+        return reserved;
+    }
+
+    public void setReserved(boolean reserved) {
+        this.reserved = reserved;
     }
 }

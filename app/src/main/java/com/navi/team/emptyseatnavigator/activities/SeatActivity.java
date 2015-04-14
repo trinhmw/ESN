@@ -589,7 +589,7 @@ public class SeatActivity extends ActionBarActivity implements Constants{
         int groupSize = pickerGroupSize.getValue();
         Button reserveButton = (Button) findViewById(R.id.buttonReserve);
 
-        if(imageSeat.isAvailable()) {
+        if(imageSeat.isAvailable() && !imageSeat.isReserved()) {
             if(touchSelection == null){
                 if(seatFormation == null) {
                     touchSelection = new ArrayList<Seat>();
@@ -661,7 +661,7 @@ public class SeatActivity extends ActionBarActivity implements Constants{
         LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(width, height);
         layoutParams1.setMargins(seatMargin, seatMargin, seatMargin, seatMargin);
         imageSeat.setLayoutParams(layoutParams1);
-        if (seat.isAvailable()) {
+        if (seat.isAvailable() && !seat.getReserved()) {
             imageSeat.setImageDrawable(getResources().getDrawable(R.drawable.available_seat));
         } else {
             imageSeat.setImageDrawable(getResources().getDrawable(R.drawable.unavailable_seat));
@@ -694,7 +694,7 @@ public class SeatActivity extends ActionBarActivity implements Constants{
         LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(width, height);
         layoutParams1.setMargins(seatMargin, seatMargin, seatMargin, seatMargin);
         imageSeat.setLayoutParams(layoutParams1);
-        if (seat.isAvailable()) {
+        if (seat.isAvailable() && !seat.getReserved()) {
             imageSeat.setImageDrawable(d);
         } else {
             imageSeat.setImageDrawable(getResources().getDrawable(R.drawable.unavailable_seat));
@@ -764,7 +764,7 @@ public class SeatActivity extends ActionBarActivity implements Constants{
                         c = formation[formIndex][seatInFormation].getCol();
                         if ((r == row) && (c == column)) { // If the row and column is matches this iteration of row and columns
                             //If this seat is in the seat formation, generate a view that indicates it's part of the formation
-                            if (formation[formIndex][seatInFormation].isAvailable()) {
+                            if (formation[formIndex][seatInFormation].isAvailable() && !formation[formIndex][seatInFormation].getReserved()) {
                                 addSeatImage(generateSeatSelectedImage(formation[formIndex][seatInFormation]), tempLayout[row]);
                                 seatMade = true;
                             }
@@ -793,7 +793,6 @@ public class SeatActivity extends ActionBarActivity implements Constants{
      * Displays one formation from a given index. Generates each seat and checks each seat in the formation
      * to see if it matches the row and column of the current seat
      * @param formation The seat formations
-     * @param formIndex The formation number
      * @return a linear layout of the formation
      */
     public LinearLayout[] displaySelection(ArrayList<Seat> formation){
@@ -818,7 +817,7 @@ public class SeatActivity extends ActionBarActivity implements Constants{
                         c = formation.get(seatInFormation).getCol();
                         if ((r == row) && (c == column)) { // If the row and column is matches this iteration of row and columns
                             //If this seat is in the seat formation, generate a view that indicates it's part of the formation
-                            if (formation.get(seatInFormation).isAvailable()) {
+                            if (formation.get(seatInFormation).isAvailable() && !formation.get(seatInFormation).getReserved()) {
                                 addSeatImage(generateSeatSelectedImage(formation.get(seatInFormation)), tempLayout[row]);
                                 seatMade = true;
                             }
@@ -866,7 +865,7 @@ public class SeatActivity extends ActionBarActivity implements Constants{
                         c = formation.get(formIndex).get(seatInFormation).getCol();
                         if ((r == row) && (c == column)) { // If the row and column is matches this iteration of row and columns
                             //If this seat is in the seat formation, generate a view that indicates it's part of the formation
-                            if (formation.get(formIndex).get(seatInFormation).isAvailable()) {
+                            if (formation.get(formIndex).get(seatInFormation).isAvailable() && !formation.get(formIndex).get(seatInFormation).getReserved()) {
                                 addSeatImage(generateSeatSelectedImage(formation.get(formIndex).get(seatInFormation)), tempLayout[row]);
                                 seatMade = true;
                             }
@@ -1031,7 +1030,7 @@ public class SeatActivity extends ActionBarActivity implements Constants{
         ArrayList<Seat> availables = new ArrayList<Seat>();
         for(Seat seat : formation){
             if(seat == null){}
-            else if(seat.isAvailable()){
+            else if(seat.isAvailable() && !seat.getReserved()){
                 availables.add(seat);
             }
         }

@@ -32,7 +32,7 @@ public class SeatingLogic implements Constants{
         Seat temp;
         for (int r = 0; r < MAX_ROW; r++) {
             for (int c = 0; c < MAX_COLUMN; c++) {
-                if(source[r][c].isAvailable()){
+                if(source[r][c].isAvailable() && !source[r][c].getReserved()){
                     temp = new Seat(r,c,true);
                     seats[r][c] = temp;
                 }

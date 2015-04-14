@@ -41,7 +41,7 @@ public class DBController implements Constants{
         int[][] results = new int[MAX_ROW][MAX_COLUMN];
         for (int row =0; row< MAX_ROW; row++){
             for (int col =0; col<MAX_COLUMN; col++){
-                if (seats[row][col].isAvailable()){
+                if (seats[row][col].isAvailable() && !seats[row][col].getReserved()){
                     results[row][col] = 1;
                 }
                 else {
@@ -52,52 +52,6 @@ public class DBController implements Constants{
         return results;
     }
 
-    public Seat[][] getAvailableSeats(){
-        Seat[][] results = new Seat[MAX_ROW][MAX_COLUMN];
-        for (int row =0; row< MAX_ROW; row++){
-            for (int col =0; col<MAX_COLUMN; col++){
-                if (seats[row][col].isAvailable()){
-                    results[row][col] = seats[row][col];
-                }
-                else{
-                    results[row][col] = null;
-                }
-
-            }
-        }
-        return results;
-    }
-
-    public boolean reserveSeats(ArrayList<int[][]> rSeats, SeatActivity act){
-        boolean status = true;
-        for (int x =0; x< rSeats.size(); x++){
-            int seatX = rSeats.get(x)[0][0];
-            int seatY = rSeats.get(x)[0][1];
-            if (seats[seatX][seatY].isAvailable()){
-                continue;
-            } else {
-                status = false;
-                break;
-            }
-        }
-        if (status){
-            for (int x =0; x< rSeats.size(); x++){
-                int seatX = rSeats.get(x)[0][0];
-                int seatY = rSeats.get(x)[0][1];
-                seats[seatX][seatY].setAvailable(false);
-            }
-        } else{
-            return status;
-        }
-
-        for (int x =0; x< rSeats.size(); x++){
-            int seatX = rSeats.get(x)[0][0];
-            int seatY = rSeats.get(x)[0][1];
-            act.sendMessage(seats[seatX][seatY]);
-        }
-
-        return status;
-    }
 
     public boolean updateSeat(Seat newSeat){
         int row = newSeat.getRow();
@@ -105,6 +59,7 @@ public class DBController implements Constants{
 
         Seat currentSeat = seats[row][col];
         currentSeat.setAvailable(newSeat.isAvailable());
+        currentSeat.setReserved(newSeat.getReserved());
         currentSeat.setColor(newSeat.getColor());
         return true;
     }
@@ -125,7 +80,7 @@ public class DBController implements Constants{
         for (int x = 0; x < rSeats.length; x++){
             int row = rSeats[x].getRow();
             int col = rSeats[x].getCol();
-            if (seats[row][col].isAvailable()){
+            if (seats[row][col].isAvailable() && !seats[row][col].getReserved()){
                 continue;
             } else {
                 status = false;

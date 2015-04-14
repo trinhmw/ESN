@@ -51,7 +51,8 @@ public class ReserveSeatsController{
         if(setFormation(formation)){
             for(Seat seat : formation){
                 seat.setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
-                seat.setAvailable(false);
+                seat.setReserved(true);
+//                seat.setAvailable(false);
             }
 //            If reservation successful, pass the next possible color
             if(dbc.reserveSeats(formation, activity)) {
@@ -68,12 +69,17 @@ public class ReserveSeatsController{
                         @Override
                         public void onFinish() {
                             //commented out check due to it not working after first cdt
-//                            if (!(seat.getR() == 0) && (seat.getG() == 0) && (seat.getB() == 0)) {
-                                Seat newSeat = new Seat(seat.getRow(), seat.getCol(), true);
+                            if(seat.isAvailable()) {
+                                int[] availColor = {0, 255, 0};
+                                Seat newSeat = new Seat(true, availColor, seat.getRow(), seat.getCol());
+                                newSeat.setReserved(false);
                                 DBController.getController().updateSeat(newSeat);
                                 activity.sendMessage(newSeat);
                                 activity.seatUpdateRefresh();
-//                            }
+                            } else{
+                                seat.setReserved(false);
+                                activity.seatUpdateRefresh();
+                            }
                         }
                     };
                     cdt.start();
