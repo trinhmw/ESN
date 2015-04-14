@@ -7,15 +7,13 @@ import java.util.ArrayList;
 /**
  * Created by oguni on 4/3/2015.
  */
-public class DBController {
+public class DBController implements Constants{
     private Seat seats[][];
     private boolean availability;
     private static int objCount =0;
     private static DBController controller = null;
     int RESERVED = 384;
     int ERROR =76;
-    private final int MAX_COLUMN = 4;
-    private final int MAX_ROW = 3;
 
     class Result {
         Result previous;
@@ -39,8 +37,8 @@ public class DBController {
         return controller;
     }
 
-    public int[][] getAvailableSeats(){
-        int[][] results = new int[3][4];
+    public int[][] getAvailableSeatsInt(){
+        int[][] results = new int[MAX_ROW][MAX_COLUMN];
         for (int row =0; row< MAX_ROW; row++){
             for (int col =0; col<MAX_COLUMN; col++){
                 if (seats[row][col].isAvailable()){
@@ -49,6 +47,22 @@ public class DBController {
                 else {
                     results[row][col] =0;
                 }
+            }
+        }
+        return results;
+    }
+
+    public Seat[][] getAvailableSeats(){
+        Seat[][] results = new Seat[MAX_ROW][MAX_COLUMN];
+        for (int row =0; row< MAX_ROW; row++){
+            for (int col =0; col<MAX_COLUMN; col++){
+                if (seats[row][col].isAvailable()){
+                    results[row][col] = seats[row][col];
+                }
+                else{
+                    results[row][col] = null;
+                }
+
             }
         }
         return results;
@@ -95,11 +109,15 @@ public class DBController {
         return true;
     }
 
+    public Seat getSeatStatus(int row, int col){
+        return seats[row][col];
+    }
+
 
     /**
-     * reserveSeats - Reserves the seats given an array of seats to be reserved.
-     * @param rSeats - seats to be reserved
-     * @return boolean - true for successfully reserved, false for reservation failure
+     * Reserves the seats given an array of seats to be reserved.
+     * @param rSeats seats to be reserved
+     * @return boolean true for successfully reserved, false for reservation failure
      */
     public boolean reserveSeats(Seat[] rSeats, SeatActivity act){
         boolean status = true;
@@ -115,27 +133,24 @@ public class DBController {
             }
         }
 //      If the seats are all available, update map and reserve
-        if (status){
-            for (int x = 0; x < rSeats.length; x++){
+        if (status) {
+            for (int x = 0; x < rSeats.length; x++) {
                 int row = rSeats[x].getRow();
                 int col = rSeats[x].getCol();
-                seats[row][col].setAvailable(false);
+                seats[row][col] = rSeats[x];
             }
-        } else{
-            return status;
-        }
 
-        for (int x =0; x < rSeats.length; x++){
-            int row = rSeats[x].getRow();
-            int col = rSeats[x].getCol();
-            act.sendMessage(seats[row][col]);
+            for (int x = 0; x < rSeats.length; x++) {
+                int row = rSeats[x].getRow();
+                int col = rSeats[x].getCol();
+                act.sendMessage(seats[row][col]);
+            }
         }
-
         return status;
     }
 
     /**
-     * seatAllAvailable - Testing purposes only
+     * Testing purposes only
      */
     public void seatAllAvailable(){
         for(int r = 0; r < MAX_ROW; r++){
@@ -148,5 +163,9 @@ public class DBController {
                 }
             }
         }
+    }
+
+    public Seat[][] getSeats() {
+        return seats;
     }
 }

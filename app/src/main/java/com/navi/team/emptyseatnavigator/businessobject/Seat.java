@@ -1,5 +1,6 @@
 package com.navi.team.emptyseatnavigator.businessobject;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import com.navi.team.emptyseatnavigator.activities.SeatActivity;
@@ -62,6 +63,12 @@ public class Seat implements Serializable {
 
     public int[] getColor() {
         return color;
+    }
+
+
+    public String rgbToHex(int r, int g, int b){
+        String hexColor = String.format( "%02x%02x%02x", r, g, b );
+        return hexColor;
     }
 
     public int getR() {

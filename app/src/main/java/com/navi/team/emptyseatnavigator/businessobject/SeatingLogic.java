@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Contains one public static method, called, creatively, SeatingAlgorithm.
  * Also contains a private method that generates a set of seats to test the algorithm with.
  */
-public class SeatingLogic {
+public class SeatingLogic implements Constants{
     /**
      * Takes a number of seats from 1-4 inclusive and a string, returns a two-dimensional array of seats.
      * Each 'row' of Seats represents a set of seats returned by the algorithm.
@@ -24,7 +24,25 @@ public class SeatingLogic {
         Seat [][] returnval = new Seat [1][1];
 
         //This will be replaced with a call to AvailableSeats.
-        Seat[][] seats = GenerateFakeData();
+//        Seat[][] seats = GenerateFakeData();
+        Seat[][] source = DBController.getController().getSeats();
+
+        //Created it manually, because using the DBController source causes it to make a reference to the array
+        Seat[][] seats = new Seat[MAX_ROW][MAX_COLUMN];
+        Seat temp;
+        for (int r = 0; r < MAX_ROW; r++) {
+            for (int c = 0; c < MAX_COLUMN; c++) {
+                if(source[r][c].isAvailable()){
+                    temp = new Seat(r,c,true);
+                    seats[r][c] = temp;
+                }
+                else{
+                    temp = new Seat(r,c,false);
+                    seats[r][c] = temp;
+                }
+            }
+        }
+
 
         //if seat_number = 1, then there's one configuration: first empty seat.
         //if it's 2, we'll use three configs: horizontal adjacent, vertical adjacent, and first empty seats.
@@ -48,7 +66,7 @@ public class SeatingLogic {
         }
 
         //Seat preference dictates what direction iteration loops go in.
-        if (preference.equals("front") | preference.equals("none")){
+        if (preference.equals("Front") | preference.equals("None")){
             //How many seats the user's looking for dictates how many configurations we look for, and what exactly each is.
             switch(seat_number){
                 case 1:
@@ -209,7 +227,7 @@ public class SeatingLogic {
 
 
         }
-        else if (preference.equals("back")){
+        else if (preference.equals("Back")){
             switch(seat_number){
                 case 1:
                     for(int i=seats.length-1;i>=0;i--){
@@ -366,7 +384,7 @@ public class SeatingLogic {
                     break;
             }
         }
-        else if (preference.equals("middle")){
+        else if (preference.equals("Middle")){
             //Here we run front-first loops from the middle, back-first loops from the middle, then reconcile them.
             int middle_row= (int) Math.floor(seats.length/2);
             switch(seat_number){

@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/dialogText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/large_text"
-        android:layout_margin="@dimen/margin"/>
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin"
+        android:padding="@dimen/dialog_padding"/>
 
     <Button
         android:id="@+id/dialogButtonOK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" OK "
-        android:layout_below="@+id/dialogText"
         android:layout_margin="@dimen/margin"
-        style="@style/Theme.AppCompat.Light.Dialog"
+        style="@style/Button"
+        android:layout_gravity="center"
         />
 
-</RelativeLayout>
+</LinearLayout>

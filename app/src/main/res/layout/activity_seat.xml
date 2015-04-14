@@ -95,11 +95,19 @@
 
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/btn_width"
                 android:layout_height="wrap_content"
                 android:text="@string/submit_size"
                 android:id="@+id/buttonSubmit"
                 android:layout_gravity="center_horizontal" />
+
+            <!--<Button-->
+                <!--android:layout_width="@dimen/btn_width"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="@dimen/margin"-->
+                <!--android:text="@string/button_lucky"-->
+                <!--android:id="@+id/buttonLucky"-->
+                <!--android:layout_gravity="center_horizontal" />-->
 
             </LinearLayout>
 
@@ -139,7 +147,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/theater_front"
                                 android:id="@+id/textFront"
                                 android:layout_gravity="bottom" />
 
@@ -191,33 +198,28 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/buttonLeft"
                             android:text="@string/left"
-                            android:layout_gravity="left"/>
+                            android:layout_gravity="left"
+                            android:layout_margin="@dimen/margin"/>
 
-                        <TextView
+                        <Button
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/available_seats"
-                            android:id="@+id/tvCurrentSeatFormation"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="@dimen/large_margin"
-                            android:layout_marginRight="@dimen/large_margin"/>
+                            android:text="@string/reserve_seats"
+                            android:id="@+id/buttonReserve"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/margin"/>
 
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/buttonRight"
                             android:text="@string/right"
-                            android:layout_gravity="right"/>
+                            android:layout_gravity="right"
+                            android:layout_margin="@dimen/margin"/>
 
                         </LinearLayout>
 
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/reserve_seats"
-                        android:id="@+id/buttonReserve"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="@dimen/margin"/>
+
                 </LinearLayout>
 
             </LinearLayout>

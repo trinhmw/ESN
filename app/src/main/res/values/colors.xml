@@ -1,48 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color0">#F70061</color>
-    <color name="color1">#91A9FC</color>
-    <color name="color2">#EDA74F</color>
-    <color name="color3">#38BFF0</color>
+    <!--Color Rotation-->
+    <color name="color0">#FF0000</color>
+    <color name="color1">#ff00d2</color>
+    <color name="color2">#ff4000</color>
+    <color name="color3">#0000FF</color>
+    <color name="color4">#91A9FC</color>
 
-    <color name="empty">#00ff20</color>
-    <color name="not_empty">#007eff</color>
-
+    <!--General UI Colors-->
     <color name="primary">#ffffff</color>
-    <color name="secondary">#ffffff</color>
+    <color name="secondary">#ccfffa</color>
     <color name="tertiary">#ffffff</color>
 
     <color name="line">#ffffff</color>
 
-    <color name="btn_focus">#004380</color>
-    <color name="btn_focus_stroke">#91d9ff</color>
 
-    <color name="btn_start">#11429b</color>
-    <color name="btn_end">#052161</color>
-    <color name="btn_stroke">#72bcff</color>
+    <!--Button-->
+    <color name="btn_font">#003631</color>
+    <color name="btn_font_focus">#ccfffa</color>
+    <color name="btn_font_press">#ccfffa</color>
 
-    <color name="btn_press">#470022</color>
-    <color name="btn_press_stroke">#ff3399</color>
+    <color name="btn_focus_start">#005f56</color>
+    <color name="btn_focus_end">#009889</color>
+    <color name="btn_focus_stroke">#00342f</color>
 
-    <color name="seat_avail_start">#00ee1f</color>
-    <color name="seat_avail_end">#006a0d</color>
-    <color name="seat_avail_stroke">#001a03</color>
+    <color name="btn_start">#87cec7</color>
+    <color name="btn_end">#ccfffa</color>
+    <color name="btn_stroke">#003631</color>
 
-    <color name="seat_unavail_start">#e7e7e7</color>
-    <color name="seat_unavail_end">#616261</color>
+    <!--<color name="btn_start">#ffffff</color>-->
+    <!--<color name="btn_end">#ffffff</color>-->
+    <!--<color name="btn_stroke">#003631</color>-->
+
+    <color name="btn_press_start">#222222</color>
+    <color name="btn_press_end">#222222</color>
+    <color name="btn_press_stroke">#000000</color>
+
+    <color name="seat_avail_start">#008d00</color>
+    <color name="seat_avail_end">#00c800</color>
+    <color name="seat_avail_stroke">#003e00</color>
+
+    <color name="seat_unavail_start">#adadad</color>
+    <color name="seat_unavail_end">#e7e7e7</color>
     <color name="seat_unavail_stroke">#1a1a1a</color>
 
-    <color name="seat_select_start">#0033ef</color>
-    <color name="seat_select_end">#00146a</color>
-    <color name="seat_select_stroke">#000932</color>
+    <color name="seat_select_start">#004097</color>
+    <color name="seat_select_end">#005ddd</color>
+    <color name="seat_select_stroke">#00204c</color>
 
+    <color name="bkg_start">#000000</color>
+    <color name="bkg_end">#001536</color>
 
-    <color name="bkg_start">#206cc4</color>
-    <color name="bkg_end">#618ec3</color>
-
-    <color name="screen_start">#000000</color>
-    <color name="screen_end">#1a1a1a</color>
-    <color name="screen_stroke">#000000</color>
-    <!--<color-->
-        <!--name="color_name">hex_color</color>-->
+    <!--Theater Screen-->
+    <color name="screen_start">#1a1a1a</color>
+    <color name="screen_end">#6a6a6a</color>
+    <color name="screen_stroke">#ffffff</color>
 </resources>

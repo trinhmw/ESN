@@ -15,7 +15,7 @@
     <gradient
     android:startColor="@color/btn_start"
     android:endColor="@color/btn_end"
-    android:angle="270"
+    android:angle="@integer/btn_angle"
     />
     <!--<solid-->
         <!--android:color="@color/btn" />-->

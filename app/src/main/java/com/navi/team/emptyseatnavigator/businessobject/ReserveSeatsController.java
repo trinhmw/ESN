@@ -7,9 +7,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.CountDownTimer;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Melissa on 2/10/2015.
@@ -17,12 +19,13 @@ import java.util.ArrayList;
 public class ReserveSeatsController{
     private static ReserveSeatsController instance;
     private int[] color;
-    private int[] possibleColors = {R.color.color0, R.color.color1, R.color.color2, R.color.color3};
+    private int[] possibleColors = {R.color.color0, R.color.color1, R.color.color2, R.color.color3, R.color.color4};
     private int colorIndex;
     private Seat[] formation;
     private static final String TAG = "ReserveSeatsController";
     private Resources res;
-    private DBController dbController;
+    private CountDownTimer cdt;
+    private long timeout = TimeUnit.SECONDS.toMillis(5);
 
     public static ReserveSeatsController getInstance(Context context){
         if(instance == null){
@@ -41,29 +44,43 @@ public class ReserveSeatsController{
      * @param formation
      * @return
      */
-    public int[] reserveSeats(Seat[] formation, SeatActivity activity){
-        boolean isValid = true;
+    public int[] reserveSeats(Seat[] formation, final SeatActivity activity){
         setColor(0,0,0);
-        ArrayList<int[][]> seats;
-        boolean reserved = false;
+        DBController dbc = DBController.getController();
 
-        if(setFormation(formation) == false){
-            isValid = false;
-        }
-
-        if(isValid == true) {
-
-
-//        Call isReserved= MapModule.reserveseat() or something like that here
-//            If reserve successful then
-
-            reserved = DBController.getController().reserveSeats(formation, activity);
-
+        if(setFormation(formation)){
+            for(Seat seat : formation){
+                seat.setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
+                seat.setAvailable(false);
+            }
 //            If reservation successful, pass the next possible color
-            if(reserved) {
+            if(dbc.reserveSeats(formation, activity)) {
                 setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
                 colorIndexAdjust();
+
+                for(final Seat seat : formation) {
+                    cdt = new CountDownTimer(timeout, TimeUnit.SECONDS.toMillis(1)) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            //commented out check due to it not working after first cdt
+//                            if (!(seat.getR() == 0) && (seat.getG() == 0) && (seat.getB() == 0)) {
+                                Seat newSeat = new Seat(seat.getRow(), seat.getCol(), true);
+                                DBController.getController().updateSeat(newSeat);
+                                activity.sendMessage(newSeat);
+                                activity.seatUpdateRefresh();
+//                            }
+                        }
+                    };
+                    cdt.start();
+                }
+
             }
+
         }
         return color;
     }
@@ -146,6 +163,22 @@ public class ReserveSeatsController{
             isSet = true;
         }
         return isSet;
+    }
+
+    public int[] getPossibleColors() {
+        return possibleColors;
+    }
+
+    public int[] getCurrentPossibleColors() {
+        return hexToRGB(res.getColor(possibleColors[colorIndex]));
+    }
+
+    public int getCurrentPossibleColors2() {
+        return res.getColor(possibleColors[colorIndex]);
+    }
+
+    private void setPossibleColors(int[] possibleColors) {
+        this.possibleColors = possibleColors;
     }
 }
 

@@ -12,12 +12,12 @@
         android:color="@color/btn_stroke"
         android:width= "@dimen/btn_stroke" />
 
-    <!--<gradient-->
-        <!--android:startColor="@color/seat_unavail_start"-->
-        <!--android:endColor="@color/seat_unavail_end"-->
-        <!--android:angle="270"-->
-        <!--/>-->
-    <solid
-        android:color="@color/seat_unavail_start"
+    <gradient
+        android:startColor="@color/seat_unavail_start"
+        android:endColor="@color/seat_unavail_end"
+        android:angle="270"
         />
+    <!--<solid-->
+        <!--android:color="@color/seat_unavail_start"-->
+        <!--/>-->
 </shape>

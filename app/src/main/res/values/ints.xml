@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="btn_angle">270</integer>
+    <integer name="seat_angle">270</integer>
+</resources>

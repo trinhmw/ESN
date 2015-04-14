@@ -13,8 +13,8 @@
         android:width="@dimen/btn_stroke" />
 
     <gradient
-    android:startColor="@color/seat_unavail_start"
-    android:endColor="@color/seat_unavail_end"
+    android:startColor="@color/btn_focus_start"
+    android:endColor="@color/btn_focus_end"
     android:angle="90"
     />
 
