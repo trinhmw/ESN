@@ -1,5 +1,6 @@
 package com.navi.team.emptyseatnavigator.activities;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -25,6 +26,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,7 +53,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 
-public class SeatActivity extends ActionBarActivity implements Constants{
+public class SeatActivity extends Activity implements Constants{
 
     private final static String TAG = SeatActivity.class.getSimpleName();
 
@@ -84,11 +87,17 @@ public class SeatActivity extends ActionBarActivity implements Constants{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowHomeEnabled(true);
-            actionBar.setIcon(R.drawable.ic_launcher);
-        }
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null) {
+//            actionBar.setDisplayShowHomeEnabled(true);
+//            actionBar.setIcon(R.drawable.ic_launcher);
+//        }
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         seatActivity = this;
         // Group size picker
         final NumberPicker pickerGroupSize = (NumberPicker) findViewById(R.id.pickerGroupSize);
@@ -601,15 +610,26 @@ public class SeatActivity extends ActionBarActivity implements Constants{
                 if (touchSelection.contains(imageSeat.getSeat())) {
                     touchSelection.remove(imageSeat.getSeat());
                     imageSeat.setImageDrawable(getResources().getDrawable(R.drawable.available_seat));
-                    if(touchSelection.size()<1) {
-//                        reserveButton.setEnabled(false);
-                    }
+
                 } else {
                     touchSelection.add(imageSeat.getSeat());
                     imageSeat.setImageDrawable(getResources().getDrawable(R.drawable.select_seat));
                     imageSeat.setImageDrawable(d);
+                }
+            } else if(touchSelection.size() == 1){
+                if (touchSelection.contains(imageSeat.getSeat())) {
+                    touchSelection.remove(imageSeat.getSeat());
+                    imageSeat.setImageDrawable(getResources().getDrawable(R.drawable.available_seat));
+
+                } else {
+                    touchSelection.clear();
+                    touchSelection.add(imageSeat.getSeat());
+                    imageSeat.setImageDrawable(getResources().getDrawable(R.drawable.select_seat));
+                    imageSeat.setImageDrawable(d);
+                    seatUpdateRefresh();
 //                    reserveButton.setEnabled(true);
                 }
+
             } else {
                 if (touchSelection.contains(imageSeat.getSeat())) {
                     touchSelection.remove(imageSeat.getSeat());
