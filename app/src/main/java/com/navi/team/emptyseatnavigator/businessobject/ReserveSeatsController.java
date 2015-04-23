@@ -75,10 +75,10 @@ public class ReserveSeatsController{
                                 newSeat.setReserved(false);
                                 DBController.getController().updateSeat(newSeat);
                                 activity.sendMessage(newSeat);
-                                activity.seatUpdateRefresh();
+//                                activity.seatUpdateRefresh();
                             } else{
                                 seat.setReserved(false);
-                                activity.seatUpdateRefresh();
+//                                activity.seatUpdateRefresh();
                             }
                         }
                     };

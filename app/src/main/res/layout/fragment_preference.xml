@@ -1,0 +1,103 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.navi.team.emptyseatnavigator.activities.PreferenceFragment"
+    android:background="@drawable/bkg">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutGeneral"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/layoutForm"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/group_size"
+                android:id="@+id/tvGroupSize"
+                android:layout_gravity="center_horizontal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+            <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pickerGroupSize"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/line_seperator"
+            android:layout_height="fill_parent"
+            android:background="@color/line"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/layoutForm2"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/seat_preference"
+                android:id="@+id/tvSeatPreferences"
+                android:layout_gravity="center_horizontal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:id="@+id/seatPreferences">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pref_front"
+                    android:textColor="@color/line"
+                    android:id="@+id/prefFront"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pref_middle"
+                    android:textColor="@color/line"
+                    android:id="@+id/prefMiddle"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pref_back"
+                    android:textColor="@color/line"
+                    android:id="@+id/prefBack"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pref_none"
+                    android:textColor="@color/line"
+                    android:id="@+id/prefNone"/>
+            </RadioGroup>
+
+            <Button
+                android:layout_width="@dimen/btn_width"
+                android:layout_height="wrap_content"
+                android:text="@string/submit_size"
+                android:id="@+id/buttonSubmit"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

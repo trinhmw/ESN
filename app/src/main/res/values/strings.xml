@@ -20,4 +20,7 @@
     <string name="right">&gt;</string>
     <string name="available_seats">Available Seats</string>
     <string name="button_lucky">I\'m Feeling Unlucky!</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
