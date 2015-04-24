@@ -30,20 +30,7 @@ import com.navi.team.emptyseatnavigator.businessobject.SeatImageView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SeatDisplayFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SeatDisplayFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SeatDisplayFragment extends Fragment implements Constants{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private int[] reserveColor;
     private int[][] availableSeats = new int[MAX_ROW][MAX_COLUMN];
     private Seat[][] seatFormation;
@@ -59,29 +46,8 @@ public class SeatDisplayFragment extends Fragment implements Constants{
     private final int width = 70;
     private final int seatMargin = 5;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SeatDisplayFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SeatDisplayFragment newInstance(String param1, String param2) {
-        SeatDisplayFragment fragment = new SeatDisplayFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public SeatDisplayFragment() {
         // Required empty public constructor
@@ -90,16 +56,22 @@ public class SeatDisplayFragment extends Fragment implements Constants{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_seat_display, container, false);
+
+        seatActivity = (SeatActivity) getActivity();
+
+        Bundle bundle = this.getArguments();
+        if(bundle != null){
+            availableSeats = (int[][])bundle.getSerializable("availableSeats");
+            selectedFormationIndex = bundle.getInt("selectedFormationIndex");
+            groupSize = bundle.getInt("groupSize");
+            seatFormation = (Seat[][])bundle.getSerializable("seatFormation");
+        }
 
         // Rotate Formation Left Button
         final Button leftButton = (Button) view.findViewById(R.id.buttonLeft);
@@ -121,7 +93,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                 }
             }
         });
-        leftButton.setEnabled(false);
 
         // Rotate Formation Right Button
         final Button rightButton = (Button) view.findViewById(R.id.buttonRight);
@@ -143,16 +114,14 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                 }
             }
         });
-        rightButton.setEnabled(false);
 
         // Make Reservation Button
         final Button reserveButton = (Button) view.findViewById(R.id.buttonReserve);
         reserveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    ReserveSeatsController rsc = ReserveSeatsController.getInstance(activity.getApplicationContext());
+                if (seatActivity != null) {
+                    ReserveSeatsController rsc = ReserveSeatsController.getInstance(seatActivity.getApplicationContext());
                     if ((seatFormation != null) || (touchSelection != null)) {
                         if (touchSelection != null) {
                             selectedFormation = touchSelection.toArray(new Seat[touchSelection.size()]);
@@ -160,7 +129,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                             selectedFormation = seatFormation[selectedFormationIndex];
                             selectedFormation = stripUnavailableFromFormation(seatFormation[selectedFormationIndex]);
                         }
-//                        if (pickerGroupSize.getValue() == selectedFormation.length) {
                         if (groupSize == selectedFormation.length) {
                             reserveColor = rsc.reserveSeats(selectedFormation, seatActivity);
 
@@ -172,6 +140,7 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                                 //Tell the user that their seats could not be reserved and refresh display back to available seats
                                 errorRefreshDialog("Your seats have been taken, please try again.", view);
                             }
+                            mListener.onMakeReservation();
                         } else {
                             errorDialog("Please select the same amount of seats as your group size.");
                         }
@@ -181,11 +150,23 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                 }
             }
         });
-        reserveButton.setEnabled(false);
 
-        availableSeats = DBController.getController().getAvailableSeatsInt();
-
-        tempLinLayout = displaySeats(availableSeats, view);
+        if(seatFormation != null){
+            displayFormation(seatFormation, selectedFormationIndex,view);
+            reserveButton.setEnabled(true);
+            if(seatFormation.length <= 1){
+                leftButton.setEnabled(false);
+                rightButton.setEnabled(false);
+            } else {
+                leftButton.setEnabled(true);
+                rightButton.setEnabled(true);
+            }
+        } else {
+            tempLinLayout = displaySeats(availableSeats, view);
+            reserveButton.setEnabled(false);
+            leftButton.setEnabled(false);
+            rightButton.setEnabled(false);
+        }
         return view;
     }
 
@@ -410,8 +391,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             Drawable d = getResources().getDrawable(R.drawable.unavailable_seat);
             ReserveSeatsController rsv = ReserveSeatsController.getInstance(activity.getApplicationContext());
             d.setColorFilter(rsv.getCurrentPossibleColors2(), PorterDuff.Mode.MULTIPLY);
-            NumberPicker pickerGroupSize = (NumberPicker) view.findViewById(R.id.pickerGroupSize);
-            int groupSize = pickerGroupSize.getValue();
             Button reserveButton = (Button) view.findViewById(R.id.buttonReserve);
 
             if (imageSeat.isAvailable() && !imageSeat.isReserved()) {
@@ -443,17 +422,12 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                         imageSeat.setImageDrawable(getResources().getDrawable(R.drawable.select_seat));
                         imageSeat.setImageDrawable(d);
                         seatUpdateRefresh(view);
-//                    reserveButton.setEnabled(true);
                     }
 
                 } else {
                     if (touchSelection.contains(imageSeat.getSeat())) {
                         touchSelection.remove(imageSeat.getSeat());
                         imageSeat.setImageDrawable(getResources().getDrawable(R.drawable.available_seat));
-//                    if(touchSelection.size()<1) {
-//                        reserveButton.setEnabled(false);
-//                    }
-
                     }
                 }
                 if (touchSelection.size() != groupSize) {
@@ -487,10 +461,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                     if (seatFormation == null) {
                         imageSelection(imageSeat, view);
                     } else { //if a formation is already selected
-                        if (touchSelection == null) {
-//                        touchSelection = new ArrayList<Seat>(Arrays.asList(seatFormation[selectedFormationIndex]));
-//                        touchSelection = new ArrayList<Seat>(Arrays.asList(stripUnavailableFromFormation(seatFormation[selectedFormationIndex])));
-                        }
                         imageSelection(imageSeat, view);
                     }
                 }

@@ -25,7 +25,7 @@ public class ReserveSeatsController{
     private static final String TAG = "ReserveSeatsController";
     private Resources res;
     private CountDownTimer cdt;
-    private long timeout = TimeUnit.SECONDS.toMillis(5);
+    private long timeout = TimeUnit.SECONDS.toMillis(20);
 
     public static ReserveSeatsController getInstance(Context context){
         if(instance == null){

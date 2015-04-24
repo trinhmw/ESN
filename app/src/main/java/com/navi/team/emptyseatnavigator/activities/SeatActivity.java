@@ -69,6 +69,7 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
     private LinearLayout[] tempLinLayout;
     private final String ERROR_TITLE = "Hey Listen!";
     private SeatActivity seatActivity;
+    private int groupSize;
 
     // USB Communications Variables & Constants
     private PendingIntent mPermissionIntent;
@@ -81,6 +82,11 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
     private FileOutputStream mOutputStream;
     private static final byte CMD_LED = 0x0;
     private static final byte CMD_SWITCH = 0x1;
+    private FragmentManager fm = null;
+    private FragmentTransaction ft = null;
+    private PreferenceFragment preferenceFragment;
+    private SeatDisplayFragment seatDisplayFragment;
+    private int container;
 
 
 
@@ -90,6 +96,8 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         setContentView(R.layout.activity_seat);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         seatActivity = this;
+        availableSeats = DBController.getController().getAvailableSeatsInt();
+        container = R.id.fragment_container;
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -100,12 +108,10 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
             }
 
             PreferenceFragment preferenceFragment = new PreferenceFragment();
-            preferenceFragment.setArguments(getIntent().getExtras());
-
+            Bundle prefBundle = new Bundle();
+            prefBundle.putSerializable("availableSeats", availableSeats);
+            preferenceFragment.setArguments(prefBundle);
             ft.add(R.id.fragment_container, preferenceFragment).commit();
-//            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, preferenceFragment).commit();
-
-
         }
 
 
@@ -257,6 +263,7 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
                             @Override
                             public void run() {
                                 DBController.getController().updateSeat(cmdSeat);
+                                availableSeats = DBController.getController().getAvailableSeatsInt();
 //                                seatUpdateRefresh();
                             }
                         });
@@ -436,13 +443,50 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         this.selectedFormationIndex = selectedFormationIndex;
     }
 
-    @Override
-    public void onSubmit() {
+    public void swapToSeatDisplayFragment(){
+        availableSeats = DBController.getController().getAvailableSeatsInt();
+        fm = getFragmentManager();
+        ft = fm.beginTransaction();
+        seatDisplayFragment = new SeatDisplayFragment();
+        Bundle seatDisplayBundle = new Bundle();
+        seatDisplayBundle.putSerializable("availableSeats",availableSeats);
+        seatDisplayBundle.putInt("selectedFormationIndex",selectedFormationIndex);
+        seatDisplayBundle.putInt("groupSize", groupSize);
+        seatDisplayBundle.putSerializable("seatFormation", seatFormation);
+        seatDisplayFragment.setArguments(seatDisplayBundle);
+        ft.replace(R.id.fragment_container, seatDisplayFragment);
+        ft.addToBackStack("Submitted seat preferences.");
+        ft.commit();
+
+    }
+
+    public void swapToPreferenceFragment(){
+        availableSeats = DBController.getController().getAvailableSeatsInt();
+        fm = getFragmentManager();
+        ft = fm.beginTransaction();
+        PreferenceFragment preferenceFragment = new PreferenceFragment();
+        Bundle prefBundle = new Bundle();
+        prefBundle.putSerializable("availableSeats", availableSeats);
+        preferenceFragment.setArguments(prefBundle);
+        ft.replace(R.id.fragment_container, preferenceFragment);
+        ft.addToBackStack("Completed Reservation.");
+        ft.commit();
 
     }
 
     @Override
-    public void onMakeReservation() {
+    public void onSubmit(Seat[][] seatFormation, int groupSize) {
+        this.seatFormation = seatFormation;
+        this.selectedFormationIndex = 0;
+        this.groupSize = groupSize;
 
+        if(seatFormation != null){
+            swapToSeatDisplayFragment();
+        }
+    }
+
+    @Override
+    public void onMakeReservation() {
+        swapToPreferenceFragment();
     }
 }
