@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,10 @@ public class SeatDisplayFragment extends Fragment implements Constants{
     private final int width = 70;
     private final int seatMargin = 5;
 
+    private View view;
+
+
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,7 +66,7 @@ public class SeatDisplayFragment extends Fragment implements Constants{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_seat_display, container, false);
+        view = inflater.inflate(R.layout.fragment_seat_display, container, false);
 
         seatActivity = (SeatActivity) getActivity();
 
@@ -136,11 +141,16 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                                 //Show reservation seat color with a confirmation button
                                 //Clear the display to available seats again
                                 reservedDialog(reserveColor[0], reserveColor[1], reserveColor[2]);
+                                mListener.onMakeReservation();
+
                             } else {
                                 //Tell the user that their seats could not be reserved and refresh display back to available seats
+                                seatFormation = null;
+                                selectedFormation = null;
+                                touchSelection = null;
                                 errorRefreshDialog("Your seats have been taken, please try again.", view);
                             }
-                            mListener.onMakeReservation();
+
                         } else {
                             errorDialog("Please select the same amount of seats as your group size.");
                         }
@@ -206,6 +216,7 @@ public class SeatDisplayFragment extends Fragment implements Constants{
      */
     public interface OnFragmentInteractionListener {
         public void onMakeReservation();
+        public void onFailedReservation();
     }
 
 
@@ -302,7 +313,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             dialogButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    hardRefresh();
                     dialog.dismiss();
                 }
             });
@@ -721,6 +731,9 @@ public class SeatDisplayFragment extends Fragment implements Constants{
         return success;
     }
 
-
-
+    @Nullable
+    @Override
+    public View getView() {
+        return view;
+    }
 }

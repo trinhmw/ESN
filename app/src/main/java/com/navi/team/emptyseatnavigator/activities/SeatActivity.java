@@ -2,6 +2,7 @@ package com.navi.team.emptyseatnavigator.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
@@ -107,11 +108,12 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
                 return;
             }
 
+
             PreferenceFragment preferenceFragment = new PreferenceFragment();
             Bundle prefBundle = new Bundle();
             prefBundle.putSerializable("availableSeats", availableSeats);
             preferenceFragment.setArguments(prefBundle);
-            ft.add(R.id.fragment_container, preferenceFragment).commit();
+            ft.add(R.id.fragment_container, preferenceFragment, "preferenceFragment").commit();
         }
 
 
@@ -264,7 +266,7 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
                             public void run() {
                                 DBController.getController().updateSeat(cmdSeat);
                                 availableSeats = DBController.getController().getAvailableSeatsInt();
-//                                seatUpdateRefresh();
+                                seatUpdateRefresh();
                             }
                         });
 
@@ -454,7 +456,7 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         seatDisplayBundle.putInt("groupSize", groupSize);
         seatDisplayBundle.putSerializable("seatFormation", seatFormation);
         seatDisplayFragment.setArguments(seatDisplayBundle);
-        ft.replace(R.id.fragment_container, seatDisplayFragment);
+        ft.replace(R.id.fragment_container, seatDisplayFragment, "seatDisplayFragment");
         ft.addToBackStack("Submitted seat preferences.");
         ft.commit();
 
@@ -468,7 +470,7 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         Bundle prefBundle = new Bundle();
         prefBundle.putSerializable("availableSeats", availableSeats);
         preferenceFragment.setArguments(prefBundle);
-        ft.replace(R.id.fragment_container, preferenceFragment);
+        ft.replace(R.id.fragment_container, preferenceFragment, "preferenceFragment");
         ft.addToBackStack("Completed Reservation.");
         ft.commit();
 
@@ -488,5 +490,16 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
     @Override
     public void onMakeReservation() {
         swapToPreferenceFragment();
+    }
+
+
+
+    public void seatUpdateRefresh(){
+        fm = getFragmentManager();
+        SeatDisplayFragment fragment = (SeatDisplayFragment) fm.findFragmentByTag("seatDisplayFragment");
+        fragment.seatUpdateRefresh(fragment.getView());
+        ft = fm.beginTransaction();
+
+
     }
 }

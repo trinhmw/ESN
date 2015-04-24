@@ -76,7 +76,7 @@ public class PreferenceFragment extends Fragment implements Constants{
                 if (preference.getText() != null) {
                     calculateNumberOfAvailableSeats();
                     if(pickerGroupSize.getValue() > calculateNumberOfAvailableSeats()){
-                        errorRefreshDialog("There are not enough seats available for your group.");
+                        errorDialog("There are not enough seats available for your group.");
                     }
                     else {
                         seatFormation = null;
