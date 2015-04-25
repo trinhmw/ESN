@@ -83,6 +83,8 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
     private FileOutputStream mOutputStream;
     private static final byte CMD_LED = 0x0;
     private static final byte CMD_SWITCH = 0x1;
+
+    //Fragment Handling Variables
     private FragmentManager fm = null;
     private FragmentTransaction ft = null;
     private PreferenceFragment preferenceFragment;
@@ -113,12 +115,14 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
             Bundle prefBundle = new Bundle();
             prefBundle.putSerializable("availableSeats", availableSeats);
             preferenceFragment.setArguments(prefBundle);
-            ft.add(R.id.fragment_container, preferenceFragment, "preferenceFragment").commit();
+            ft.add(R.id.fragment_container, preferenceFragment, "preferenceFragment")
+                    .addToBackStack("Add Preference Fragment")
+                    .commit();
         }
 
 
 
-            // USB Communications Setup
+        // USB Communications Setup
         mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
         mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
         IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
@@ -310,75 +314,6 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
 
     }
 
-
-
-    /**
-     * Pops a message that the seat has been reserved with a look sound, hard refreshes after tapping okay
-     * @param r red
-     * @param g green
-     * @param b blue
-     */
-    public void reservedDialog(int r, int g, int b) {
-        MediaPlayer mediaPlayer = MediaPlayer.create(SeatActivity.this, R.raw.look);
-
-        final Dialog dialog = new Dialog(SeatActivity.this);
-        dialog.setContentView(R.layout.reserved_dialog);
-        dialog.setTitle("Reservation Successful");
-        ImageView colorImage = (ImageView) dialog.findViewById(R.id.image);
-        colorImage.setBackgroundColor(Color.rgb(r, g, b));
-        TextView textView = (TextView) dialog.findViewById(R.id.reservedText);
-        textView.setText("Your seat has been reserved.\nPlease look for the light with the color displayed.");
-
-        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hardRefresh();
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-        mediaPlayer.setLooping(false);
-        mediaPlayer.setVolume(1, 1);
-        mediaPlayer.start();
-        if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.release();
-        }
-    }
-
-
-
-    /**
-     * Refreshes the current available seats layout and user preferences
-     */
-    public void hardRefresh() {
-        availableSeats = DBController.getController().getAvailableSeatsInt();
-//        tempLinLayout = displaySeats(availableSeats);
-        seatFormation = null;
-        touchSelection = null;
-
-        Button rightButton = (Button) findViewById(R.id.buttonRight);
-        Button leftButton = (Button) findViewById(R.id.buttonLeft);
-        Button reserveButton = (Button) findViewById(R.id.buttonReserve);
-        rightButton.setEnabled(false);
-        leftButton.setEnabled(false);
-        reserveButton.setEnabled(false);
-
-        selectedFormationIndex = 0;
-
-        final RadioGroup seatPreferences = (RadioGroup) findViewById(R.id.seatPreferences);
-        seatPreferences.check(R.id.prefNone);
-
-        final NumberPicker pickerGroupSize = (NumberPicker) findViewById(R.id.pickerGroupSize);
-        pickerGroupSize.setMaxValue(MAX_GROUP_SIZE);
-        pickerGroupSize.setMinValue(1);
-        pickerGroupSize.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        pickerGroupSize.setValue(1);
-
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -445,6 +380,9 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         this.selectedFormationIndex = selectedFormationIndex;
     }
 
+    /**
+     * Swaps the fragment container to use the SeatDisplayFragment
+     */
     public void swapToSeatDisplayFragment(){
         availableSeats = DBController.getController().getAvailableSeatsInt();
         fm = getFragmentManager();
@@ -456,12 +394,35 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         seatDisplayBundle.putInt("groupSize", groupSize);
         seatDisplayBundle.putSerializable("seatFormation", seatFormation);
         seatDisplayFragment.setArguments(seatDisplayBundle);
-        ft.replace(R.id.fragment_container, seatDisplayFragment, "seatDisplayFragment");
-        ft.addToBackStack("Submitted seat preferences.");
-        ft.commit();
+        ft.replace(R.id.fragment_container, seatDisplayFragment, "seatDisplayFragment")
+                .addToBackStack("Submitted seat preferences.")
+                .commit();
 
     }
 
+    /**
+     * Swaps the fragment container to use the Seat Display Fragment without bundling the seat formation.
+     */
+    public void swapToSeatDisplayFragmentEmpty(){
+        availableSeats = DBController.getController().getAvailableSeatsInt();
+        fm = getFragmentManager();
+        ft = fm.beginTransaction();
+        seatDisplayFragment = new SeatDisplayFragment();
+        Bundle seatDisplayBundle = new Bundle();
+        seatDisplayBundle.putSerializable("availableSeats",availableSeats);
+        seatDisplayBundle.putInt("selectedFormationIndex",selectedFormationIndex);
+        seatDisplayBundle.putInt("groupSize", groupSize);
+        seatDisplayBundle.putSerializable("seatFormation", null);
+        seatDisplayFragment.setArguments(seatDisplayBundle);
+        ft.replace(R.id.fragment_container, seatDisplayFragment, "seatDisplayFragment")
+                .addToBackStack("Submitted seat preferences.")
+                .commit();
+
+    }
+
+    /**
+     * Swaps the fragment container to use the Preference Fragment
+     */
     public void swapToPreferenceFragment(){
         availableSeats = DBController.getController().getAvailableSeatsInt();
         fm = getFragmentManager();
@@ -470,9 +431,9 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         Bundle prefBundle = new Bundle();
         prefBundle.putSerializable("availableSeats", availableSeats);
         preferenceFragment.setArguments(prefBundle);
-        ft.replace(R.id.fragment_container, preferenceFragment, "preferenceFragment");
-        ft.addToBackStack("Completed Reservation.");
-        ft.commit();
+        ft.replace(R.id.fragment_container, preferenceFragment, "preferenceFragment")
+                .addToBackStack("Completed Reservation.")
+                .commit();
 
     }
 
@@ -492,14 +453,30 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         swapToPreferenceFragment();
     }
 
+    @Override
+    public void onFailedReservation() {
+        swapToSeatDisplayFragmentEmpty();
+    }
 
 
+    /**
+     * Updates seats in the Seat Display Fragment.
+     */
     public void seatUpdateRefresh(){
         fm = getFragmentManager();
         SeatDisplayFragment fragment = (SeatDisplayFragment) fm.findFragmentByTag("seatDisplayFragment");
         fragment.seatUpdateRefresh(fragment.getView());
-        ft = fm.beginTransaction();
+    }
 
-
+    /**
+     * Goes back to the last fragment?
+     */
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() <= 1) {
+            this.finish();
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 }

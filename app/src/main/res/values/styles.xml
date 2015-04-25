@@ -11,6 +11,7 @@
         <item name="android:textColorTertiary">@color/tertiary</item>
 
         <item name="android:buttonStyle">@style/Button</item>
+        <item name="android:radioButtonStyle">@style/RadioButton</item>
 
     </style>
 
@@ -21,6 +22,10 @@
         <item name="android:textColor">@drawable/selector_button_text</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:padding">@dimen/btn_padding</item>
+    </style>
+
+    <style name="RadioButton" parent="android:Widget.Holo.Light.CompoundButton.RadioButton">
+        <item name="android:buttonTint">@color/btn_font_press</item>
     </style>
 
 

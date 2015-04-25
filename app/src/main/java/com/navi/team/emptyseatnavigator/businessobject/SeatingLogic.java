@@ -178,19 +178,19 @@ public class SeatingLogic implements Constants{
                             if(returnval[1][0]==null){
                                 if((i<(seats.length-1)) && (j<(seats[i].length-2)) && seats[i][j].isAvailable() && !seats[i][j].getReserved()){
                                     if(seats[i][j+1].isAvailable() && seats[i][j+2].isAvailable() && !seats[i][j+1].getReserved() && !seats[i][j+2].getReserved()){
-                                        if(seats[i+1][j].isAvailable()){
+                                        if(seats[i+1][j].isAvailable() && !seats[i+1][j].getReserved()){
                                             returnval[1][0]=seats[i][j];
                                             returnval[1][1]=seats[i][j+1];
                                             returnval[1][2]=seats[i][j+2];
                                             returnval[1][3]=seats[i+1][j];
                                         }
-                                        if(seats[i+1][j+1].isAvailable()){
+                                        if(seats[i+1][j+1].isAvailable() && !seats[i+1][j+1].getReserved()){
                                             returnval[1][0]=seats[i][j];
                                             returnval[1][1]=seats[i][j+1];
                                             returnval[1][2]=seats[i][j+2];
                                             returnval[1][3]=seats[i+1][j+1];
                                         }
-                                        if(seats[i+1][j+2].isAvailable()){
+                                        if(seats[i+1][j+2].isAvailable() && !seats[i+1][j+2].getReserved()){
                                             returnval[1][0]=seats[i][j];
                                             returnval[1][1]=seats[i][j+1];
                                             returnval[1][2]=seats[i][j+2];
@@ -630,7 +630,7 @@ public class SeatingLogic implements Constants{
                             if(returnval[1][0]==null){
                                 if((backi>0) && (j<(seats[i].length-2)) && seats[backi][j].isAvailable() && !seats[backi][j].getReserved()){
                                     if(seats[backi][j+1].isAvailable() && seats[backi][j+2].isAvailable() && !seats[backi][j+1].getReserved() && !seats[backi][j+2].getReserved()){
-                                        if(seats[backi-1][j].isAvailable()){
+                                        if(seats[backi-1][j].isAvailable() && !seats[backi-1][j].getReserved()){
                                             returnval[1][0]=seats[backi][j];
                                             returnval[1][1]=seats[backi][j+1];
                                             returnval[1][2]=seats[backi][j+2];

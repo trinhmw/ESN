@@ -40,7 +40,7 @@ public class ReserveSeatsController{
     }
 
     /**
-     * reserveSeats - Reserves the seats given an array of seats to be reserved.
+     * Reserves the seats given an array of seats to be reserved.
      * @param formation
      * @return
      */
@@ -93,7 +93,7 @@ public class ReserveSeatsController{
 
 
     /**
-     * colorIndexAdjust - Rotates the color reservation colors
+     * Rotates the color reservation colors
      */
     private void colorIndexAdjust(){
         if(colorIndex >= (possibleColors.length - 1)){

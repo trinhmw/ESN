@@ -2,15 +2,15 @@ package com.navi.team.emptyseatnavigator.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -18,28 +18,18 @@ import android.widget.TextView;
 
 import com.navi.team.emptyseatnavigator.R;
 import com.navi.team.emptyseatnavigator.businessobject.Constants;
-import com.navi.team.emptyseatnavigator.businessobject.DBController;
 import com.navi.team.emptyseatnavigator.businessobject.InputController;
 import com.navi.team.emptyseatnavigator.businessobject.Seat;
 
-import java.util.ArrayList;
 
 public class PreferenceFragment extends Fragment implements Constants{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private int[][] availableSeats = new int[MAX_ROW][MAX_COLUMN];
     private Seat[][] seatFormation;
-    private int selectedFormationIndex = 0;
     private final String ERROR_TITLE = "Hey Listen!";
-    private int groupSize = 0;
 
     private OnFragmentInteractionListener mListener;
 
     public PreferenceFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -50,12 +40,17 @@ public class PreferenceFragment extends Fragment implements Constants{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
+
         Bundle bundle = this.getArguments();
         if(bundle != null){
             availableSeats = (int[][])bundle.getSerializable("availableSeats");
         }
+
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        final View view = localInflater.inflate(R.layout.fragment_preference, container, false);
+
         // Group size picker
-        final View view = inflater.inflate(R.layout.fragment_preference, container, false);
         final NumberPicker pickerGroupSize = (NumberPicker) view.findViewById(R.id.pickerGroupSize);
         pickerGroupSize.setMaxValue(MAX_GROUP_SIZE);
         pickerGroupSize.setMinValue(1);
@@ -82,7 +77,6 @@ public class PreferenceFragment extends Fragment implements Constants{
                         seatFormation = null;
                         seatFormation = InputController.validateInput(pickerGroupSize.getValue(), preference.getText().toString(), MAX_GROUP_SIZE);
                         if (seatFormation != null) {
-                            selectedFormationIndex = 0;
                             mListener.onSubmit(seatFormation, pickerGroupSize.getValue());
                         } else {
                             errorDialog("No seat formations available.");

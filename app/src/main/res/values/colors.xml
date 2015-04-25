@@ -28,10 +28,6 @@
     <color name="btn_end">#ccfffa</color>
     <color name="btn_stroke">#003631</color>
 
-    <!--<color name="btn_start">#ffffff</color>-->
-    <!--<color name="btn_end">#ffffff</color>-->
-    <!--<color name="btn_stroke">#003631</color>-->
-
     <color name="btn_press_start">#222222</color>
     <color name="btn_press_end">#222222</color>
     <color name="btn_press_stroke">#000000</color>

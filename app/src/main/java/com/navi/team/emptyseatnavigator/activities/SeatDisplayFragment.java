@@ -2,14 +2,15 @@ package com.navi.team.emptyseatnavigator.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-
 import com.navi.team.emptyseatnavigator.R;
 import com.navi.team.emptyseatnavigator.businessobject.Constants;
 import com.navi.team.emptyseatnavigator.businessobject.DBController;
@@ -49,13 +47,9 @@ public class SeatDisplayFragment extends Fragment implements Constants{
 
     private View view;
 
-
-
-
     private OnFragmentInteractionListener mListener;
 
     public SeatDisplayFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -66,7 +60,9 @@ public class SeatDisplayFragment extends Fragment implements Constants{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_seat_display, container, false);
+        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        view = localInflater.inflate(R.layout.fragment_seat_display, container, false);
 
         seatActivity = (SeatActivity) getActivity();
 
@@ -145,10 +141,8 @@ public class SeatDisplayFragment extends Fragment implements Constants{
 
                             } else {
                                 //Tell the user that their seats could not be reserved and refresh display back to available seats
-                                seatFormation = null;
-                                selectedFormation = null;
-                                touchSelection = null;
                                 errorRefreshDialog("Your seats have been taken, please try again.", view);
+                                mListener.onFailedReservation();
                             }
 
                         } else {
@@ -178,13 +172,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             rightButton.setEnabled(false);
         }
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onMakeReservation();
-        }
     }
 
     @Override
@@ -254,8 +241,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
         }
     }
 
-
-
     /**
      * Pops up an error dialog using the listen sound, soft refreshes after tapping confirm
      * @param message error message
@@ -275,7 +260,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             dialogButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    seatUpdateRefresh(view);
                     dialog.dismiss();
                 }
             });
@@ -326,7 +310,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             }
         }
     }
-
 
     /**
      * Refreshes to update freed up available seats without losing hand selected formations
