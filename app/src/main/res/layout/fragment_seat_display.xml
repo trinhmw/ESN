@@ -72,6 +72,13 @@
                 android:padding="@dimen/margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvGroupSizeInformation"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/margin"/>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

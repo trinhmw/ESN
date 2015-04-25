@@ -41,8 +41,8 @@ public class SeatDisplayFragment extends Fragment implements Constants{
     private SeatActivity seatActivity;
     private int groupSize = 0;
 
-    private final int height = 70;
-    private final int width = 70;
+    private final int height = 75;
+    private final int width = 75;
     private final int seatMargin = 5;
 
     private View view;
@@ -74,6 +74,9 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             seatFormation = (Seat[][])bundle.getSerializable("seatFormation");
         }
 
+        configureSizeTextView(seatFormation[selectedFormationIndex].length, groupSize);
+
+
         // Rotate Formation Left Button
         final Button leftButton = (Button) view.findViewById(R.id.buttonLeft);
         leftButton.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +90,7 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                         touchSelection = null;
                         Button reserveButton = (Button) view.findViewById(R.id.buttonReserve);
                         reserveButton.setEnabled(true);
+                        configureSizeTextView(seatFormation[selectedFormationIndex].length, groupSize);
                     }
                 }
                 else{
@@ -108,6 +112,7 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                         touchSelection = null;
                         Button reserveButton = (Button) view.findViewById(R.id.buttonReserve);
                         reserveButton.setEnabled(true);
+                        configureSizeTextView(seatFormation[selectedFormationIndex].length, groupSize);
                     }
                 }
                 else{
@@ -143,6 +148,7 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                                 //Tell the user that their seats could not be reserved and refresh display back to available seats
                                 errorRefreshDialog("Your seats have been taken, please try again.", view);
                                 mListener.onFailedReservation();
+                                configureSizeTextView(0, groupSize);
                             }
 
                         } else {
@@ -157,6 +163,7 @@ public class SeatDisplayFragment extends Fragment implements Constants{
 
         if(seatFormation != null){
             displayFormation(seatFormation, selectedFormationIndex,view);
+            configureSizeTextView(seatFormation[selectedFormationIndex].length, groupSize);
             reserveButton.setEnabled(true);
             if(seatFormation.length <= 1){
                 leftButton.setEnabled(false);
@@ -166,6 +173,7 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                 rightButton.setEnabled(true);
             }
         } else {
+            configureSizeTextView(0, groupSize);
             tempLinLayout = displaySeats(availableSeats, view);
             reserveButton.setEnabled(false);
             leftButton.setEnabled(false);
@@ -318,12 +326,15 @@ public class SeatDisplayFragment extends Fragment implements Constants{
         availableSeats = DBController.getController().getAvailableSeatsInt();
         if((seatFormation == null) && (touchSelection == null)){
             tempLinLayout = displaySeats(availableSeats, view);
+            configureSizeTextView(0, groupSize);
         } else {
             if(touchSelection != null){
                 tempLinLayout = displaySelection(touchSelection, view);
+                configureSizeTextView(touchSelection.size(), groupSize);
             }
             else if(seatFormation != null) {
                 tempLinLayout = displayFormation(seatFormation, selectedFormationIndex, view);
+                configureSizeTextView(seatFormation[selectedFormationIndex].length, groupSize);
             }
         }
     }
@@ -428,6 +439,7 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                 } else {
                     reserveButton.setEnabled(true);
                 }
+                configureSizeTextView(touchSelection.size(), groupSize);
             }
         }
     }
@@ -719,4 +731,12 @@ public class SeatDisplayFragment extends Fragment implements Constants{
     public View getView() {
         return view;
     }
+
+    private void configureSizeTextView(int selected,int groupSize){
+        String message = "Seats selected: " + selected + " out of " + groupSize + " selected.";
+        TextView sizeTextView = (TextView) view.findViewById(R.id.tvGroupSizeInformation);
+        sizeTextView.setText(message);
+    }
 }
+
+
