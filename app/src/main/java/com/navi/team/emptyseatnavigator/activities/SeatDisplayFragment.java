@@ -136,18 +136,21 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                             selectedFormation = stripUnavailableFromFormation(seatFormation[selectedFormationIndex]);
                         }
                         if (groupSize == selectedFormation.length) {
+//                            errorDialog("Bugs are a feature");
                             reserveColor = rsc.reserveSeats(selectedFormation, seatActivity);
 
+//                            errorDialog("No not really...");
                             if (!(reserveColor[0] == 0 && reserveColor[1] == 0 && reserveColor[2] == 0)) {
                                 //Show reservation seat color with a confirmation button
                                 //Clear the display to available seats again
                                 reservedDialog(reserveColor[0], reserveColor[1], reserveColor[2]);
                                 mListener.onMakeReservation();
-
-                            } else {
-                                //Tell the user that their seats could not be reserved and refresh display back to available seats
+//
+                            }
+                            else {
+//                                //Tell the user that their seats could not be reserved and refresh display back to available seats
                                 errorRefreshDialog("Your seats have been taken, please try again.", view);
-                                mListener.onFailedReservation();
+//                                mListener.onFailedReservation();
                                 configureSizeTextView(0, groupSize);
                             }
 
@@ -229,6 +232,7 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             dialog.setTitle(ERROR_TITLE);
             TextView textView = (TextView) dialog.findViewById(R.id.dialogText);
             textView.setText(message);
+            dialog.setCanceledOnTouchOutside(false);
 
             Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
             dialogButton.setOnClickListener(new View.OnClickListener() {
@@ -263,6 +267,19 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             dialog.setTitle(ERROR_TITLE);
             TextView textView = (TextView) dialog.findViewById(R.id.dialogText);
             textView.setText(message);
+
+            availableSeats = DBController.getController().getAvailableSeatsInt();
+            Button reserveButton = (Button)view.findViewById(R.id.buttonReserve);
+            Button leftButton = (Button) view.findViewById(R.id.buttonLeft);
+            Button rightButton = (Button) view.findViewById(R.id.buttonRight);
+            reserveButton.setEnabled(false);
+            leftButton.setEnabled(false);
+            rightButton.setEnabled(false);
+            configureSizeTextView(0, groupSize);
+            tempLinLayout = displaySeats(availableSeats, view);
+
+            dialog.setCanceledOnTouchOutside(false);
+
 
             Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
             dialogButton.setOnClickListener(new View.OnClickListener() {
@@ -300,6 +317,7 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             colorImage.setBackgroundColor(Color.rgb(r, g, b));
             TextView textView = (TextView) dialog.findViewById(R.id.reservedText);
             textView.setText("Your seat has been reserved.\nPlease look for the light with the color displayed.");
+            dialog.setCanceledOnTouchOutside(false);
 
             Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
             dialogButton.setOnClickListener(new View.OnClickListener() {

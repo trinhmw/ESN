@@ -134,6 +134,7 @@ public class PreferenceFragment extends Fragment implements Constants{
             dialog.setTitle(ERROR_TITLE);
             TextView textView = (TextView) dialog.findViewById(R.id.dialogText);
             textView.setText(message);
+            dialog.setCanceledOnTouchOutside(false);
 
             Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
             dialogButton.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +171,7 @@ public class PreferenceFragment extends Fragment implements Constants{
             dialog.setTitle(ERROR_TITLE);
             TextView textView = (TextView) dialog.findViewById(R.id.dialogText);
             textView.setText(message);
+            dialog.setCanceledOnTouchOutside(false);
 
             Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
             dialogButton.setOnClickListener(new View.OnClickListener() {
