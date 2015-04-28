@@ -25,7 +25,7 @@ public class ReserveSeatsController{
     private static final String TAG = "ReserveSeatsController";
     private Resources res;
     private CountDownTimer cdt;
-    private long timeout = TimeUnit.SECONDS.toMillis(5);
+    private long timeout = TimeUnit.SECONDS.toMillis(20);
 
     public static ReserveSeatsController getInstance(Context context){
         if(instance == null){
@@ -40,7 +40,7 @@ public class ReserveSeatsController{
     }
 
     /**
-     * reserveSeats - Reserves the seats given an array of seats to be reserved.
+     * Reserves the seats given an array of seats to be reserved.
      * @param formation
      * @return
      */
@@ -51,7 +51,8 @@ public class ReserveSeatsController{
         if(setFormation(formation)){
             for(Seat seat : formation){
                 seat.setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
-                seat.setAvailable(false);
+                seat.setReserved(true);
+//                seat.setAvailable(false);
             }
 //            If reservation successful, pass the next possible color
             if(dbc.reserveSeats(formation, activity)) {
@@ -68,12 +69,17 @@ public class ReserveSeatsController{
                         @Override
                         public void onFinish() {
                             //commented out check due to it not working after first cdt
-//                            if (!(seat.getR() == 0) && (seat.getG() == 0) && (seat.getB() == 0)) {
-                                Seat newSeat = new Seat(seat.getRow(), seat.getCol(), true);
+                            if(seat.isAvailable()) {
+                                int[] availColor = {0, 255, 0};
+                                Seat newSeat = new Seat(true, availColor, seat.getRow(), seat.getCol());
+                                newSeat.setReserved(false);
                                 DBController.getController().updateSeat(newSeat);
                                 activity.sendMessage(newSeat);
                                 activity.seatUpdateRefresh();
-//                            }
+                            } else{
+                                seat.setReserved(false);
+                                activity.seatUpdateRefresh();
+                            }
                         }
                     };
                     cdt.start();
@@ -87,7 +93,7 @@ public class ReserveSeatsController{
 
 
     /**
-     * colorIndexAdjust - Rotates the color reservation colors
+     * Rotates the color reservation colors
      */
     private void colorIndexAdjust(){
         if(colorIndex >= (possibleColors.length - 1)){

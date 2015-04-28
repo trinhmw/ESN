@@ -1,10 +1,5 @@
 package com.navi.team.emptyseatnavigator.businessobject;
 
-import android.graphics.Color;
-import android.util.Log;
-
-import com.navi.team.emptyseatnavigator.activities.SeatActivity;
-
 import java.io.Serializable;
 
 /**
@@ -16,20 +11,24 @@ public class Seat implements Serializable {
     private static final String TAG = "SeatObject";
     private int column;
     private int row;
+    private Boolean reserved;
 
 
     public Seat(Boolean isAvailable, int[] color) {
         this.isAvailable = isAvailable;
         this.color = color;
+        this.reserved = false;
 
     }
     public Seat(Boolean isAvailable) {
         setColor(0,0,0);
         this.isAvailable = isAvailable;
+        this.reserved = false;
     }
     public Seat() {
         setColor(0,0,0);
         this.isAvailable = false;
+        this.reserved = false;
     }
 
     public Seat(Boolean isAvailable, int[] color, int row, int column){
@@ -37,6 +36,7 @@ public class Seat implements Serializable {
         this.color = color;
         this.row = row;
         this.column = column;
+        this.reserved = false;
     }
 
     public Seat(int row, int column){
@@ -44,6 +44,7 @@ public class Seat implements Serializable {
         setColor(0,0,0);
         this.row = row;
         this.column = column;
+        this.reserved = false;
     }
 
     public Seat(int row, int column, Boolean isAvailable){
@@ -51,6 +52,15 @@ public class Seat implements Serializable {
         setColor(0,0,0);
         this.row = row;
         this.column = column;
+        this.reserved = false;
+    }
+
+    public Seat(int row, int column, Boolean isAvailable, Boolean reserved){
+        this.isAvailable = isAvailable;
+        setColor(0,0,0);
+        this.row = row;
+        this.column = column;
+        this.reserved = reserved;
     }
 
     public Boolean isAvailable() {
@@ -113,5 +123,13 @@ public class Seat implements Serializable {
 
     public void setRow(int row) {
         this.row = row;
+    }
+
+    public Boolean getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(Boolean reserved) {
+        this.reserved = reserved;
     }
 }
