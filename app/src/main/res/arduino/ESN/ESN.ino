@@ -11,6 +11,7 @@
 
 #define COMMAND_LED 0x0
 #define COMMAND_SWITCH 0x1
+#define COMMAND_REFRESH 0x2
 
 #define INTENSITY 2
 
@@ -117,9 +118,19 @@ void loop() {
         Tlc.set(seats[row][col].red, message[3] * INTENSITY);
         Tlc.set(seats[row][col].green, message[4] * INTENSITY);
         Tlc.set(seats[row][col].blue, message[5] * INTENSITY);
+      } else if (message[0] == COMMAND_REFRESH) {          
+        //Check state of each switch
+        for (int i = 0; i < NUM_ROWS; i++) {
+          for (int j = 0; j < NUM_COLS; j++) {
+            int pin = seats[i][j].pin;
+            int value = digitalRead(pin);
+            delay(25);
+            sendMessage(COMMAND_SWITCH, i, j, value); 
+          }
+        }        
       }
     }
   }
 
   Tlc.update();
-}
+} 
