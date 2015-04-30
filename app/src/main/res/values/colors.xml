@@ -8,25 +8,25 @@
     <color name="color4">#91A9FC</color>
 
     <!--General UI Colors-->
-    <color name="primary">#ffffff</color>
-    <color name="secondary">#ccfffa</color>
-    <color name="tertiary">#ffffff</color>
+    <color name="primary">#000000</color>
+    <color name="secondary">#001028</color>
+    <color name="tertiary">#000000</color>
 
-    <color name="line">#ffffff</color>
+    <color name="line">#001028</color>
 
 
     <!--Button-->
-    <color name="btn_font">#003631</color>
-    <color name="btn_font_focus">#ccfffa</color>
-    <color name="btn_font_press">#ccfffa</color>
+    <color name="btn_font">#001028</color>
+    <color name="btn_font_focus">#001027</color>
+    <color name="btn_font_press">#ffffff</color>
 
-    <color name="btn_focus_start">#005f56</color>
-    <color name="btn_focus_end">#009889</color>
-    <color name="btn_focus_stroke">#00342f</color>
+    <color name="btn_focus_start">#d7d7d7</color>
+    <color name="btn_focus_end">#d7d7d7</color>
+    <color name="btn_focus_stroke">#000000</color>
 
-    <color name="btn_start">#87cec7</color>
-    <color name="btn_end">#ccfffa</color>
-    <color name="btn_stroke">#003631</color>
+    <color name="btn_start">#ffffff</color>
+    <color name="btn_end">#ffffff</color>
+    <color name="btn_stroke">#001028</color>
 
     <color name="btn_press_start">#222222</color>
     <color name="btn_press_end">#222222</color>
@@ -44,11 +44,11 @@
     <color name="seat_select_end">#005ddd</color>
     <color name="seat_select_stroke">#00204c</color>
 
-    <color name="bkg_start">#000000</color>
-    <color name="bkg_end">#001536</color>
+    <color name="bkg_start">#b9f6ff</color>
+    <color name="bkg_end">#ffffff</color>
 
     <!--Theater Screen-->
     <color name="screen_start">#1a1a1a</color>
     <color name="screen_end">#6a6a6a</color>
-    <color name="screen_stroke">#ffffff</color>
+    <color name="screen_stroke">#1a1a1a</color>
 </resources>
