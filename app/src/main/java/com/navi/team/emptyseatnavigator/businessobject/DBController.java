@@ -9,23 +9,12 @@ import java.util.ArrayList;
  */
 public class DBController implements Constants{
     private Seat seats[][];
-    private boolean availability;
     private static int objCount =0;
     private static DBController controller = null;
-    int RESERVED = 384;
-    int ERROR =76;
-
-    class Result {
-        Result previous;
-        Boolean success;
-        int code;
-        Result next;
-    }
 
     private DBController(){
         seats = new Seat[MAX_ROW][MAX_COLUMN];
         seatAllAvailable();
-        availability = true;
     }
 
     public static DBController getController(){

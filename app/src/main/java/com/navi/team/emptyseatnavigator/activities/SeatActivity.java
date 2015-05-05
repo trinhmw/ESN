@@ -222,7 +222,7 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
     }
 
     public void sendMessage(Seat seat) {
-        byte buffer[] = new byte[6];
+        byte buffer[] = new byte[7];
 
         buffer[0] = CMD_LED;
         buffer[1] = (byte) seat.getRow();
@@ -230,6 +230,12 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         buffer[3] = (byte) seat.getR();
         buffer[4] = (byte) seat.getG();
         buffer[5] = (byte) seat.getB();
+        if(seat.getReserved() == false) {
+            buffer[6] = (byte) 0;
+        }
+        else{
+            buffer[6] = (byte) 1;
+        }
 
         if (mOutputStream != null) {
             try {
