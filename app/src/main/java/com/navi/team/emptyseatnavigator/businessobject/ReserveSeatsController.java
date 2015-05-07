@@ -52,7 +52,6 @@ public class ReserveSeatsController{
             for(Seat seat : formation){
                 seat.setColor(hexToRGB(res.getColor(possibleColors[colorIndex])));
                 seat.setReserved(true);
-//                seat.setAvailable(false);
             }
 //            If reservation successful, pass the next possible color
             if(dbc.reserveSeats(formation, activity)) {
