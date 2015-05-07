@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -150,8 +149,8 @@ public class SeatDisplayFragment extends Fragment implements Constants{
                             else {
 //                                //Tell the user that their seats could not be reserved and refresh display back to available seats
                                 errorRefreshDialog("Your seats have been taken, please try again.", view);
-//                                mListener.onFailedReservation();
-                                configureSizeTextView(0, groupSize);
+                                mListener.onMakeReservation();
+//                                configureSizeTextView(0, groupSize);
                             }
 
                         } else {
@@ -214,7 +213,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
      */
     public interface OnFragmentInteractionListener {
         public void onMakeReservation();
-        public void onFailedReservation();
     }
 
 
@@ -225,8 +223,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
     public void errorDialog(String message) {
         Activity activity = getActivity();
         if (activity != null) {
-            MediaPlayer mediaPlayer = MediaPlayer.create(activity, R.raw.listen);
-
             final Dialog dialog = new Dialog(activity);
             dialog.setContentView(R.layout.confirm_dialog);
             dialog.setTitle(ERROR_TITLE);
@@ -243,13 +239,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             });
 
             dialog.show();
-            mediaPlayer.setLooping(false);
-            mediaPlayer.setVolume(1, 1);
-            mediaPlayer.start();
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.release();
-            }
-
         }
     }
 
@@ -260,8 +249,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
     public void errorRefreshDialog(String message, View view) {
         Activity activity = getActivity();
         if (activity != null) {
-            MediaPlayer mediaPlayer = MediaPlayer.create(activity, R.raw.listen);
-
             final Dialog dialog = new Dialog(activity);
             dialog.setContentView(R.layout.confirm_dialog);
             dialog.setTitle(ERROR_TITLE);
@@ -290,12 +277,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             });
 
             dialog.show();
-            mediaPlayer.setLooping(false);
-            mediaPlayer.setVolume(1, 1);
-            mediaPlayer.start();
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.release();
-            }
         }
     }
 
@@ -308,8 +289,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
     public void reservedDialog(int r, int g, int b) {
         Activity activity = getActivity();
         if (activity != null) {
-            MediaPlayer mediaPlayer = MediaPlayer.create(activity, R.raw.look);
-
             final Dialog dialog = new Dialog(activity);
             dialog.setContentView(R.layout.reserved_dialog);
             dialog.setTitle("Reservation Successful");
@@ -328,12 +307,6 @@ public class SeatDisplayFragment extends Fragment implements Constants{
             });
 
             dialog.show();
-            mediaPlayer.setLooping(false);
-            mediaPlayer.setVolume(1, 1);
-            mediaPlayer.start();
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.release();
-            }
         }
     }
 

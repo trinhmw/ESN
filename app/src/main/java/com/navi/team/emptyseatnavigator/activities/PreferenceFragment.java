@@ -3,7 +3,6 @@ package com.navi.team.emptyseatnavigator.activities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.ContextThemeWrapper;
@@ -127,8 +126,6 @@ public class PreferenceFragment extends Fragment implements Constants{
     public void errorDialog(String message) {
         Activity activity = getActivity();
         if (activity != null) {
-            MediaPlayer mediaPlayer = MediaPlayer.create(activity, R.raw.listen);
-
             final Dialog dialog = new Dialog(activity);
             dialog.setContentView(R.layout.confirm_dialog);
             dialog.setTitle(ERROR_TITLE);
@@ -145,13 +142,6 @@ public class PreferenceFragment extends Fragment implements Constants{
             });
 
             dialog.show();
-            mediaPlayer.setLooping(false);
-            mediaPlayer.setVolume(1, 1);
-            mediaPlayer.start();
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.release();
-            }
-
         }
     }
 
@@ -164,8 +154,6 @@ public class PreferenceFragment extends Fragment implements Constants{
     public void errorRefreshDialog(String message) {
         Activity activity = getActivity();
         if (activity != null) {
-            MediaPlayer mediaPlayer = MediaPlayer.create(activity, R.raw.listen);
-
             final Dialog dialog = new Dialog(activity);
             dialog.setContentView(R.layout.confirm_dialog);
             dialog.setTitle(ERROR_TITLE);
@@ -183,12 +171,6 @@ public class PreferenceFragment extends Fragment implements Constants{
             });
 
             dialog.show();
-            mediaPlayer.setLooping(false);
-            mediaPlayer.setVolume(1, 1);
-            mediaPlayer.start();
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.release();
-            }
         }
     }
 

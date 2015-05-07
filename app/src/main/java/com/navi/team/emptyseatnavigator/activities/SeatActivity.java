@@ -276,6 +276,20 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
                             public void run() {
                                 DBController.getController().updateSeat(cmdSeat);
                                 availableSeats = DBController.getController().getAvailableSeatsInt();
+                                if(availableSeats[0][0] == 0 && availableSeats[0][3] == 0 && availableSeats[2][0] == 0 && availableSeats[2][3] == 0){
+                                    if(cmdSeat.getRow() == 0 && cmdSeat.getCol() == 0) {
+                                        playSound();
+                                    }
+                                    else if (cmdSeat.getRow() == 0 && cmdSeat.getCol() == 3){
+                                        playSound();
+                                    }
+                                    else if (cmdSeat.getRow() == 2 && cmdSeat.getCol() == 0){
+                                        playSound();
+                                    }
+                                    else if (cmdSeat.getRow() == 2 && cmdSeat.getCol() == 3){
+                                        playSound();
+                                    }
+                                }
                                 seatUpdateRefresh();
                             }
                         });
@@ -289,13 +303,21 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         }
     };
 
+    private void playSound() {
+        MediaPlayer mediaPlayer = MediaPlayer.create(SeatActivity.this, R.raw.listen);
+        mediaPlayer.setLooping(false);
+        mediaPlayer.setVolume(1, 1);
+        mediaPlayer.start();
+        if (!mediaPlayer.isPlaying()) {
+            mediaPlayer.release();
+        }
+    }
+
     /**
      * Pops up an error dialog using the listen sound
      * @param message error message
      */
     public void errorDialog(String message) {
-        MediaPlayer mediaPlayer = MediaPlayer.create(SeatActivity.this, R.raw.listen);
-
         final Dialog dialog = new Dialog(SeatActivity.this);
         dialog.setContentView(R.layout.confirm_dialog);
         dialog.setTitle(ERROR_TITLE);
@@ -311,13 +333,6 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         });
 
         dialog.show();
-        mediaPlayer.setLooping(false);
-        mediaPlayer.setVolume(1, 1);
-        mediaPlayer.start();
-        if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.release();
-        }
-
     }
 
     @Override
@@ -406,25 +421,6 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
 
     }
 
-    /**
-     * Swaps the fragment container to use the Seat Display Fragment without bundling the seat formation.
-     */
-    public void swapToSeatDisplayFragmentEmpty(){
-        availableSeats = DBController.getController().getAvailableSeatsInt();
-        fm = getFragmentManager();
-        ft = fm.beginTransaction();
-        seatDisplayFragment = new SeatDisplayFragment();
-        Bundle seatDisplayBundle = new Bundle();
-        seatDisplayBundle.putSerializable("availableSeats",availableSeats);
-        seatDisplayBundle.putInt("selectedFormationIndex",selectedFormationIndex);
-        seatDisplayBundle.putInt("groupSize", groupSize);
-        seatDisplayBundle.putSerializable("seatFormation", null);
-        seatDisplayFragment.setArguments(seatDisplayBundle);
-        ft.replace(R.id.fragment_container, seatDisplayFragment, "seatDisplayFragment")
-                .addToBackStack("Submitted seat preferences.")
-                .commit();
-
-    }
 
     /**
      * Swaps the fragment container to use the Preference Fragment
@@ -459,10 +455,6 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         swapToPreferenceFragment();
     }
 
-    @Override
-    public void onFailedReservation() {
-        swapToSeatDisplayFragmentEmpty();
-    }
 
 
     /**
