@@ -471,7 +471,9 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
     public void seatUpdateRefresh(){
         fm = getFragmentManager();
         SeatDisplayFragment fragment = (SeatDisplayFragment) fm.findFragmentByTag("seatDisplayFragment");
-        fragment.seatUpdateRefresh(fragment.getView());
+        if(fragment != null) {
+            fragment.seatUpdateRefresh(fragment.getView());
+        }
     }
 
     /**
