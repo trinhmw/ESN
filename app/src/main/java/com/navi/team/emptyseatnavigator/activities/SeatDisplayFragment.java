@@ -40,8 +40,8 @@ public class SeatDisplayFragment extends Fragment implements Constants{
     private SeatActivity seatActivity;
     private int groupSize = 0;
 
-    private final int height = 75;
-    private final int width = 75;
+    private final int height = 50;
+    private final int width = 50;
     private final int seatMargin = 5;
 
     private View view;

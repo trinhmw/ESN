@@ -5,7 +5,7 @@ package com.navi.team.emptyseatnavigator.businessobject;
  */
 public interface Constants {
     final int MAX_COLUMN = 4;
-    final int MAX_ROW = 3;
+    final int MAX_ROW = 4;
     final int TOTAL_SEATS = MAX_COLUMN * MAX_ROW;
     final int MAX_GROUP_SIZE = 4;
 }
