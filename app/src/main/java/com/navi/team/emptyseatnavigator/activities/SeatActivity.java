@@ -102,6 +102,13 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
         availableSeats = DBController.getController().getAvailableSeatsInt();
         container = R.id.fragment_container;
 
+        // USB Communications Setup
+        mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+        mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+        IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
+        filter.addAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED);
+        registerReceiver(mUsbReceiver, filter);
+
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
@@ -119,15 +126,6 @@ public class SeatActivity extends FragmentActivity implements Constants, SeatDis
                     .addToBackStack("Add Preference Fragment")
                     .commit();
         }
-
-
-
-        // USB Communications Setup
-        mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
-        IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
-        filter.addAction(UsbManager.ACTION_USB_ACCESSORY_DETACHED);
-        registerReceiver(mUsbReceiver, filter);
     }
 
     @Override

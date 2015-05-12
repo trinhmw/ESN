@@ -6,7 +6,7 @@
 #include "Adafruit_LEDBackpack.h"
 #include "Adafruit_GFX.h"
 
-#define NUM_ROWS 3
+#define NUM_ROWS 4
 #define NUM_COLS 4
 
 #define COMMAND_LED 0x0
@@ -15,10 +15,10 @@
 
 #define INTENSITY 1
 
-Adafruit_8x8matrix matrix[3] = {Adafruit_8x8matrix(), 
-  Adafruit_8x8matrix(), Adafruit_8x8matrix()};
+Adafruit_8x8matrix matrix[4] = {Adafruit_8x8matrix(), 
+  Adafruit_8x8matrix(), Adafruit_8x8matrix(), Adafruit_8x8matrix()};
   
-static const uint8_t matrixAddr[] = { 0x70, 0x71, 0x72 };
+static const uint8_t matrixAddr[] = { 0x70, 0x71, 0x72, 0x73 };
 
 static const uint8_t PROGMEM
   numImg[][8] = {
@@ -140,6 +140,11 @@ void setup() {
   setPins(2,1,30,26,27,28);
   setPins(2,2,33,4,5,6);
   setPins(2,3,28,13,14,15);
+  
+  setPins(3,0,34,48,50,49);
+  setPins(3,1,35,53,52,51);
+  setPins(3,2,36,54,55,56);
+  setPins(3,3,37,57,58,59);
  
   //Set all LEDs to Green, isAvailable to true; debounce values
   for (int i=0; i<NUM_ROWS; i++) {
@@ -162,11 +167,11 @@ void setup() {
   
   //Start the android accessory
   acc.powerOn();
-  
-  Serial.begin(9600);
 }
 
 void loop() {
+ 
+ acc.isConnected();
   
  //Check state of each switch
   for (int i = 0; i < NUM_ROWS; i++) {
@@ -213,7 +218,6 @@ void loop() {
       if (message[0] == COMMAND_LED) {
         int row = message[1];
         int col = message[2];
-        Serial.write(message[1]); Serial.write(message[2]);
         Tlc.set(seats[row][col].red, message[3] * INTENSITY);
         Tlc.set(seats[row][col].green, message[4] * INTENSITY);
         Tlc.set(seats[row][col].blue, message[5] * INTENSITY);
@@ -252,9 +256,6 @@ void loop() {
     }
   }
   
-  Serial.println(easterEgg);
-  Serial.println(badCount);
-  
   if (easterEgg==4 && badCount==0) {
       matrix[0].setTextSize(1);
       matrix[0].setTextWrap(false);  // we dont want text to wrap so it scrolls nicely
@@ -265,6 +266,9 @@ void loop() {
       matrix[2].clear();
       matrix[2].drawBitmap(0, 0, sword, 8, 8, LED_ON);
       matrix[2].writeDisplay();   
+      matrix[3].clear();
+      matrix[3].drawBitmap(0, 0, navi, 8, 8, LED_ON);
+      matrix[3].writeDisplay(); 
       for (int8_t x=0; x>=-127; x--) {
         matrix[0].clear();
         matrix[0].setCursor(x%64+8,0);
@@ -274,16 +278,6 @@ void loop() {
         matrix[1].setCursor(x+8,0);
         matrix[1].print("Melissa Brad & Kevin");
         matrix[1].writeDisplay();
-//        if (x==0) {
-//          matrix[2].clear();
-//          matrix[2].drawBitmap(0, 0, navi, 8, 8, LED_ON);
-//          matrix[2].writeDisplay();   
-//        }
-//        if (x==-64) {
-//          matrix[2].clear();
-//          matrix[2].drawBitmap(0, 0, sword, 8, 8, LED_ON);
-//          matrix[2].writeDisplay();   
-//        }
         delay(100);
       }
   }
