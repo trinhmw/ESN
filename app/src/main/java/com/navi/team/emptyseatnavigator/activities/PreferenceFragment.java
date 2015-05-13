@@ -105,16 +105,6 @@ public class PreferenceFragment extends Fragment implements Constants{
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         public void onSubmit(Seat[][] seatFormation, int groupSize);
     }
@@ -137,35 +127,6 @@ public class PreferenceFragment extends Fragment implements Constants{
             dialogButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
-        }
-    }
-
-
-
-    /**
-     * Pops up an error dialog using the listen sound, soft refreshes after tapping confirm
-     * @param message error message
-     */
-    public void errorRefreshDialog(String message) {
-        Activity activity = getActivity();
-        if (activity != null) {
-            final Dialog dialog = new Dialog(activity);
-            dialog.setContentView(R.layout.confirm_dialog);
-            dialog.setTitle(ERROR_TITLE);
-            TextView textView = (TextView) dialog.findViewById(R.id.dialogText);
-            textView.setText(message);
-            dialog.setCanceledOnTouchOutside(false);
-
-            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    seatUpdateRefresh();
                     dialog.dismiss();
                 }
             });

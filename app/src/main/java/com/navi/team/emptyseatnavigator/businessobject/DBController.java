@@ -93,9 +93,7 @@ public class DBController implements Constants{
         return status;
     }
 
-    /**
-     * Testing purposes only
-     */
+
     public void seatAllAvailable(){
         for(int r = 0; r < MAX_ROW; r++){
             for(int c = 0; c < MAX_COLUMN; c++){
